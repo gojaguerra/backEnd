@@ -25,11 +25,33 @@ class productManager {
 
         const codeIndex = this.products.findIndex(producto => producto.code === code);
         
+        // VALIDO NO ESTEN VACIOS CAMPOS OBLIGATORIOS
         if(title===""){
             console.log('No se puede crear producto, campo Nombre vacio!');
             return
         }
+        if(description===""){
+            console.log('No se puede crear producto, campo Descripción vacio!');
+            return
+        }
+        if(price=0){
+            console.log('No se puede crear producto, campo Precio vacio!');
+            return
+        }
+        if(thumbnail===""){
+            console.log('No se puede crear producto, campo Imagen vacio!');
+            return
+        }
+        if(code===""){
+            console.log('No se puede crear producto, campo Código vacio!');
+            return
+        }
+        if(stock=0){
+            console.log('No se puede crear producto, campo Stock vacio!');
+            return
+        }
 
+        // VALIDO NO EXISTE EL PRODUCTO. CAMPO DE VALIDACION CODE
         if (codeIndex!=-1) {
             console.log(`El producto ${code} ya existe!`);
             return            
@@ -61,9 +83,9 @@ class productManager {
 const manejadorProductos = new productManager();
 // agrego codigo 100
 manejadorProductos.addProduct("Galletas","Galletas de avena x 200grs",10,"imagen.jpg","100",50)
-// repito mismo codigo
+// repito mismo codigo - ERROR
 manejadorProductos.addProduct("Galletas","Galletas de avena x 200grs",10,"imagen.jpg","100",50)
-// envio title vacio
+// envio title vacio - ERROR
 manejadorProductos.addProduct("","Galletas de avena x 200grs",10,"imagen.jpg","100",50)
 
 // agrego codigo 200
