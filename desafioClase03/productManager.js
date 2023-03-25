@@ -51,12 +51,13 @@ class productManager {
             return
         }
 
-        // VALIDO NO EXISTE EL PRODUCTO. CAMPO DE VALIDACION CODE
+        // VALIDO NO EXISTA EL PRODUCTO. CAMPO DE VALIDACION CODE
         if (codeIndex!=-1) {
             console.log(`El producto ${code} ya existe!`);
             return            
         }
 
+        // TODO OK para crear el nuevo producto
          const product = {
             title,
             description,
@@ -66,6 +67,7 @@ class productManager {
             stock
         };
 
+        // ASIGNO id autoincremental
         if (this.products.length === 0) {
             product.id = 1;
         } else {
