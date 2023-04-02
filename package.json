@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/gojaguerra/backEnd/issues"
   },
-  "homepage": "https://github.com/gojaguerra/backEnd#readme"
+  "homepage": "https://github.com/gojaguerra/backEnd#readme",
+  "dependencies": {
+    "moment": "^2.29.4"
+  }
 }
