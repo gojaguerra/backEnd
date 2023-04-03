@@ -25,7 +25,7 @@ const actualizoProduct = async (id, data) => {
 
 // Cargo el archivo de productos
 console.log("INICIO CARGA DE PRODUCTOS: cargoProduct");
-cargoProduct();
+await cargoProduct();
 
 // muestro lista de productos
 console.log("MUESTRO LOS PRODUCTOS: getProducts");
@@ -42,8 +42,10 @@ console.log("BUSCO PRODUCTO CON ID 10: getProductById");
 const respuestaFind2= await manejadorProductos.getProductById(10);
 respuestaFind2 != -1 && console.log(respuestaFind2);
 
-/*
 // Cambio datos del producto selecciona y el campo que necesito
 const respuestaFind3 = await actualizoProduct(1, {stock:30, title:"Tostadas"})
 respuestaFind3 != -1 && console.log('Producto Actualizado')
-*/
+
+// Elimino un producto del archivo por ID
+const respuestaFind4 = await manejadorProductos.deleteProductById(2);
+respuestaFind4 != -1 && console.log('El producto fue eliminado')

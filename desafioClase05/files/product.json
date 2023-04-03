@@ -1,21 +1,12 @@
 [
 	{
-		"title": "Galletas",
+		"title": "Tostadas",
 		"description": "Galletas de avena x 200grs",
 		"price": 10,
 		"thumbnail": "imagen.jpg",
 		"code": "100",
-		"stock": 50,
+		"stock": 30,
 		"id": 1
-	},
-	{
-		"title": "Agua Saborizada",
-		"description": "Agua con gas sabor naranja x 500cc",
-		"price": 20.5,
-		"thumbnail": "imagen.jpg",
-		"code": "200",
-		"stock": 50,
-		"id": 2
 	},
 	{
 		"title": "Agua Saborizada",

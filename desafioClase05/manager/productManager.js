@@ -98,7 +98,7 @@ export default class productManager {
             const products = await this.getProducts();
             // Busco el indice del ID a actualizar
             const codeIndex = products.findIndex(producto => producto.id === id);
-
+            
             // Valido que exista     
             if (codeIndex === -1) {
                 console.log(`updateProduct: El producto con ID ${id} NO existe!`);
@@ -113,14 +113,38 @@ export default class productManager {
             //Escribo el archivo con los datos modificados
             await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
 
-            console.log(products);
-
             return products;
 
         }catch (error){
             console.log(error);
         }
     }
+
+/*     updateProductNew = async (id, data) => {
+        try {
+            
+            const codeIndex = this.products.findIndex(producto => producto.id === id);
+            
+            // Valido que exista     
+            if (codeIndex === -1) {
+                console.log(`updateProduct: El producto con ID ${id} NO existe!`);
+                return codeIndex  
+            }
+            
+            // Reemplazo los datos de las propiedades del objeto que recibo en el indice antes buscado
+            for (const propiedad in data){
+                this.products[codeIndex][propiedad] = data[propiedad];
+            };
+            
+            //Escribo el archivo con los datos modificados
+            await fs.promises.writeFile(this.path, JSON.stringify(this.products, null, '\t'));
+
+            return;
+
+        }catch (error){
+            console.log(error);
+        }
+    } */
 
     deleteProductById = async (id) => {
         try {
