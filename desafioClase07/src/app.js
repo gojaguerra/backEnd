@@ -3,43 +3,12 @@ import productManager from './productManager.js';
 
 const app = express();
 
-/* const usuarios =[
-    {id:1, nombre:"jose", edad:55},
-    {id:2, nombre:"carlos", edad:45}
-];
-
-app.get("/saludo", (req, res) => {
-    res.send("Hola a todos desde express");
-});
-
-app.get("/usuario", (req, res) => {
-    res.send({
-        nombre:"jose",
-        edad:55
-    })
-})
-
-app.get("/welcome", (req, res) => {
-    res.send(`<h1>HOLA</h1>`)
-})
-
-app.get("/usuario/:id", (req, res) => {
-    const userId = Number(req.params.id);
-    const usuario = usuarios.find(u => u.id === userId);
-    res.send(usuario);
-})
-
-app.get("/usuarios-find", (req, res) => {
-    const { edad, nombre } = req.query;
-
-}) */
-
 //Creamos la instancia de la clase
 const ProductManager = new productManager('./products.json');
 
 app.use(express.urlencoded({extended: true}));
 
-//Ruta /products 
+//Ruta /products + query limits
 app.get('/products', async (req, res) => {
     const { limit } = req.query;
     const products = await ProductManager.getProducts();
@@ -47,7 +16,7 @@ app.get('/products', async (req, res) => {
     const nuevoArreglo = [];
     
     if (limit){
-        for (let i=0; i<=limit-1; i++) {
+        for (let i=0; i<=limit-1 && i < products.length; i++) {
             nuevoArreglo.push(products[i]) ;
         }
         res.send(nuevoArreglo)
@@ -56,10 +25,13 @@ app.get('/products', async (req, res) => {
     }
 })
 
-/* //Ruta /products 
-app.get('/products/:limit', async (req, res) => {
-    const limitSize = Number(req.params.limit);
-    console.log(limitSize);
-}) */
+//Ruta /products/:pid 
+app.get('/products/:pid', async (req, res) => {
+    const productId = Number(req.params.pid);
+    const productById = await ProductManager.getProductById(productId);
+    
+    productById===-1 ? res.send(`El producto con id ${productId} no existe!`) : res.send(productById);
+
+})
 
 app.listen(8080, () => console.log("escuchando port 8080"));

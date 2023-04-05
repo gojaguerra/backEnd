@@ -32,7 +32,7 @@ export default class productManager {
 
             // Valido que exista y retorno el resultado
             if (codeIndex===-1) {
-                console.log(`El producto con ID ${id} NO existe!`);
+                /* console.log(`El producto con ID ${id} NO existe!`); */
                 return codeIndex         
             } else {
                 return products[codeIndex]
