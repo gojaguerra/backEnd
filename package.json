@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/gojaguerra/backEnd#readme",
   "dependencies": {
+    "express": "^4.18.2",
     "moment": "^2.29.4"
   }
 }
