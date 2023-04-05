@@ -43,13 +43,14 @@ app.use(express.urlencoded({extended: true}));
 app.get('/products', async (req, res) => {
     const { limit } = req.query;
     const products = await ProductManager.getProducts();
+
+    const nuevoArreglo = [];
+    
     if (limit){
-        const nuevoArreglo = products.forEach( (n) => {
-            if (n<=limit){
-                return;
-            }
-        })
-        res.send(nuevoArreglo);
+        for (let i=0; i<=limit-1; i++) {
+            nuevoArreglo.push(products[i]) ;
+        }
+        res.send(nuevoArreglo)
     } else {
         res.send(products);
     }
