@@ -90,7 +90,8 @@ router.post('/', async(req, res) => {
 
 router.put('/:id', async(req,res) =>{
     // llamar al metodo updateProduct para actualizar sin modificar el id
-    const id = parseInt(req.params);
+    /* const id = parseInt(req.params); */
+    const id = Number(req.params.id);
     const data = req.body;
 
     const result = await productManager.updateProduct(id, data);
@@ -98,10 +99,24 @@ router.put('/:id', async(req,res) =>{
     res.send({status: 'success', product})
 });
 
-router.delete('/:id',(req,res)=>{
-    const id = parseInt(req.params)
+router.delete('/:id', async(req,res)=>{
+    /* const id = parseInt(req.params) */
+    const id = Number(req.params.id);
     //llamar al metodo deleteProduct pasandole como parametro id
-    res.send({status: 'success'})
+
+    const result = await productManager.deleteProductById(id);
+
+    /* res.send({status: 'success'}) */
+
+    const response = result !==-1 
+    ? { status: "Success", data: result} 
+    : { status: "NOT FOUND", data: `NO existe el producto que desea eliminar!` };
+    //Valido marco el estado según el resultado
+    const statusCode = result!==-1 ? 200 : 404;
+
+    //muestro resultado
+    res.status(statusCode).json(response);
+
 })
 
 

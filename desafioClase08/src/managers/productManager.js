@@ -101,8 +101,8 @@ export default class productManager {
             
             // Valido que exista 
             if (codeIndex===-1) {
-                console.log(`El producto con ID ${id} NO existe!`);
-                return codeIndex;
+                /* console.log(`El producto con ID ${id} NO existe!`); */
+                return -1;
             } 
             
             //Elimino el producto del indice antes buscado
@@ -111,7 +111,7 @@ export default class productManager {
             //Escribo el archivo con los datos modificados
             await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
 
-            return products;
+            return;
 
         }catch (error){
             console.log(error);
