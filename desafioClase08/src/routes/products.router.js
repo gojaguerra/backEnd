@@ -90,14 +90,32 @@ router.post('/', async(req, res) => {
 
 router.put('/:id', async(req,res) =>{
     // llamar al metodo updateProduct para actualizar sin modificar el id
-    /* const id = parseInt(req.params); */
     const id = Number(req.params.id);
-    const data = req.body;
+    const product = req.body;
 
-    const result = await productManager.updateProduct(id, data);
+    /* console.log(product.category); */
+    if(!product.title || !product.description || !product.code || !product.price || 
+        !product.stock || !product.category || !product.status){
+        return res.status(400).send({error:'Hay campos que faltan completar!'});
+    }
 
-    res.send({status: 'success', product})
-});
+    if("id" in product){
+        return res.status(404).json({ status: "NOT FOUND", data: "Error no se puede modificar el id"});
+    }
+
+    //Intento actualizar los datos de productos
+    const result = await productManager.updateProduct(id,product);
+
+    // Valido el resultado del Update
+    const response = result !==-1 
+    ? { status: "Success", data: `El producto con ID ${id} fue actualizado con éxito!`} 
+    : { status: "NOT FOUND", data: `El producto con ID ${id} NO existe!` };
+
+    const statusCode = result !==-1 ? 200 : 404;
+
+    //muestro resultado
+    res.status(statusCode).json(response); 
+})
 
 router.delete('/:id', async(req,res)=>{
     /* const id = parseInt(req.params) */

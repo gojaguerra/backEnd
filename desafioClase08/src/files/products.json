@@ -18,5 +18,25 @@
 		"category": "grocery",
 		"status": true,
 		"id": 5
+	},
+	{
+		"title": "Galletitas",
+		"description": "Galletitas de Avena x 200",
+		"code": "200",
+		"price": 15.5,
+		"stock": 50,
+		"category": "grocery",
+		"status": true,
+		"id": 6
+	},
+	{
+		"title": "Galletitas",
+		"description": "Galletitas de Avena x 200",
+		"code": "201",
+		"price": 15.5,
+		"stock": 50,
+		"category": "food",
+		"status": true,
+		"id": 7
 	}
 ]
