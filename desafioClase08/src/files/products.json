@@ -1,0 +1,14 @@
+[
+	{
+		"title": {
+			"title": "Galletitas",
+			"description": "Galletitas de Avena x 200",
+			"code": "101",
+			"price": 10.5,
+			"stock": 50,
+			"category": "grocery",
+			"status": true
+		},
+		"id": 1
+	}
+]
