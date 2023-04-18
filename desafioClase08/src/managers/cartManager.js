@@ -23,21 +23,46 @@ export default class cartManager {
         }
     }
 
-    async addCart(cart) {
+     addCart = async (cart) => {
+        try {
+            // Traigo los productos
+            const carts = await this.getCarts();
+            
+            // ASIGNO ID
+            if (carts.length === 0) {
+                cart.id = 1;
+            } else {
+                cart.id = carts[carts.length - 1].id + 1;
+            }
 
-        // ASIGNO ID
-        if (this.carts.length === 0) {
-            carts.id = 1;
-        } else {
-            carts.id = this.carts[this.carts.length - 1].id + 1;
+            // Agrego y escribo el archivo
+            carts.push(cart);   
+            await fs.promises.writeFile(this.path, JSON.stringify(carts, null, '\t'));
+
+            return cart;
+
+        } catch (error){
+            console.log(error);
         }
+    }    
 
-        this.carts.push(cart);
-        return cart;
-    }
 
-    async getById(id) {
-        const cart = this.carts.find(cart => cart.id===id);
-        return cart;
+    getById = async (id) => {
+        try {
+            // Traigo los productos
+            const carts = await this.getCarts();
+           
+            // Busco el indice del ID a consultar
+            const cartIndex = carts.findIndex(cart => cart.id === id);
+
+            // Valido que exista y retorno el resultado
+            if (cartIndex===-1) {
+                return cartIndex         
+            } else {
+                return carts[cartIndex]
+            }
+        }catch (error){
+            console.log("ERROR:",error);
+        }
     }
 }

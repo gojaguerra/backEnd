@@ -4,10 +4,11 @@ import cartsRouter from './routes/cart.router.js'
 
 const app = express();
 
+// Configuracion de express
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
-app.use('/api/products',productRouter)
-app.use('/api/carts', cartsRouter)
+app.use('/api/products', productRouter);
+app.use('/api/carts', cartsRouter);
 
-app.listen(8080, () => {console.log('Servidor escuchando en el puerto 8080')})
+app.listen(8080, () => {console.log('Servidor escuchando en el puerto 8080')});

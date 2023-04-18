@@ -10,7 +10,6 @@ export default class productManager {
 
     getProducts = async () => {
         try {
-            
             //Verifico que exista el archivo para leerlo
             if (fs.existsSync(this.path)) {
                 const data = await fs.promises.readFile(this.path, 'utf-8');
@@ -28,6 +27,7 @@ export default class productManager {
         try {
             // Traigo los productos
             const products = await this.getProducts();
+           
             // Busco el indice del ID a consultar
             const codeIndex = products.findIndex(producto => producto.id === id);
 
@@ -42,42 +42,30 @@ export default class productManager {
             console.log("ERROR:",error);
         }
     }
-
-    addProduct = async (title, description, code, price, status, stock, category, thumbnail) => {
+    /* title, description, code, price, status, stock, category, thumbnail */
+    addProduct = async (product) => {
         try {
             // Traigo los productos
-            await this.getProducts();
+            const products = await this.getProducts();
+            
             // Busco el indice del producto por su CODE a consultar
-            const codeIndex = this.products.findIndex(producto => producto.code === code);
+            const codeIndex = products.findIndex(producto => producto.code === product.code);
 
             // VALIDO NO EXISTA EL PRODUCTO POR EL CAMPO DE VALIDACION CODE
             if (codeIndex!=-1) {
-                console.log(`El producto ${code} ya existe!`);
-                return            
+                return -1;           
             }
 
-            // Preparo el nuevo producto
-            const  product = {
-                title,
-                description,
-                code,
-                price,
-                status,
-                stock,
-                category,
-                thumbnail
-            };
-
             // ASIGNO ID
-            if (this.products.length === 0) {
+            if (products.length === 0) {
                 product.id = 1;
             } else {
-                product.id = this.products[this.products.length - 1].id + 1;
+                product.id = products[products.length - 1].id + 1;
             }
 
             // Agrego y escribo el archivo
-            this.products.push(product);   
-            await fs.promises.writeFile(this.path, JSON.stringify(this.products, null, '\t'));
+            products.push(product);   
+            await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
 
             return product;
 
