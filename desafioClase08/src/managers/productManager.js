@@ -25,7 +25,7 @@ export default class productManager {
 
     getProductById = async (id) => {
         try {
-            // Traigo los productos
+            // Traigo todos los productos
             const products = await this.getProducts();
            
             // Busco el indice del ID a consultar
@@ -33,7 +33,7 @@ export default class productManager {
 
             // Valido que exista y retorno el resultado
             if (codeIndex===-1) {
-                /* console.log(`El producto con ID ${id} NO existe!`); */
+                // NO EXISTE EL PRODUCTO
                 return codeIndex         
             } else {
                 return products[codeIndex]

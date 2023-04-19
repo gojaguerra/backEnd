@@ -47,7 +47,7 @@ export default class cartManager {
     }    
 
 
-    getById = async (id) => {
+    getCartById = async (id) => {
         try {
             // Traigo los productos
             const carts = await this.getCarts();
@@ -57,12 +57,51 @@ export default class cartManager {
 
             // Valido que exista y retorno el resultado
             if (cartIndex===-1) {
-                return cartIndex         
+                return cartIndex;
             } else {
-                return carts[cartIndex]
+                return carts[cartIndex];
             }
         }catch (error){
             console.log("ERROR:",error);
         }
+    }
+
+    addProductInCart = async(cartId, productId) => {
+        try {
+            // Traigo los Carritos
+            const carts = await this.getCarts();
+            // Busco el indice del ID a actualizar
+            const codeIndex = carts.findIndex(carrito => carrito.id === cartId);
+            
+            //Valido si el item esta en el carrito
+            const isInCart = (id) => {
+                return (
+                    carts[codeIndex].products.some(item => item.product === id)
+                )
+            }
+
+            if  (isInCart(productId)){
+                const productIndex = carts[codeIndex].products.findIndex(prod => prod.product === productId);
+                console.log(productIndex);
+                carts[codeIndex].products[productIndex].quantity++;
+                console.log('esta en el carro');
+            }else{
+                //creo arreglo para el nuevo producto
+                const newProduct = {
+                    product: productId,
+                    quantity: 1
+                };
+                carts[codeIndex].products.push(newProduct);
+                console.log('NO esta en el carro');
+            }
+            // Agrego y escribo el archivo
+            await fs.promises.writeFile(this.path, JSON.stringify(carts, null, '\t'));
+
+            return carts;
+
+        } catch (error){
+            console.log(error);
+        }    
+
     }
 }
