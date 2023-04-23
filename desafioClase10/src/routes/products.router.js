@@ -8,12 +8,10 @@ router.get('/', async(req, res) => {
     //llamar al metodo getProducts
     const products = await productManager.getProducts()
 
-    /* res.send({ products }) */
-
     const { limit } = req.query;
 
     const nuevoArreglo = [];
-
+    
     if (limit){
         for (let i=0; i<=limit-1 && i < products.length; i++) {
                 nuevoArreglo.push(products[i]) ;    
@@ -33,12 +31,6 @@ router.get('/', async(req, res) => {
     }
 
 });
-
-/* router.get('/:id', async(req, res) => {//buscar por id un producto
-    const id = parseInt(req.params.id)
-    const product = await productManager.getProductById(id);
-    res.send({product})
-}); */
 
 router.get('/:id', async(req, res) => {
     const id = Number(req.params.id);
