@@ -1,9 +1,9 @@
 <div>
     {{#each products}}
     <div>
-        <h1>Hola {{this.code}}</h1>
+        <h1>Código: {{this.code}}</h1>
         <p>{{this.description}}</p>
-        <p>{{this.code}}</p>
+        <p>${{this.price}}</p>
     </div>
     {{/each}}
 </div>
