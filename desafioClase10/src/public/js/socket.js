@@ -15,6 +15,7 @@ socket.on('showProducts', data => {
         container.innerHTML += `
         <div>
             <h1>Código: ${prod.code}</h1>
+            <p>Nombre: ${prod.title}</p> 
             <p>Descripción: ${prod.description}</p> 
             <p>Categoria: ${prod.category}</p> 
             <p>Precio: ${prod.price}</p>

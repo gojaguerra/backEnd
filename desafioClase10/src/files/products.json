@@ -48,16 +48,5 @@
 		"category": "food",
 		"status": true,
 		"id": 8
-	},
-	{
-		"code": "222",
-		"title": "333",
-		"description": "444",
-		"category": "555",
-		"price": "11",
-		"stock": "11",
-		"thumbnail": "",
-		"status": true,
-		"id": 9
 	}
 ]
