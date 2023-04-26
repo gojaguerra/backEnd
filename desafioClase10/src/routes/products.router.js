@@ -64,21 +64,33 @@ router.post('/', async(req, res) => {
     }
 
     const result = await productManager.addProduct(product);
-/*     if (!result) {
-        return res.status(404).send({ error: 'producto existe!' });
-    }
+     
+    //Valido el resultado de la búsqueda
+    if (result !==-1 ) {
+        const io = req.app.get('socketio');
+        io.emit("showProducts", await productManager.getProducts());
+    };
 
-    res.send({ status: 'success', result })//si salio todo ok lo guardo y muestro */
-
-     //Valido el resultado de la búsqueda
+    //Valido el resultado de la búsqueda
      const response = result !==-1 
      ? { status: "Success", data: result} 
-     : { status: "NOT FOUND", data: `Ya existe el producto que desea crear!` };
+     : { status: "FOUND", data: `Ya existe el producto que desea crear!` };
      //Valido marco el estado según el resultado
      const statusCode = result!==-1 ? 200 : 404;
 
      //muestro resultado
-     res.status(statusCode).json(response);
+     //res.status(statusCode).json(response);
+     res.redirect("/realTimeProducts");
+
+/*      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        title: `${result} se agrego el producto`,
+        icon: 'success'
+    }); */
+
 
 });
 
@@ -117,6 +129,12 @@ router.delete('/:id', async(req,res)=>{
     //llamar al metodo deleteProduct pasandole como parametro id
 
     const result = await productManager.deleteProductById(id);
+
+    //Valido el resultado de la búsqueda
+    if (result !==-1 ) {
+        const io = req.app.get('socketio');
+        io.emit("showProducts", await productManager.getProducts());
+    };
 
     /* res.send({status: 'success'}) */
 
