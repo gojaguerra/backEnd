@@ -22,14 +22,14 @@ router.get('/', async(req, res) => {
         };
 
         //res.send(response);
-        res.render("home.handlebars", { nuevoArreglo })
+        res.render("products.handlebars", { nuevoArreglo })
     } else {
         const response = {
             status: "OK",
             data: products,
         };
         //res.send(response)
-        res.render("home.handlebars", { products })
+        res.render("products.handlebars", { products })
     }
 
 });

@@ -8,9 +8,7 @@ router.get('/', async(req, res) => {
     
     const products = await productManager.getProducts()
     
-    res.render('home', {
-        products
-    });
+    res.render('home');
 
 });
 

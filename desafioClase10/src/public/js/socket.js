@@ -19,8 +19,6 @@ socket.on('showProducts', data => {
             <p>Categoria: ${prod.category}</p> 
             <p>Precio: ${prod.price}</p>
             <p>Stock: ${prod.stock}</p>
-
-            <button id="prodDelete" action="/api/products/${prod.id}">Borrar ID ${prod.id}</button>
         </div>
         `
     })
