@@ -4,6 +4,7 @@ const  addProduct = document.getElementById('addProduct')
 addProduct.addEventListener('click', (event) => {
     window.location= "/realTimeProducts";
 });
+
 // Botón para ver lista de productos
 const  viewProduct = document.getElementById('viewProduct')
 // viewProduct.innerHTML = `<button id="viewProduct" class="btn btn-secondary"> Ver Productos</button>`
