@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
 
 //CREATE
 
-router.post("/", async(req,res) => {
+router.post("/", async (req,res) => {
     const { first_name, last_name, email } = req.body;
 
     if (!first_name || !last_name || !email) {
@@ -27,6 +27,7 @@ router.post("/", async(req,res) => {
             last_name,
             email
         })
+        /* res.send({ result: "success", payload: users }) */
     } catch (error) {
         res.status(500).send({ error });
     }

@@ -20,7 +20,7 @@ app.engine('handlebars', handlebars.engine());
 app.set('views', `${__dirname}/views`);
 app.set('view engine', 'handlebars');
 
-app.use('api/users', userRouter)
+app.use('/api/users', userRouter)
 app.use('/', viewsRouter);
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartsRouter);
@@ -30,7 +30,7 @@ try {
      await mongoose.connect("mongodb+srv://jguerra1968:THWf8CZ8UjehbFfO@cluster37960jg.hhv9pbe.mongodb.net/?retryWrites=true&w=majority")
      console.log("conectados a la base MONGO");
 } catch (error) {
-     
+
 }
 
 const server = app.listen(8080, () => console.log('Server running'));
