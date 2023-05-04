@@ -12,4 +12,24 @@ router.get("/", async (req, res) => {
     }
 });
 
+//CREATE
+
+router.post("/", async(req,res) => {
+    const { first_name, last_name, email } = req.body;
+
+    if (!first_name || !last_name || !email) {
+        return res.status(400).send({ error: "Incomplete values" });
+    }
+
+    try {
+        const result = await userModel.create({
+            first_name,
+            last_name,
+            email
+        })
+    } catch (error) {
+        res.status(500).send({ error });
+    }
+})
+
 export default router;
