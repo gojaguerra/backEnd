@@ -39,7 +39,7 @@ const io = new Server(server);
 app.set('socketio',io);
 
 //Creamos la instancia de la clase
-const productManager = new ProductManager('./desafioClase10/src/files/products.json');
+const productManager = new ProductManager('./desafioClase14/src/files/products.json');
 
 io.on('connection', async socket => {
      console.log('Nuevo cliente conectado');

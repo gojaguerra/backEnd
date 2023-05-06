@@ -2,7 +2,7 @@ import { Router } from 'express';
 import ProductManager from '../managers/productManager.js';
 
 const router = Router();
-const productManager = new ProductManager('./desafioClase10/src/files/products.json');
+const productManager = new ProductManager('./desafioClase14/src/files/products.json');
 
 router.get('/', async(req, res) => {
     //llamar al metodo getProducts
@@ -60,6 +60,7 @@ router.post('/', async(req, res) => {
         product.status = true
     }
     if(!product.title || !product.description || !product.code || !product.price || !product.stock || !product.category){
+
         return res.status(400).send({error:'Faltan completar campos!'});
     }
 
