@@ -24,7 +24,14 @@ const userSchema = new mongoose.Schema({
         enum: ["M", "F"]
     },
     courses: {
-        type: Array,
+        type:[
+            {
+                course: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "courses"
+                }
+            }
+        ],
         default: []
     }
 });
