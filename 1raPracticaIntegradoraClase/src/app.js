@@ -16,9 +16,12 @@ app.engine('handlebars', handlebars.engine());
 app.set('views', `${__dirname}/views`);
 app.set('view engine', 'handlebars');
 
+app.use("/", viewsRouter);
+app.use("/api/users", usersRouter);
+app.use("/api/courses", coursesRouter);
 
 try {
-    await mongoose.connect("mongodb+srv://jguerra1968:THWf8CZ8UjehbFfO@cluster37960jg.hhv9pbe.mongodb.net/produ?retryWrites=true&w=majority")
+    await mongoose.connect("mongodb+srv://jguerra1968:THWf8CZ8UjehbFfO@cluster37960jg.hhv9pbe.mongodb.net/?retryWrites=true&w=majority")
     console.log("conectados a la base MONGO");
 } catch (error) {
     console.log(error);
