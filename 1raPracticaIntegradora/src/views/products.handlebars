@@ -4,13 +4,24 @@
 <div>
     <h1>Productos disponibles</h1>
     {{#each products}}
-    <div>
-        <h1>Código: {{this.code}}</h1>
+{{!--     <div>
+        <h3>Código: {{this.code}}</h3>
         <p>Nombre: {{this.title}}</p>
         <p>Descripción: {{this.description}}</p>
         <p>Precio: ${{this.price}}</p>
         <p>Stock: ${{this.stock}}</p>
+    </div> --}}
+
+    <div class="card" style="width: 18rem;">
+        <img src="{{this.thumbnail}}" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">{{this.title}}</h5>
+            <p class="card-text">Descripción:  {{this.description}}</p>
+            <p class="card-text">Precio:$ {{this.price}}</p>
+            <button class="btn btn-primary" id=boton{{this.code}}>Comprar</button>
+        </div>
     </div>
+
     {{/each}}
 </div>
 
