@@ -1,8 +1,12 @@
 import express from 'express';
+import { Server } from 'socket.io';
 import __dirname from "./utils.js";
-import usersRouter from "./routes/users.js";
-import coursesRouter from "./routes/courses.js";
-import viewsRouter from "./routes/views.js";
+import viewsRouter from "./routes/views.router.js";
+import cartsRouter from "./routes/cart.router.js";
+import productRouter from "./routes/products.router.js";
+import viewsProdRouter from "./routes/viewsProd.router.js";
+import ProductManager from './dao/dbManagers/productManager.js';
+
 import handlebars from "express-handlebars";
 import mongoose from "mongoose";
 
@@ -16,12 +20,27 @@ app.engine('handlebars', handlebars.engine());
 app.set('views', `${__dirname}/views`);
 app.set('view engine', 'handlebars');
 
+app.use('/', viewsRouter);
+app.use('/api/products', productRouter);
+app.use('/api/carts', cartsRouter);
+app.use('/realtimeproducts', viewsProdRouter)
 
 try {
-    await mongoose.connect("mongodb+srv://jguerra1968:THWf8CZ8UjehbFfO@cluster37960jg.hhv9pbe.mongodb.net/produ?retryWrites=true&w=majority")
+    await mongoose.connect("mongodb+srv://jguerra1968:THWf8CZ8UjehbFfO@cluster37960jg.hhv9pbe.mongodb.net/ecommerce?retryWrites=true&w=majority")
     console.log("conectados a la base MONGO");
 } catch (error) {
     console.log(error);
 }
 
 const server = app.listen(8080, () => console.log('Server running'));
+
+const io = new Server(server);
+app.set('socketio',io);
+
+//Creamos la instancia de la clase
+const productManager = new ProductManager();
+
+io.on('connection', async socket => {
+     console.log('Nuevo cliente conectado');
+     io.emit("showProducts", await productManager.getProducts());
+});

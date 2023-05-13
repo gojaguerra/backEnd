@@ -1,6 +1,6 @@
 import { cartModel } from "../models/cartModel.js"
 
-export default class cartManager {
+export default class CartManager {
 
     constructor() {
         console.log('Working carts with DB');
@@ -18,7 +18,7 @@ export default class cartManager {
 
     getCartById = async (id) => {
         //Leo de la base devolviendo los productos
-        const cart = await cartModel.find(id).lean();
+        const cart = await cartModel.find({_id:id}).lean();
         return cart;         
     };
 

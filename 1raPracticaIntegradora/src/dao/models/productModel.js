@@ -31,4 +31,4 @@ const productSchema = new mongoose.Schema({
     status: Boolean
 });
 
-export const productModel = mongoose.model(productCollection, productSchema)
+export const productModel = mongoose.model(productCollection, productSchema);

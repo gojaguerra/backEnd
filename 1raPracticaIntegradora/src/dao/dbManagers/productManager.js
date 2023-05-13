@@ -1,6 +1,6 @@
 import { productModel } from '../models/productModel.js';
 
-export default class productManager {
+export default class ProductManager {
 
     constructor() {
         console.log('Working products with DB');
@@ -14,7 +14,7 @@ export default class productManager {
 
     getProductById = async (id) => {
         //Leo de la base devolviendo los productos
-        const product = await productModel.find(id).lean();
+        const product = await productModel.find({_id: id}).lean();
         return product;
     };
 
