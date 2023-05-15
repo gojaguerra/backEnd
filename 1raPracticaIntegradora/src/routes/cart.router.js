@@ -47,7 +47,8 @@ router.get('/:id', async(req, res) => {
 // AGREGO/ACTUALIZO PRODUCTO EN EL CARRITO
 router.post('/:cid/product/:pid', async(req, res) => {
     // Primero Valido que exista el carrito 
-    const cartId = Number(req.params.cid);
+    /* const cartId = Number(req.params.cid); */
+    const cartId = req.params.cid;
     // OBTENGO el carrito QUE HAY EN EL ARCHIVO
     const cart = await cartManager.getCartById(cartId);
     //Valido el resultado de la búsqueda
@@ -56,18 +57,28 @@ router.post('/:cid/product/:pid', async(req, res) => {
         return res.status(404).json(response);
     };
     // Segundo Valido que exista el producto
-    const productId = Number(req.params.pid);
+    const productId = req.params.pid;
     // OBTENGO el carrito QUE HAY EN EL ARCHIVO
     const product = await productManager.getProductById(productId);
+
+    /* console.log(product); */
     if (product === -1){
         const response = { status: "Error", data: `El Producto con ID ${productId} NO existe!` };
         return res.status(404).json(response);
     };
-
+    console.log(cart);
+    console.log(product);
     // Una vez validado llamar al metodo addProductInCart
-    const result = await cartManager.addProductInCart(cart.id, product.id);
-
-    res.send({ status: 'success', result: 'Se agrego correctamente el producto al carrito' })
+    try {
+        const result = await cartManager.addProductInCart(cart.id, product.id);
+        console.log(result);
+        if(result) {
+            res.send({ status: 'success', result: 'Se agrego correctamente el producto al carrito' })
+        };
+    } catch (error) {
+        res.status(500).send({ status: "error", error });
+    }
+    /* console.log(result); */
 
 });
 

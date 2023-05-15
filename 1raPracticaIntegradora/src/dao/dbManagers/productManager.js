@@ -14,7 +14,7 @@ export default class ProductManager {
 
     getProductById = async (id) => {
         //Leo de la base devolviendo los productos
-        const product = await productModel.find({_id: id}).lean();
+        const product = await productModel.find({_id:id}).lean();
         return product;
     };
 

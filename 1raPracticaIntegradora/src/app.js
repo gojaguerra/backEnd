@@ -40,7 +40,6 @@ const server = app.listen(8080, () => console.log('Server running'));
 const io = new Server(server);
 app.set('socketio',io);
 
-//Creamos la instancia de la clase
 const productManager = new ProductManager();
 const messageManager = new MessageManager();
 
@@ -54,6 +53,7 @@ io.on('connection', async socket => {
         messages.push(data);
         io.emit('messageLogs', messages);
         
+        // Persistir en MONGO el chat
         try {
             const messageUser = messageManager.addMessage(data);
         } catch (error) {
