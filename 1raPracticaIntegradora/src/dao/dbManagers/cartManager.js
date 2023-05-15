@@ -23,8 +23,8 @@ export default class CartManager {
     };
 
     addProductInCart = async (id, productId) => {
-        console.log(id);
-        console.log(productId);
+        /* console.log(id); */
+        /* console.log(productId); */
         const result = await cartModel.updateOne({_id: id}, productId);
         return result;
     };

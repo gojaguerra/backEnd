@@ -66,11 +66,11 @@ router.post('/:cid/product/:pid', async(req, res) => {
         const response = { status: "Error", data: `El Producto con ID ${productId} NO existe!` };
         return res.status(404).json(response);
     };
-    console.log(cart);
-    console.log(product);
+    /* console.log(cart[0]._id);
+    console.log(product[0]._id); */
     // Una vez validado llamar al metodo addProductInCart
     try {
-        const result = await cartManager.addProductInCart(cart.id, product.id);
+        const result = await cartManager.addProductInCart(cartId, productId);
         console.log(result);
         if(result) {
             res.send({ status: 'success', result: 'Se agrego correctamente el producto al carrito' })
