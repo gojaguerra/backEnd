@@ -11,3 +11,10 @@ const  viewProduct = document.getElementById('viewProduct')
 viewProduct.addEventListener('click', (event) => {
     window.location= "/api/products";
 });
+
+
+// Botón para ir al chat
+const  viewChat = document.getElementById('viewChat')
+viewChat.addEventListener('click', (event) => {
+    window.location= "/chatPage";
+});

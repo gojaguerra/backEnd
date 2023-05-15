@@ -5,6 +5,7 @@ import viewsRouter from "./routes/views.router.js";
 import cartsRouter from "./routes/cart.router.js";
 import productRouter from "./routes/products.router.js";
 import viewsProdRouter from "./routes/viewsProd.router.js";
+import viewsChatPage from "./routes/viewsChatPage.route.js"
 import ProductManager from './dao/dbManagers/productManager.js';
 
 import handlebars from "express-handlebars";
@@ -24,6 +25,7 @@ app.use('/', viewsRouter);
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/realtimeproducts', viewsProdRouter)
+app.use('/chatPage', viewsChatPage)
 
 try {
     await mongoose.connect("mongodb+srv://jguerra1968:THWf8CZ8UjehbFfO@cluster37960jg.hhv9pbe.mongodb.net/ecommerce?retryWrites=true&w=majority")
@@ -40,7 +42,19 @@ app.set('socketio',io);
 //Creamos la instancia de la clase
 const productManager = new ProductManager();
 
+const logs = [];
+
 io.on('connection', async socket => {
-     console.log('Nuevo cliente conectado');
-     io.emit("showProducts", await productManager.getProducts());
+    console.log('Nuevo cliente conectado');
+    io.emit("showProducts", await productManager.getProducts());
+
+    socket.on('message1', data => {
+        io.emit('log', data)
+    });
+
+    socket.on('message2', data => {
+        logs.push({ socketId: socket.id, message: data });
+        io.emit('log', { logs })
+    });
+
 });
