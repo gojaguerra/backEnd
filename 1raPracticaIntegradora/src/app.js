@@ -7,6 +7,7 @@ import productRouter from "./routes/products.router.js";
 import viewsProdRouter from "./routes/viewsProd.router.js";
 import viewsChatPage from "./routes/viewsChatPage.route.js"
 import ProductManager from './dao/dbManagers/productManager.js';
+import MessageManager from './dao/dbManagers/chatManager.js';
 
 import handlebars from "express-handlebars";
 import mongoose from "mongoose";
@@ -41,6 +42,7 @@ app.set('socketio',io);
 
 //Creamos la instancia de la clase
 const productManager = new ProductManager();
+const messageManager = new MessageManager();
 
 const messages = [];
 
@@ -51,6 +53,13 @@ io.on('connection', async socket => {
     socket.on('message', data => {
         messages.push(data);
         io.emit('messageLogs', messages);
+        
+        try {
+            const messageUser = messageManager.addMessage(data);
+        } catch (error) {
+            console.log("Error",error);
+        }
+
     });
 
     socket.on('authenticated', data => {
