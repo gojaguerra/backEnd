@@ -25,7 +25,7 @@ app.use('/', viewsRouter);
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/realtimeproducts', viewsProdRouter)
-app.use('/chatPage', viewsChatPage)
+app.use('/chat', viewsChatPage)
 
 try {
     await mongoose.connect("mongodb+srv://jguerra1968:THWf8CZ8UjehbFfO@cluster37960jg.hhv9pbe.mongodb.net/ecommerce?retryWrites=true&w=majority")
@@ -42,19 +42,20 @@ app.set('socketio',io);
 //Creamos la instancia de la clase
 const productManager = new ProductManager();
 
-const logs = [];
+const messages = [];
 
 io.on('connection', async socket => {
     console.log('Nuevo cliente conectado');
     io.emit("showProducts", await productManager.getProducts());
 
-    socket.on('message1', data => {
-        io.emit('log', data)
+    socket.on('message', data => {
+        messages.push(data);
+        io.emit('messageLogs', messages);
     });
 
-    socket.on('message2', data => {
-        logs.push({ socketId: socket.id, message: data });
-        io.emit('log', { logs })
+    socket.on('authenticated', data => {
+        socket.emit('messageLogs', messages);
+        socket.broadcast.emit('newUserConnected', data);
     });
 
 });
