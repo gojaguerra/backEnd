@@ -16,5 +16,5 @@ viewProduct.addEventListener('click', (event) => {
 // Botón para ir al chat
 const  viewChat = document.getElementById('viewChat')
 viewChat.addEventListener('click', (event) => {
-    window.location= "/chatPage";
+    window.location= "/chat";
 });
