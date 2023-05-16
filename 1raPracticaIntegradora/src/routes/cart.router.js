@@ -25,71 +25,52 @@ router.post('/', async(req, res) => {
 });
 
 // OBTENER SI EXISTE UN CARRITO PASANDO EL ID
-router.get('/:id', async(req, res) => {
-    const cartId = Number(req.params.id);
+router.get('/:cid', async(req, res) => {
+    const cartId = String(req.params.cid);
     try {
         const cart = await cartManager.getCartById(cartId);
-   
-         //Valido el resultado de la búsqueda
-        const response = cart!==-1
-            ? { status: "Success", data: cart} 
-            : { status: "NOT FOUND", data: `El carrito con ID ${cartId} NO existe!` };
-
-        const statusCode = cart!==-1 ? 200 : 404;
-
+        const response ={ status: "Success", payload: cart};
         //muestro resultado
-        res.status(statusCode).json(response);
+        res.status(200).json(response);
     } catch (error) {
-        res.status(500).send({ status: "error", error });
-    }
+        const response = { status: "NOT FOUND", payload: `El carrito con ID ${cartId} NO existe!` };
+        res.status(404).send(response);
+    };
 });
 
 // AGREGO/ACTUALIZO PRODUCTO EN EL CARRITO
 router.post('/:cid/product/:pid', async(req, res) => {
-    // Primero Valido que exista el carrito 
-    /* const cartId = Number(req.params.cid); */
+     //Leo el ID del carrito y producto por parametros 
     const cartId = String(req.params.cid);
-    // OBTENGO el carrito QUE HAY EN EL ARCHIVO
-    const cart = await cartManager.getCartById(cartId);
-    //Valido el resultado de la búsqueda
-    if (cart === -1){
-        const response = { status: "Error", data: `El carrito con ID ${cartId} NO existe!` };
-        return res.status(404).json(response);
-    };
-    // Segundo Valido que exista el producto
     const productId = String(req.params.pid);
-    // OBTENGO el carrito QUE HAY EN EL ARCHIVO
+
+    //MongoDB
+    // Primero Valido que exista el carrito 
     try {
-        const product = await productManager.getProductById(productId);
-        
+        // OBTENGO el carrito QUE HAY EN la BASE
+        await cartManager.getCartById(cartId);
     } catch (error) {
-        return res.status(404).json(error);
-        
-    }
-
-    /* console.log(product); */
-   /*  if (product === -1){
-        const response = { status: "Error", data: `El Producto con ID ${productId} NO existe!` };
+        const response = { status: "Error", payload: `El carrito con ID ${cartId} NO existe!` };
         return res.status(404).json(response);
-    }; */
-
-    /* console.log(cart[0]._id);
-    console.log(product[0]._id); */
-
-    //cart.products.push({ product: productId });
-    //student.courses.push({ course: '645d7c6b7ade91e8ce67bf4c' })
+    }
+    // Segundo Valido que exista el producto
+    try {
+        // OBTENGO el producto QUE HAY EN la Base
+        await productManager.getProductById(productId);
+    } catch (error) {
+        const response = { status: "Error", payload: `El Producto con ID ${productId} NO existe!` };
+        return res.status(404).json(response);
+    }
 
     // Una vez validado llamar al metodo addProductInCart
     try {
         const result = await cartManager.addProductInCart(cartId, productId);
-        console.log(result);
-        if(result) {
-            res.send({ status: 'success', result: 'Se agrego correctamente el producto al carrito' })
+        if(result.acknowledged) {
+            res.status(200).send({ status: 'success', payload: 'Se agrego correctamente el producto al carrito' })
         };
     } catch (error) {
-        res.status(500).send({ status: "error", error });
-    }
-    /* console.log(result); */
+        res.status(404).send({ status: "NOT FOUND", payload: `No se pudo agregar el Producto al carrito!` });
+    };
 
 });
 

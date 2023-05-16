@@ -6,10 +6,15 @@ export default class ProductManager {
         console.log('Working products with DB');
     };
 
-    getProducts = async () => {
+    getProducts = async (limit) => {
         //Leo de la base devolviendo los productos
-        const products = await productModel.find().lean();
-        return products;
+        if (limit){
+            const products = await productModel.find().skip(0).limit(limit).lean();
+            return products;
+        } else {
+            const products = await productModel.find().lean();
+            return products;
+        };
     };
 
     getProductById = async (id) => {
@@ -24,12 +29,12 @@ export default class ProductManager {
     };
 
     updateProduct = async (id, product) => {
-        const result = await productModel.updateOne({_id: id}, product);
+        const result = await productModel.updateOne({_id:id}, {$set: product});
         return result;
     };
 
     deleteProductById = async (id) => {
-        const result = await productModel.deleteOne({_id: id});
+        const result = await productModel.deleteOne({_id:id});
         return result;
     };
 
