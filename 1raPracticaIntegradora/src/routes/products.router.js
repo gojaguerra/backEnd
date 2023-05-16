@@ -106,18 +106,15 @@ router.delete('/:pid', async(req,res)=>{
         if (result.acknowledged & result.deletedCount!==0 ) {
             const io = req.app.get('socketio');
             io.emit("showProducts", await productManager.getProducts());
+            const response = { status: "Success", payload: `El producto con ID ${id} fue eliminado!`}; 
+            res.status(200).json(response);
+        } else {
+            const response = { status: "NOT FOUND", payload: `NO existe el producto que desea eliminar!`}; 
+            res.status(404).json(response);
         };
-
-        const response = (result.acknowledged & result.deletedCount!==0)
-        ? { status: "Success", data: result} 
-        : { status: "NOT FOUND", data: `NO existe el producto que desea eliminar!` };
-        //Valido marco el estado según el resultado
-        const statusCode = 200;
-
-        //muestro resultado
-        res.status(statusCode).json(response);
     } catch (error) {
-        res.status(500).send({ status: "error", error });
+        res.status(404).json({ status: "NOT FOUND", payload: `NO existe el producto que desea eliminar!` });
+        /* res.status(500).send({ status: "error", error }); */
     }
 
 });
