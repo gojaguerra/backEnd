@@ -48,7 +48,7 @@ router.get('/:id', async(req, res) => {
 router.post('/:cid/product/:pid', async(req, res) => {
     // Primero Valido que exista el carrito 
     /* const cartId = Number(req.params.cid); */
-    const cartId = req.params.cid;
+    const cartId = String(req.params.cid);
     // OBTENGO el carrito QUE HAY EN EL ARCHIVO
     const cart = await cartManager.getCartById(cartId);
     //Valido el resultado de la búsqueda
@@ -57,19 +57,27 @@ router.post('/:cid/product/:pid', async(req, res) => {
         return res.status(404).json(response);
     };
     // Segundo Valido que exista el producto
-    const productId = req.params.pid;
+    const productId = String(req.params.pid);
     // OBTENGO el carrito QUE HAY EN EL ARCHIVO
-    const product = await productManager.getProductById(productId);
+    try {
+        const product = await productManager.getProductById(productId);
+        
+    } catch (error) {
+        return res.status(404).json(error);
+        
+    }
 
     /* console.log(product); */
-    if (product === -1){
+   /*  if (product === -1){
         const response = { status: "Error", data: `El Producto con ID ${productId} NO existe!` };
         return res.status(404).json(response);
-    };
+    }; */
+
     /* console.log(cart[0]._id);
     console.log(product[0]._id); */
 
-    //cart.products.push({product: productId});
+    //cart.products.push({ product: productId });
+    //student.courses.push({ course: '645d7c6b7ade91e8ce67bf4c' })
 
     // Una vez validado llamar al metodo addProductInCart
     try {
