@@ -15,21 +15,24 @@ router.get("/", async (req, res) => {
 });
 
 router.get('/:id', async(req, res) => {
-    /* const id = Number(req.params.id); */
-    const id = req.params.id;
-    const product = await productManager.getProductById(id);
+    const id = String(req.params.id);
+    
+    // BUsco el ID en el arreglo
+    try {
+        const productById = await productManager.getProductById(id);
+        const response = { status: "OK", payload: productById} 
+        //muestro resultado
+        //Postman
+        res.status(200).json(response);
+        //Render page
+        //res.render("products.hbs", { productById });
+    } catch (error) {
+        const response = { status: "NOT FOUND", payload: `El producto con ID ${id} NO existe!` };
+        //Postman
+        res.status(404).json(response);
+    };
 
-    //Valido el resultado de la búsqueda
-    const response = product!==-1 
-    ? { status: "OK", data: product} 
-    : { status: "NOT FOUND", data: `El producto con ID ${id} NO existe!` };
-
-    const statusCode = product!==-1 ? 200 : 404;
-
-    //muestro resultado
-    res.status(statusCode).json(response);
-
-})
+});
 
 router.post('/', async(req, res) => {
     const product = req.body;//ingreso producto por body

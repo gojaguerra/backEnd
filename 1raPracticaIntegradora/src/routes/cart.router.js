@@ -68,6 +68,9 @@ router.post('/:cid/product/:pid', async(req, res) => {
     };
     /* console.log(cart[0]._id);
     console.log(product[0]._id); */
+
+    //cart.products.push({product: productId});
+
     // Una vez validado llamar al metodo addProductInCart
     try {
         const result = await cartManager.addProductInCart(cartId, productId);
