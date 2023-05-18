@@ -18,24 +18,10 @@ socket.on('showProducts', data => {
                 <h5 class="card-title">${prod.title}</h5>
                 <p class="card-text">Descripción:  ${prod.description}</p>
                 <p class="card-text">Precio:$ ${prod.price}</p>
-                <button class="btn btn-primary" id=boton${prod.code}>Comprar</button>
             </div>
         </div>` 
     })
 });
-
-/* `
-        <div>
-            <h3>Códigooo: ${prod.code}</h3>
-            <p>Nombre: ${prod.title}</p> 
-            <p>Descripción: ${prod.description}</p> 
-            <p>Categoria: ${prod.category}</p> 
-            <p>Precio: ${prod.price}</p>
-            <p>Stock: ${prod.stock}</p>
-        </div>
-        ` */
-
-
 
 butAdd.addEventListener('submit', (event) => {
     event.preventDefault();

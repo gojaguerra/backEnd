@@ -53,7 +53,7 @@ const messages = [];
 
 io.on('connection', async socket => {
     console.log('Nuevo cliente conectado');
-    const products = await productManager.getProducts(10)
+    const products = await productManager.getProducts()
     io.emit("showProducts", products.docs);
 
     socket.on('message', data => {
