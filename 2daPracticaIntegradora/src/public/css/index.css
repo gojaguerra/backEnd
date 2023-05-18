@@ -378,6 +378,13 @@ footer {
 /*
             VENTAS
 */
+.producto-contenedor-real {
+  display: grid;
+  margin: 30px auto;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap; }
+
 #producto-contenedor {
   display: grid;
   margin: 30px auto;

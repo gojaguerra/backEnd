@@ -1,24 +1,39 @@
-<h1 style="color:darkblue;">Bienvenidos al servidor express - Comisión 39760</h1> <br>
-<h1>Vista de productos</h1> <br>
+<h2 style="color:darkblue;">Bienvenidos al servidor express - Comisión 39760</h2> <br>
+<h2>Vista de productos</h2> <br>
 
-<div>
-    <h3 class="h3Productos">Productos disponibles</h3>
-        <div id="producto-contenedor">
-
-        {{#each products}}
-            <div class="card" style="width: 18rem;">
-                <img src="{{this.thumbnail}}" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">{{this.title}}</h5>
-                    <p class="card-text">Descripción:  {{this.description}}</p>
-                    <p class="card-text">Precio:$ {{this.price}}</p>
-                    <button class="btn btn-primary" id=boton{{this.code}}>Comprar</button>
-                </div>
-            </div>
-        {{/each}}
+{{#if isValid}}
+    <div>
+        <h3 class="h3Productos">Productos disponibles</h3>
+            <div id="producto-contenedor">
+                {{#each docs}}
+                    <div class="card" style="width: 18rem;">
+                        <img src="{{this.thumbnail}}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{this.title}}</h5>
+                            <p class="card-text">Descripción:  {{this.description}}</p>
+                            <p class="card-text">Precio:$ {{this.price}}</p>
+                            <button class="btn btn-primary" id=boton{{this.code}}>Comprar</button>
+                        </div>
+                    </div>
+                {{/each}}
+        </div>
     </div>
-</div>
+    <div>
+        {{#if hasPrevPage}}
+            <a class="btn btn-warning" href={{this.prevLink}}><< Anterior</a>  
+        {{/if}}
+        &nbsp;
+        {{this.page}}
+        &nbsp;
+        {{#if hasNextPage}}
+            <a class="btn btn-warning" href={{this.nextLink}}>Siguiente >></a>  
+        {{/if}} 
+    </div>
+{{else}}
+    <h2 style="color: chocolate;">No se encontraron productos</h2>
+{{/if}}
 
+<br/>
 <button id="addProduct" class="btn btn-secondary"> Ir a Cargar Productos</button>
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

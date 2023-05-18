@@ -5,11 +5,16 @@ const router = Router();
 const productManager = new ProductManager();
 
 router.get("/", async (req, res) => {
-    const { limit } = req.query;
+    let { limit, page, query, sort } = req.query;
     try {
-        const products = await productManager.getProducts(limit);
+        if (!limit) limit=3;
+        if (!page) page=1;
+        const products = await productManager.getProducts(limit, page, query, sort)
+        products.prevLink = products.hasPrevPage?`http://localhost:8080/api/products?page=${products.prevPage}`:'';
+        products.nextLink = products.hasNextPage?`http://localhost:8080/api/products?page=${products.nextPage}`:'';
+        products.isValid= !(page<=0||page>products.totalPages)
         /* res.send({ status: "success", payload: products}); */
-        res.render("products.handlebars", { products });
+        res.render("products.handlebars", products );
     } catch (error) {
         res.status(500).send({ status: "error", error });
     }

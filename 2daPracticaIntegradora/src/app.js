@@ -18,6 +18,12 @@ app.use(express.static(`${__dirname}/public`));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
+/* //middleware Log conexiones
+app.use((req, res, next) => {
+    console.log(`Nueva ${req.method} - ${req.path}`);
+    next();
+}); */
+
 app.engine('handlebars', handlebars.engine());
 app.set('views', `${__dirname}/views`);
 app.set('view engine', 'handlebars');
@@ -47,7 +53,8 @@ const messages = [];
 
 io.on('connection', async socket => {
     console.log('Nuevo cliente conectado');
-    io.emit("showProducts", await productManager.getProducts());
+    const products = await productManager.getProducts(10)
+    io.emit("showProducts", products.docs);
 
     socket.on('message', data => {
         messages.push(data);
