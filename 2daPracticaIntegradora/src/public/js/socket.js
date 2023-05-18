@@ -23,7 +23,9 @@ socket.on('showProducts', data => {
     })
 });
 
-butAdd.addEventListener('submit', (event) => {
-    event.preventDefault();
-    //window.location= "/api/products";
-});
+if(butAdd) {
+    butAdd.addEventListener('submit', (event) => {
+        event.preventDefault();
+        //window.location= "/api/products";
+    });
+};
