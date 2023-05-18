@@ -1,0 +1,25 @@
+<h1 style="color:darkblue;">Bienvenidos al servidor express - Comisión 39760</h1> <br>
+<h1>Vista de productos</h1> <br>
+
+<div>
+    <h3 class="h3Productos">Productos disponibles</h3>
+        <div id="producto-contenedor">
+
+        {{#each products}}
+            <div class="card" style="width: 18rem;">
+                <img src="{{this.thumbnail}}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{this.title}}</h5>
+                    <p class="card-text">Descripción:  {{this.description}}</p>
+                    <p class="card-text">Precio:$ {{this.price}}</p>
+                    <button class="btn btn-primary" id=boton{{this.code}}>Comprar</button>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</div>
+
+<button id="addProduct" class="btn btn-secondary"> Ir a Cargar Productos</button>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/index.js"></script>
