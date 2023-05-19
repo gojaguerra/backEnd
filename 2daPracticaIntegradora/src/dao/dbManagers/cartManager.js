@@ -24,7 +24,7 @@ export default class CartManager {
 
     addProductInCart = async (cartId, productId) => {
         // Veririco si existe y lo incremento en 1
-        const result = await cartModel.updateOne({_id: cartId, "products.product": productId},{$inc: {"products.$.quantity": 1}});
+        const result = await cartModel.updateOne({_id: cartId, "products.product": productId}, {$inc: {"products.$.quantity": 1}});
         // Si el resultado modifiedCount = 0, inserto en el arreglo products
         if (result.acknowledged & result.modifiedCount === 0){
             //creo arreglo para el nuevo producto con sus datos
