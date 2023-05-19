@@ -33,43 +33,22 @@ export default class CartManager {
                 quantity: 1
                 };
             const result = await cartModel.updateOne({_id: cartId}, {$push: { products: newProduct}});
-            return result
+            return result;
         };
         return result;
     };
+
+    deleteProductInCart = async (cartId, productId) => {
+        const result = await cartModel.updateOne({_id: cartId }, { $pull: { products: [ $productId] }});
+        console.log("deleteProductsInCart:", result);
+        return result;
+    };
+
+    deleteAllProductsInCart = async (cartId) => {
+        /* const result = await cartModel.updateOne({_id: cartId }, { $pullAll: { products: [] }}); */
+        const result = await cartModel.updateOne({_id: cartId }, { $set: { products: [] }});
+        console.log("deleteProductsInCart:", result);
+        return result;
+    };
     
-    /* addProductInCart = async(cartId, productId) => {
-        try {
-            // Traigo los Carritos
-            const cart = await cartModel.findOne({ _id: cartId });
-            
-            //Valido si el item esta en el carrito
-            const isInCart = (id) => {
-                return (
-                    cart.products.some(item => item.product === id)
-                )
-            }
-
-            if  (isInCart(productId)){
-                const productIndex = cart.products.findIndex(prod => prod.product === productId);
-                cart.products[productIndex].quantity++;
-            } else {
-                //creo arreglo para el nuevo producto
-                const newProduct = {
-                    product: productId,
-                    quantity: 1
-                };
-                cart.products.push(newProduct);
-            }
-
-            const result = await cartModel.updateOne({_id: cartId}, cart);
-            return result;
-
-        } catch (error){
-            console.log("error:", error);
-        }
-
-    }
- */
-
 };

@@ -74,4 +74,33 @@ router.post('/:cid/product/:pid', async(req, res) => {
 
 });
 
+// BORRA TODOS LOS PRODUCTOS DEL CARRO
+router.delete('/:cid', async(req, res) => {
+    const cartId = String(req.params.cid);
+    try {
+        const cart = await cartManager.deleteAllProductsInCart(cartId);
+        const response ={ status: "Success", payload: cart};
+        //muestro resultado
+        res.status(200).json(response);
+    } catch (error) {
+        const response = { status: "NOT FOUND", payload: `El carrito con ID ${cartId} NO existe!` };
+        res.status(404).send(response);
+    };
+});
+
+// BORRA UN PRODUCTO DEL CARRO
+router.delete('/:cid/product/:pid', async(req, res) => {
+    const cartId = String(req.params.cid);
+    try {
+        const cart = await cartManager.deleteAllProductsInCart(cartId);
+        const response ={ status: "Success", payload: cart};
+        //muestro resultado
+        res.status(200).json(response);
+    } catch (error) {
+        const response = { status: "NOT FOUND", payload: `El carrito con ID ${cartId} NO existe!` };
+        res.status(404).send(response);
+    };
+});
+
+
 export default router;

@@ -5,16 +5,34 @@ const router = Router();
 const productManager = new ProductManager();
 
 router.get("/", async (req, res) => {
-    let { limit, page, query, sort } = req.query;
-    try {
-        if (!limit) limit=3;
-        if (!page) page=1;
-        const products = await productManager.getProducts(limit, page, query, sort)
-        products.prevLink = products.hasPrevPage?`http://localhost:8080/api/products?page=${products.prevPage}`:'';
-        products.nextLink = products.hasNextPage?`http://localhost:8080/api/products?page=${products.nextPage}`:'';
-        products.isValid= !(page<=0||page>products.totalPages)
-        /* res.send({ status: "success", payload: products}); */
-        res.render("products.handlebars", products );
+        //MongoDb
+        //leo el parametro por req.query
+        const limit = parseInt(req.query.limit, 10) || 3;
+        const page = parseInt(req.query.page, 10) || 1;
+        let query = req.query.query; 
+        let sort  = req.query.sort;
+        try {
+            let sort1= "";
+            let sort2= "";
+            let query1= "";
+            let query2= "";
+            if (query) {
+                query2= query; 
+                query1= {category: query};
+            }
+            if (sort) {
+                sort2=sort;
+                sort1= {price: sort};
+            }
+            //console.log(query);
+            const products = await productManager.getProducts(limit, page, query1, sort1);
+            products.prevLink = products.hasPrevPage?`http://localhost:8080/api/products?page=${products.prevPage}&query=${query2}&sort=${sort2}`:'';
+            products.nextLink = products.hasNextPage?`http://localhost:8080/api/products?page=${products.nextPage}&query=${query2}&sort=${sort2}`:'';
+            products.isValid= !(page<=0||page>products.totalPages)
+            //Postman
+            // res.send({ status: "success", payload: products}); 
+            //Render page
+            res.render("products.handlebars", products );
     } catch (error) {
         res.status(500).send({ status: "error", error });
     }

@@ -7,6 +7,8 @@ export default class ProductManager {
     };
 
     getProducts = async (limit, page, query, sort) => {
+        let querys = {}
+        if (query) { querys = query };
         //armo una variable con los parámetros del paginate
         let options = {
             limit: limit,
@@ -18,7 +20,7 @@ export default class ProductManager {
         //Si no hay limite no hago el paginate
         if (!limit) options = { pagination: false };
         //Leo de la base devolviendo los productos
-        const products = await productModel.paginate({}, options)
+        const products = await productModel.paginate(querys, options)
         //console.log("1" + JSON.stringify(products, null, '\t'));
         return products; 
     };

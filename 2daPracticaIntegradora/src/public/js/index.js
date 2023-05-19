@@ -1,3 +1,30 @@
+// Selector de Orden de precio
+const ordPri = document.getElementById('ordPri')
+if(ordPri){
+    ordPri.addEventListener('change', () => {
+    let sort ="";
+    if (ordPri.options[ordPri.selectedIndex].value === "v2" ){
+        sort = 1; 
+    }else if (ordPri.options[ordPri.selectedIndex].value === "v3" ){  
+        sort = -1;
+    } 
+    window.location= "/api/products?sort="+`${sort}`;
+    });
+};
+
+// Selector de Categoría
+const categSel = document.getElementById('categSel1')
+if(categSel){
+    categSel.addEventListener('change', () => {
+    if (categSel.options[categSel.selectedIndex].value === "c6" ){
+        window.location= "/api/products";
+    }else{
+        const query = categSel.options[categSel.selectedIndex].text;
+        window.location= "/api/products?query="+`${query}`;
+    }; 
+    }); 
+}; 
+
 // Botón para agregar / Eliminar productos
 const addProduct = document.getElementById('addProduct')
 if(addProduct) {
@@ -29,3 +56,45 @@ if(viewChat) {
         window.location= "/chat";
     });
 };
+
+// Botón para insertar en carro
+function procesoId(comp){
+    const id = comp.id
+    // console.log("1 " + id);
+    const butCart = document.getElementById(`${id}`);
+    // console.log(butCart);
+    if(butCart){ 
+            Swal.fire({
+                title: 'Muy buena eleccion',
+                text: "Ingrese la cantidad a pedir",
+                input: 'text',
+                inputValidator: (value) =>{
+                    return !value && "Ingrese la cantidad a pedir";
+                },
+                showCancelButton: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                confirmButtonText: 'Agregar al Carrito'
+            }).then(result =>{
+                // console.log(result);
+                if (result.isConfirmed) {
+                    
+                    Swal.fire({
+                        title: 'Producto Agregado al Carrito',
+                        icon: 'success'
+                    })
+                     /*id = result.value;
+                        fetch('http://localhost:8080/api/products/' + id, {
+                        method: 'DELETE'
+                        })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            Swal.fire({
+                                title: 'Producto Eliminado',
+                                icon: 'success'
+                            })
+                        }) */
+                }
+        }); 
+    }
+}

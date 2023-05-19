@@ -118,6 +118,15 @@ a {
   color: black;
   text-transform: uppercase; }
 
+  .filter{
+    display: flex;
+    margin: 5px;
+}    
+.filter p {
+    margin: 5px;
+    padding: 5px;
+}
+
 /* 
     DEFINICION DE LA TABLA Y SUS COMPONENTES
 */
