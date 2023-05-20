@@ -24,7 +24,18 @@ export default class CartManager {
 
     addProductInCart = async (cartId, productId) => {
         // Veririco si existe y lo incremento en 1
-        const result = await cartModel.updateOne({_id: cartId, "products.product": productId}, {$inc: {"products.$.quantity": 1}});
+/*         const newProduct = {
+            product: productId,
+            quantity: 1
+            };
+        console.log(newProduct);
+        const result = await cartModel.updateOne({_id: cartId}, {$push: { products: newProduct}});
+        console.log(result); */
+        const result = await cartModel.updateOne({ _id: cartId }, {$inc: {"products.$[].quantity": 1}}, { 
+            "arrayFilters": [{ "product._id": productId }], 
+            "multi": false 
+          });
+        console.log("result 1:",result);
         // Si el resultado modifiedCount = 0, inserto en el arreglo products
         if (result.acknowledged & result.modifiedCount === 0){
             //creo arreglo para el nuevo producto con sus datos
@@ -33,6 +44,7 @@ export default class CartManager {
                 quantity: 1
                 };
             const result = await cartModel.updateOne({_id: cartId}, {$push: { products: newProduct}});
+            console.log("result 2:",result);
             return result;
         };
         return result;
