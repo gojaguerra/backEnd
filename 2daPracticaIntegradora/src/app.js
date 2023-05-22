@@ -8,8 +8,8 @@ import viewsProdRouter from "./routes/viewsProd.router.js";
 import viewsChatPage from "./routes/viewsChatPage.route.js"
 import ProductManager from './dao/dbManagers/productManager.js';
 import MessageManager from './dao/dbManagers/chatManager.js';
-//import cookieParser from 'cookie-parser';
-//import session from "express-sessions";
+import cookieParser from 'cookie-parser';
+import session from "express-session";
 
 import handlebars from "express-handlebars";
 import mongoose from "mongoose";
@@ -21,14 +21,14 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 // middleware para cookies
-// app.use(cookieParser("Coder39760"));
+app.use(cookieParser("Coder39760"));
 
 // middleware para sesiones
-/* app.use(session({
+app.use(session({
     secret: "Coder39760",
     resave: true,
     saveUninitialized: true
-})); */
+}));
 
 /* //middleware Log conexiones
 app.use((req, res, next) => {
