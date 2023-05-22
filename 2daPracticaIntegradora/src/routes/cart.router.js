@@ -31,7 +31,10 @@ router.get('/:cid', async(req, res) => {
         const cart = await cartManager.getCartById(cartId);
         const response ={ status: "Success", payload: cart};
         //muestro resultado
-        res.status(200).json(response);
+        // VISTA DEL CARRITO
+        cart[0].isValid= cart[0].products.length > 0
+        // res.status(200).json(response);
+        res.render("carts.handlebars", cart[0] );
     } catch (error) {
         const response = { status: "NOT FOUND", payload: `El carrito con ID ${cartId} NO existe!` };
         res.status(404).send(response);

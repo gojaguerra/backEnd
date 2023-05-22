@@ -57,6 +57,14 @@ if(viewChat) {
     });
 };
 
+// Botón para ver el carrito
+const viewCart = document.getElementById('viewCart')
+if(viewCart) {
+    viewCart.addEventListener('click', (event) => {
+        window.location= "/api/carts/645f9a2d244315590f111e1e";
+    });
+};
+
 // Botón para insertar en carro
 function procesoId(comp){
     const id = comp.id
