@@ -10,9 +10,9 @@ import ProductManager from './dao/dbManagers/productManager.js';
 import MessageManager from './dao/dbManagers/chatManager.js';
 import cookieParser from 'cookie-parser';
 import session from "express-session";
-
 import handlebars from "express-handlebars";
 import mongoose from "mongoose";
+import MongoStore from 'connect-mongo';
 
 const app = express();
 
@@ -23,8 +23,12 @@ app.use(express.urlencoded({extended:true}));
 // middleware para cookies
 app.use(cookieParser("Coder39760"));
 
-// middleware para sesiones
+// middleware para sesiones usando Mongo Storage
 app.use(session({
+    store: MongoStore.create({
+        mongoUrl: "mongodb+srv://jguerra1968:THWf8CZ8UjehbFfO@cluster37960jg.hhv9pbe.mongodb.net/ecommerce?retryWrites=true&w=majority",
+        mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true }
+    }),
     secret: "Coder39760",
     resave: true,
     saveUninitialized: true
