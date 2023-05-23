@@ -27,7 +27,8 @@ app.use(cookieParser("Coder39760"));
 app.use(session({
     store: MongoStore.create({
         mongoUrl: "mongodb+srv://jguerra1968:THWf8CZ8UjehbFfO@cluster37960jg.hhv9pbe.mongodb.net/ecommerce?retryWrites=true&w=majority",
-        mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true }
+        mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
+        ttl: 3600
     }),
     secret: "Coder39760",
     resave: true,
