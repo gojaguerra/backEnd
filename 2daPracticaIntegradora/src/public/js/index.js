@@ -37,7 +37,8 @@ if(addProduct) {
 const goHome = document.getElementById('goHome')
 if(goHome) {
     goHome.addEventListener('click', (event) => {
-        window.location= "/home";
+        /* window.location= "/home"; */
+        window.location= "/";
     });
 };
 

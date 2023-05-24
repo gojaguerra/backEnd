@@ -13,7 +13,32 @@ form.addEventListener('submit', e => {
         }
     }).then(result => {
         if (result.status === 200) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'El registro fue exitoso, ya puede ingresar su login',
+                showConfirmButton: true,
+            })
             window.location.replace('/');
+        }else{
+            if (result.status === 400) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'El usuario ya existe, vuelva a intentarlo',
+                    showConfirmButton: true,
+                })
+            }else{
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Hay campos incompletos, vuelva a intentarlo',
+                    showConfirmButton: true,
+                    timer: 5000
+                })
+            }
+            window.location.replace('/register');
         }
+
     });
 });

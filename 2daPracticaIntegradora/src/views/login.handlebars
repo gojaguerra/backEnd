@@ -1,6 +1,9 @@
+<h2 style="color:darkblue;">Bienvenidos al servidor express - Comisión 39760</h2> <br>
+{{!-- <h3>Login</h3> <br> --}}
+
 <div>
-    <h1>Login</h1>
-    <form id="loginForm">
+    <h3>Login</h3>
+    {{!-- <form id="loginForm">
         <label>Email</label>
         <input name="email">
         <br/>
@@ -8,6 +11,24 @@
         <input name="password" type="password">
         <input type="submit">
     </form>
+    <p>¿No estás registrado? <a href="/register">Regístrate aquí</a></p> --}}
+
+    <form  id="loginForm">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ingrese su email">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Ingrese su password">
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <br>
     <p>¿No estás registrado? <a href="/register">Regístrate aquí</a></p>
+
 </div>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/login.js"></script>
