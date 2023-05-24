@@ -26,6 +26,15 @@ socket.on('showProducts', data => {
 if(butAdd) {
     butAdd.addEventListener('submit', (event) => {
         event.preventDefault();
+
+/*     Swal.fire({
+            title: 'Hay campos incompletos',
+            showCancelButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonText: 'OK'
+        }).then(result =>{
+    }); */ 
         //window.location= "/api/products";
     });
 };

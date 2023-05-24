@@ -1,11 +1,13 @@
 import express from 'express';
 import { Server } from 'socket.io';
 import __dirname from "./utils.js";
-import viewsRouter from "./routes/views.router.js";
+import homeRouter from "./routes/home.router.js";
 import cartsRouter from "./routes/cart.router.js";
 import productRouter from "./routes/products.router.js";
 import viewsProdRouter from "./routes/viewsProd.router.js";
 import viewsChatPage from "./routes/viewsChatPage.route.js"
+import sessionsRouter from './routes/sessions.router.js'
+import viewsRouter from './routes/views.router.js';
 import ProductManager from './dao/dbManagers/productManager.js';
 import MessageManager from './dao/dbManagers/chatManager.js';
 import cookieParser from 'cookie-parser';
@@ -65,6 +67,8 @@ app.set('views', `${__dirname}/views`);
 app.set('view engine', 'handlebars');
 
 app.use('/', viewsRouter);
+app.use('/api/sessions', sessionsRouter);
+app.use('/home', homeRouter);
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/realtimeproducts', viewsProdRouter)
