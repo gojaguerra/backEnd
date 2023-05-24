@@ -20,10 +20,29 @@ app.use(express.static(`${__dirname}/public`));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
-// middleware para cookies
+// Conexion principal a Mongo con mongoose
+try {
+    await mongoose.connect("mongodb+srv://jguerra1968:THWf8CZ8UjehbFfO@cluster37960jg.hhv9pbe.mongodb.net/ecommerce?retryWrites=true&w=majority")
+    console.log("conectados a la base MONGO");
+} catch (error) {
+    console.log(error);
+}
+
+// Middleware para cookies
 app.use(cookieParser("Coder39760"));
 
-// middleware para sesiones usando Mongo Storage
+// Middleware para sesiones usando Mongo Storage con conexion compartida
+app.use(session({
+    store: MongoStore.create({
+        client: mongoose.connection.getClient(),
+        ttl: 3600
+    }),
+    secret: "Coder39760",
+    resave: true,
+    saveUninitialized: true
+}));
+
+/* // middleware para sesiones usando Mongo Storage y con conexion propia
 app.use(session({
     store: MongoStore.create({
         mongoUrl: "mongodb+srv://jguerra1968:THWf8CZ8UjehbFfO@cluster37960jg.hhv9pbe.mongodb.net/ecommerce?retryWrites=true&w=majority",
@@ -33,7 +52,7 @@ app.use(session({
     secret: "Coder39760",
     resave: true,
     saveUninitialized: true
-}));
+})); */
 
 /* //middleware Log conexiones
 app.use((req, res, next) => {
@@ -51,12 +70,6 @@ app.use('/api/carts', cartsRouter);
 app.use('/realtimeproducts', viewsProdRouter)
 app.use('/chat', viewsChatPage)
 
-try {
-    await mongoose.connect("mongodb+srv://jguerra1968:THWf8CZ8UjehbFfO@cluster37960jg.hhv9pbe.mongodb.net/ecommerce?retryWrites=true&w=majority")
-    console.log("conectados a la base MONGO");
-} catch (error) {
-    console.log(error);
-}
 
 const server = app.listen(8080, () => console.log('Server running'));
 
