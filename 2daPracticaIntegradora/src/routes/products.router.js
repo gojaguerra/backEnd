@@ -58,14 +58,14 @@ router.get('/:pid', async(req, res) => {
 });
 
 router.post('/', async(req, res) => {
-    const product = req.body;//ingreso producto por body
-    if (!product.status){//pongo el status en true validando
+    const product = req.body;
+    if (!product.status){
         product.status = true
-    }
+    };
     if(!product.title || !product.description || !product.code || !product.price || !product.stock || !product.category){
-
+        
         return res.status(400).send({error:'Faltan completar campos!'});
-    }
+    };
 
     try {
         const result = await productManager.addProduct(product);
@@ -84,7 +84,7 @@ router.post('/', async(req, res) => {
 
     } catch (error) {
         res.status(500).send({ status: "error", error });
-    }
+    };
 
 });
 
