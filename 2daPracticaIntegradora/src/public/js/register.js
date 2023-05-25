@@ -1,3 +1,25 @@
+let nIntervId;
+
+function delayNavigateRegister() {
+    if (!nIntervId) {
+        nIntervId = setInterval(navigateToRegister, 3000);
+    };
+};
+
+function navigateToRegister() {
+    window.location.replace('/register');
+};
+
+function delayNavigateOk() {
+    if (!nIntervId) {
+        nIntervId = setInterval(navigateOk, 3000);
+    };
+};
+
+function navigateOk() {
+    window.location.replace('/');
+};
+
 const form = document.getElementById('registerForm');
 
 form.addEventListener('submit', e => {
@@ -19,7 +41,8 @@ form.addEventListener('submit', e => {
                 title: 'El registro fue exitoso, ya puede ingresar su login',
                 showConfirmButton: true,
             })
-            window.location.replace('/');
+            //window.location.replace('/');
+            delayNavigateOk();
         }else{
             if (result.status === 400) {
                 Swal.fire({
@@ -27,6 +50,7 @@ form.addEventListener('submit', e => {
                     icon: 'error',
                     title: 'El usuario ya existe, vuelva a intentarlo',
                     showConfirmButton: true,
+                    timer: 5000
                 })
             }else{
                 Swal.fire({
@@ -37,7 +61,8 @@ form.addEventListener('submit', e => {
                     timer: 5000
                 })
             }
-            window.location.replace('/register');
+            //delayNavigateRegister();
+            //window.location.replace('/register');
         }
 
     });

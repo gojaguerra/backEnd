@@ -1,3 +1,15 @@
+let nIntervId;
+
+function delayNavigateOk() {
+    if (!nIntervId) {
+        nIntervId = setInterval(navigateOk, 2000);
+    };
+};
+
+function navigateOk() {
+    window.location.replace('/');
+};
+
 const form = document.getElementById('loginForm');
 
 form.addEventListener('submit', e => {
@@ -19,7 +31,8 @@ form.addEventListener('submit', e => {
                 title: 'Bienvenido',
                 showConfirmButton: true,
             })
-            window.location.replace('/');
+            delayNavigateOk();
+            //window.location.replace('/');
         }else{
             if (result.status === 400) {
                 Swal.fire({
