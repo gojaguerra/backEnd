@@ -1,7 +1,8 @@
 <h2 style="color:darkblue;">Bienvenidos al servidor express - Comisión 39760</h2> <br>
 <h2>Carga tu producto</h2> <br>
 
-<form action="/api/products" method="post">
+{{!-- <form action="/api/products" method="post"> --}}
+<form id="productForm">
     <div class="mb-3 col">
         <label for="exampleInput1" class="form-label">Código</label> 
         <input type="text" class="form-control-sm" name="code" placeholder="ingrese código">
@@ -30,6 +31,7 @@
     </div>
     <button type="submit" id="butAdd" class="btn btn-primary" value="Cargar Producto"> Cargar Producto </button>
 </form>
+<button id="goHome" class="btn btn-secondary"> Ir al HOME</button>
 
 <br>
 <div id="container" class="producto-contenedor-real"></div>

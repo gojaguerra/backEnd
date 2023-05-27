@@ -63,13 +63,12 @@ router.post('/', async(req, res) => {
         product.status = true
     };
     if(!product.title || !product.description || !product.code || !product.price || !product.stock || !product.category){
-        
-        return res.status(400).send({error:'Faltan completar campos!'});
+        // return res.status(400).send({ error:'Faltan completar campos!' });
+        return res.status(400).send({ status: 'error', error: 'Faltan completar campos!' })
     };
 
     try {
         const result = await productManager.addProduct(product);
-
          //Valido el resultado de la creacion del producto
         if (result.acknowledged) {
             const io = req.app.get('socketio');
@@ -79,11 +78,17 @@ router.post('/', async(req, res) => {
         const response = { status: "Success", payload: result};
 
         //res.status(200).json(response);
-        //muestro resultado
-        res.redirect("/realTimeProducts");
+        // muestro resultado
+        // res.redirect("/realTimeProducts");
+        res.send({ status: 'success', message: 'Product OK' })
 
     } catch (error) {
-        res.status(500).send({ status: "error", error });
+        if(error.code===11000){
+            // Código de producto duplicado
+            res.status(501).send({ status: "error", error });
+        }else{
+            res.status(500).send({ status: "error", error });
+        };
     };
 
 });
