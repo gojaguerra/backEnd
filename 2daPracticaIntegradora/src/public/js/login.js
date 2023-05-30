@@ -41,7 +41,7 @@ form.addEventListener('submit', e => {
                     title: 'Los datos ingresados son incorrectos, vuelva a intentarlo o registrese',
                     showConfirmButton: true,
                 })
-            }else {
+            }else{
                 Swal.fire({
                     position: 'top-end',
                     icon: 'error',

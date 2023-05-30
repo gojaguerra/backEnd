@@ -32,7 +32,7 @@ router.post('/login', async (req, res) => {
         const user = await userModel.findOne({ email, password });
 
         if (!user) return res.status(400).send({ status: 'error', error: 'Incorrect credentials' });
-
+        
         req.session.user = {
             name: `${user.first_name} ${user.last_name}`,
             email: user.email,
