@@ -21,7 +21,7 @@ router.post('/register', async (req, res) => {
         await userModel.create(user);
         res.send({ status: 'success', message: 'User registered' })
     } catch (error) {
-        res.status(500).send({ status: 'error', error });
+        res.status(500).send({ status: 'error', error: error.message });
     }
 })
 
@@ -47,7 +47,7 @@ router.post('/login', async (req, res) => {
         res.send({ status: 'success', message: 'Login success' });
 
     } catch (error) {
-        res.status(500).send({ status: 'error', error });
+        res.status(500).send({ status: 'error', error: error.message });
     }
 });
 
