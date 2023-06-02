@@ -2,6 +2,7 @@ import passport from 'passport';
 import local from 'passport-local';
 import userModel from '../dao/models/users.model.js';
 import { createHash, isValidPassword } from '../utils.js';
+import GitHubStrategy from 'passport-github2';
 
 const LocalStrategy = local.Strategy;
 
@@ -15,7 +16,7 @@ const initializePassport = () => {
             const user = await userModel.findOne({ email: username });
 
             if (user) {
-                return done(null, false)
+                return done(null, false, {message: 'User exists'})
             }
 
             const userToSave = {
@@ -41,16 +42,46 @@ const initializePassport = () => {
             const user = await userModel.findOne({ email: username});
 
             if (!user) {
-                return done(null, false)
+                return done(null, false, { message: 'Incorrect username' })
             }
 
-            if (!isValidPassword(user, password)) return done(null, false)
+            if (!isValidPassword(user, password)) return done(null, false,  { message: 'Incorrect password' })
 
             return done(null, user)
             //req.user
 
         } catch (error) {
             return done(`Error al obtener el usario: ${error}`)
+        }
+    }));
+
+    passport.use('github', new GitHubStrategy({
+        clientID: "Iv1.d14cb5dbd2b3a524",
+        clientSecret: "cc76cd2afdfdf8978bce73a5a9c2f06d25cc5c89",
+        callbackURL: "http://localhost:8080/api/sessions/github-callback",
+        scope: ['user:email']
+    }, async (accessToken, refreshToken, profile, done) => {
+        try {
+            const email = profile.emails[0].value;
+            const user = await userModel.findOne({ email });
+            if (!user) {
+                const newUser = {
+                    first_name: profile._json.name,
+                    last_name: ' - GitHub',
+                    email,
+                    age: 18,
+                    password: ''
+                };
+                
+                const result = await userModel.create(newUser);
+                
+                done(null, result);
+                
+            } else {
+                done(null, user);
+            }
+        } catch (error) {
+            return done(error);
         }
     }));
 
