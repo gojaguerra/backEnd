@@ -159,10 +159,16 @@ footer {
   color: #ffffff;
   transition: background-color 0.2s;
 } */
+.divGithub {
+  display: flex;
+  justify-content: center;
+  /* flex-wrap: wrap; */
+}
 .githubButton {
   width: 90%;
-  padding: 15px;
-  margin-top: 20px;
+  /* padding: 15px;
+  margin-top: 10px; */
+  margin-bottom: 20px;
   /* background-color: #3274d6; */
   /* border: 0; */
   cursor: pointer;
