@@ -15,6 +15,8 @@ import session from "express-session";
 import handlebars from "express-handlebars";
 import mongoose from "mongoose";
 import MongoStore from 'connect-mongo';
+import initializePassport from './config/passport.config.js';
+import passport from 'passport';
 
 const app = express();
 
@@ -43,6 +45,11 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
+
+//PASSPORT
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 /* // middleware para sesiones usando Mongo Storage y con conexion propia
 app.use(session({
