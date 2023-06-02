@@ -9,7 +9,8 @@ router.post('/register', passport.authenticate('register', { failureRedirect: 'f
 });
 
 router.get('/fail-register', async (req, res) => {
-    res.send({ status: 'error', message: 'Register failed' });
+    /* res.send({ status: 'error', message: 'Register failed' }); */
+    res.status(500).send({ status: 'error', error: 'Register failed' });
 });
 
 /* router.post('/register', async (req, res) => {
@@ -42,14 +43,16 @@ router.post('/login',  passport.authenticate('login', { failureRedirect: 'fail-l
         last_name: req.user.last_name,
         age: req.user.age,
         email: req.user.email, 
-        role: "user"
+        role: "user", 
+        name: `${req.user.first_name} ${req.user.last_name}`
     };
 
     res.send({ status: 'success', message: 'Login success' })
 });
 
 router.get('/fail-login', async (req, res) => {
-    res.send({ status: 'error', message: 'Login failed' });
+    /* res.send({ status: 'error', message: 'Login failed' }) */;
+    res.status(400).send({ status: 'error', error: 'Invalid credentials' });
 });
 
 /* router.post('/login', async (req, res) => {
