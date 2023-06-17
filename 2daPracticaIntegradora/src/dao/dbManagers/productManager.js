@@ -17,16 +17,16 @@ export default class ProductManager {
             sort: sort,
             lean: true
         };
-        //Si no hay limite no hago el paginate
+        // Si no hay limite no hago el paginate
         if (!limit) options = { pagination: false };
-        //Leo de la base devolviendo los productos
+        // Leo MONGO devolviendo los productos
         const products = await productModel.paginate(querys, options)
-        //console.log("1" + JSON.stringify(products, null, '\t'));
+        
         return products; 
     };
 
     getProductById = async (id) => {
-        //Leo de la base devolviendo los productos
+        //Leo MONGO devolviendo los productos
         const product = await productModel.find({_id:id}).lean();
         return product;
     };

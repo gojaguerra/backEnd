@@ -2,13 +2,14 @@
 
 <div>
     <h2>Tu perfil (sin datos sensibles)</h2>
-    <p>{{user.name}}</p>
+    <p>{{user.last_name}} {{user.first_name}}</p>
     <p>{{user.email}}</p>
     <p>{{user.age}}</p>
-    {{!-- <a href="/api/sessions/logout"><button>Salir</button></a> --}}
+    <p>{{user.role}}</p>
     <br>
     <button id="goHome" class="btn btn-primary"> Ir al HOME</button>
-    <button id="logout" class="btn btn-primary"> Salir</button>
+    {{!-- <button id="logout" class="btn btn-primary"> Salir</button> --}}
+    <a href="/api/sessions/logout"><button class="btn btn-primary" >Salir</button></a>
 </div>
 
 <script src="/js/index.js"></script>

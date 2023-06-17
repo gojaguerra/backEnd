@@ -1,39 +1,30 @@
 import { Router } from 'express';
+import { passportCall } from '../utils.js';
 
 const router = Router();
 
-//Acceso público y privado
-const publicAccess = (req, res, next) => {
-    if(req.session.user) return res.redirect('/');
-    next();
-}
-
-const privateAccess = (req, res, next) => {
-    if(!req.session.user) return res.redirect('/login');
-    next();
-}
-
-router.get('/register', publicAccess, (req, res) => {
-    res.render('register');
-});
-
-router.get('/login', publicAccess, (req, res) => {
-    res.render('login');
-});
-
-router.get('/', privateAccess, (req, res) => {
-    res.render('home', {
-        user: req.session.user
+router.route('/register')
+    .get( (req, res) => {
+        res.render('register.handlebars');
     });
-    /* res.render('profile', {
-        user: req.session.user
-    }); */
-});
 
-router.get('/profile', privateAccess, (req, res) => {
-    res.render('profile', {
-        user: req.session.user
+router.route('/login')
+    .get( (req, res) => {
+        res.render('login.handlebars');
     });
-});
+    
+router.route('/')
+    .get(passportCall('jwt'), (req, res) => {
+        res.render('home.handlebars', {
+            user: req.user
+        });
+    });
+
+router.route('/profile')
+    .get(passportCall('jwt'), (req, res) => {
+        res.render('profile.handlebars', {
+            user: req.user,
+        });
+    });
 
 export default router;

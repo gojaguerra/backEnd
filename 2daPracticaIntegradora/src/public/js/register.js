@@ -38,7 +38,7 @@ form.addEventListener('submit', e => {
             Swal.fire({
                 position: 'top-end',
                 icon: 'success',
-                title: 'El registro fue exitoso, ya puede ingresar su login',
+                title: 'El registro fue exitoso, ya puede ingresar su login!',
                 showConfirmButton: true,
             })
             //window.location.replace('/');
@@ -48,7 +48,7 @@ form.addEventListener('submit', e => {
                 Swal.fire({
                     position: 'top-end',
                     icon: 'error',
-                    title: 'El usuario ya existe, vuelva a intentarlo',
+                    title: 'El usuario ya existe, vuelva a intentarlo!',
                     showConfirmButton: true,
                     timer: 5000
                 })
@@ -56,7 +56,7 @@ form.addEventListener('submit', e => {
                 Swal.fire({
                     position: 'top-end',
                     icon: 'error',
-                    title: 'Hay campos incompletos, vuelva a intentarlo',
+                    title: 'Hay campos incompletos, vuelva a intentarlo!',
                     showConfirmButton: true,
                     timer: 5000
                 })

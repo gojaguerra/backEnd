@@ -1,4 +1,4 @@
-import { log } from 'console';
+// import { log } from 'console';
 import fs from 'fs';
 
 export default class productManager {
@@ -27,10 +27,10 @@ export default class productManager {
         try {
             // Traigo todos los productos
             const products = await this.getProducts();
-           
+
             // Busco el indice del ID a consultar
             const codeIndex = products.findIndex(producto => producto.id === id);
-
+            
             // Valido que exista y retorno el resultado
             if (codeIndex===-1) {
                 // NO EXISTE EL PRODUCTO

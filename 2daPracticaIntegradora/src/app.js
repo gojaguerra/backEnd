@@ -1,6 +1,6 @@
 import express from 'express';
 import { Server } from 'socket.io';
-import __dirname from "./utils.js";
+import { __dirname } from "./utils.js";
 import homeRouter from "./routes/home.router.js";
 import cartsRouter from "./routes/cart.router.js";
 import productRouter from "./routes/products.router.js";
@@ -8,18 +8,18 @@ import viewsProdRouter from "./routes/viewsProd.router.js";
 import viewsChatPage from "./routes/viewsChatPage.route.js"
 import sessionsRouter from './routes/sessions.router.js'
 import viewsRouter from './routes/views.router.js';
+
 import ProductManager from './dao/dbManagers/productManager.js';
 import MessageManager from './dao/dbManagers/chatManager.js';
 import cookieParser from 'cookie-parser';
-import session from "express-session";
+// import session from "express-session";
 import handlebars from "express-handlebars";
 import mongoose from "mongoose";
-import MongoStore from 'connect-mongo';
+// import MongoStore from 'connect-mongo';
 import initializePassport from './config/passport.config.js';
 import passport from 'passport';
 
 const app = express();
-
 app.use(express.static(`${__dirname}/public`));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
@@ -33,41 +33,17 @@ try {
 }
 
 // Middleware para cookies
-app.use(cookieParser("Coder39760"));
+app.use(cookieParser());
 
-// Middleware para sesiones usando Mongo Storage con conexion compartida
-app.use(session({
-    store: MongoStore.create({
-        client: mongoose.connection.getClient(),
-        ttl: 3600
-    }),
-    secret: "Coder39760",
-    resave: true,
-    saveUninitialized: true
-}));
+//middleware Log conexiones
+app.use((req, res, next) => {
+    console.log(`Nueva ${req.method} - ${req.path}`);
+    next();
+});
 
 //PASSPORT
 initializePassport();
 app.use(passport.initialize());
-app.use(passport.session());
-
-/* // middleware para sesiones usando Mongo Storage y con conexion propia
-app.use(session({
-    store: MongoStore.create({
-        mongoUrl: "mongodb+srv://jguerra1968:THWf8CZ8UjehbFfO@cluster37960jg.hhv9pbe.mongodb.net/ecommerce?retryWrites=true&w=majority",
-        mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-        ttl: 3600
-    }),
-    secret: "Coder39760",
-    resave: true,
-    saveUninitialized: true
-})); */
-
-/* //middleware Log conexiones
-app.use((req, res, next) => {
-    console.log(`Nueva ${req.method} - ${req.path}`);
-    next();
-}); */
 
 app.engine('handlebars', handlebars.engine());
 app.set('views', `${__dirname}/views`);

@@ -22,27 +22,6 @@ export default class CartManager {
         return cart;         
     };
 
-/*     addProductInCart = async (cartId, productId) => {
-        // Veririco si existe y lo incremento en 1
-        const result = await cartModel.updateOne({ _id: cartId, "products.product": productId }, {$inc: {"products.$[].quantity": 1}}, { 
-            "arrayFilters": [{ "product._id": productId }], 
-            "multi": false 
-          });
-        console.log("result 1:",result);
-        // Si el resultado modifiedCount = 0, inserto en el arreglo products
-        if (result.acknowledged & result.modifiedCount === 0){
-            //creo arreglo para el nuevo producto con sus datos
-            const newProduct = {
-                product: productId,
-                quantity: 1
-                };
-            const result = await cartModel.updateOne({_id: cartId}, {$push: { products: newProduct}});
-            console.log("result 2:",result);
-            return result;
-        };
-        return result;
-    }; */
-
     addProductInCart = async (cartId,productId,quantity) => {
         //Intento incrementar la cantidad si se encuentra el producto en el carrito
         const result = await cartModel.updateOne({_id: cartId, "products.product": productId },
