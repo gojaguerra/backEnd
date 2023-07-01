@@ -1,6 +1,6 @@
 import passport from 'passport';
 import jwt from 'passport-jwt';
-import userModel from '../dao/models/users.Model.js';
+import { getUser as getUserService, addUser as addUserService } from '../services/user.services.js';
 import GitHubStrategy from 'passport-github2';
 import { PRIVATE_COOKIE, PRIVATE_KEY } from '../helpers/proyect.constants.js';
 import config from "./config.js";
@@ -28,7 +28,7 @@ const initializePassport = () => {
     }, async (accessToken, refreshToken, profile, done) => {
         try {
             const email = profile.emails[0].value;
-            const user = await userModel.findOne({ email });
+            const user = await getUserService({ email });
             if (!user) {
                 const newUser = {
                     first_name: profile._json.name,
@@ -37,7 +37,7 @@ const initializePassport = () => {
                     age: 18,
                     password: ''
                 }
-                const result = await userModel.create(newUser);
+                const result = await addUserService(newUser);
                 // console.log("result:", result);
                 done(null, result);
                 
