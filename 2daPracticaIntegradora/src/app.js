@@ -7,15 +7,14 @@ import productRouter from "./routes/products.router.js";
 import viewsProdRouter from "./routes/viewsProd.router.js";
 import viewsChatPage from "./routes/viewsChatPage.route.js"
 import sessionsRouter from './routes/sessions.router.js'
+import "./dao/dbManagers/dbConfig.js"
+import config from "./config/config.js"
 import viewsRouter from './routes/views.router.js';
-
 import ProductManager from './dao/dbManagers/productManager.js';
 import MessageManager from './dao/dbManagers/chatManager.js';
 import cookieParser from 'cookie-parser';
-// import session from "express-session";
 import handlebars from "express-handlebars";
 import mongoose from "mongoose";
-// import MongoStore from 'connect-mongo';
 import initializePassport from './config/passport.config.js';
 import passport from 'passport';
 
@@ -25,12 +24,12 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 // Conexion principal a Mongo con mongoose
-try {
+/* try {
     await mongoose.connect("mongodb+srv://jguerra1968:THWf8CZ8UjehbFfO@cluster37960jg.hhv9pbe.mongodb.net/ecommerce?retryWrites=true&w=majority")
     console.log("conectados a la base MONGO");
 } catch (error) {
     console.log(error);
-}
+} */
 
 // Middleware para cookies
 app.use(cookieParser());
@@ -58,7 +57,7 @@ app.use('/realtimeproducts', viewsProdRouter)
 app.use('/chat', viewsChatPage)
 
 
-const server = app.listen(8080, () => console.log('Server running'));
+const server = app.listen(config.port, () => console.log('Server running'));
 
 const io = new Server(server);
 app.set('socketio',io);

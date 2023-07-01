@@ -2,11 +2,9 @@ import passport from 'passport';
 import jwt from 'passport-jwt';
 import userModel from '../dao/models/users.Model.js';
 import GitHubStrategy from 'passport-github2';
-import { PRIVATE_KEY } from '../helpers/proyect.constants.js';
-// import local from 'passport-local';
-// import { createHash, isValidPassword } from '../utils.js';
+import { PRIVATE_COOKIE, PRIVATE_KEY } from '../helpers/proyect.constants.js';
+import config from "./config.js";
 
-// const LocalStrategy = local.Strategy;
 const JWTStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;
 
@@ -23,9 +21,9 @@ const initializePassport = () => {
     }));
 
     passport.use('github', new GitHubStrategy({
-        clientID: "Iv1.d14cb5dbd2b3a524",
-        clientSecret: "cc76cd2afdfdf8978bce73a5a9c2f06d25cc5c89",
-        callbackURL: "http://localhost:8080/api/sessions/github-callback",
+        clientID: config.gitClienteID,
+        clientSecret: config.gitClientSecret,
+        callbackURL: config.gitCallbackURL,
         scope: ['user:email']
     }, async (accessToken, refreshToken, profile, done) => {
         try {
@@ -53,10 +51,10 @@ const initializePassport = () => {
 };
 
 const cookieExtractor = req => {
-let token = null;
-if (req && req.cookies) {
-    token = req.cookies['coderCookieToken'];
-}
+    let token = null;
+    if (req && req.cookies) {
+        token = req.cookies[PRIVATE_COOKIE];
+    }
     return token;
 }
 
