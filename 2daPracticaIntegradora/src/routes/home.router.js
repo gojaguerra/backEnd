@@ -1,15 +1,11 @@
 import { Router } from "express";
-// import ProductManager from "../dao/dbManagers/productManager.js"
 import { passportCall } from "../utils.js";
-
+import { iniHome } from "../controllers/home.controller.js";
 
 const router = Router();
+
 // RENDERIZO HBS
 router.route('/')
-    .get(passportCall('jwt'), (req, res) => {
-        res.render('home.handlebars', {
-            user: req.user
-        });
-    });
+    .get(passportCall('jwt'), iniHome);
 
 export default router;
