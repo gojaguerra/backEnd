@@ -83,14 +83,23 @@ if(form) {
                             title: 'Código duplicado, vuelva a intentarlo!',
                             showConfirmButton: true,
                     })}else{
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'error',
-                            title: 'Hay datos incompletos, vuelva a intentarlo',
-                            showConfirmButton: true,
-                        });
+                        
+                        if (result.status === 403) {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Zona restringida a administradores!',
+                                showConfirmButton: true,
+                        })}else{
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Hay datos incompletos, vuelva a intentarlo',
+                                showConfirmButton: true,
+                            });
+                        }
                     }
-                }    
+                }
             }
         });
     });
