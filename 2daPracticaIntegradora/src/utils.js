@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { PRIVATE_KEY } from './helpers/proyect.constants.js';
 import { responseMessages } from './helpers/proyect.helpers.js';
+import { log } from 'console';
 
 const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
@@ -61,4 +62,4 @@ export {
     passportCall,
     authToken,
     authorization
-}
+};

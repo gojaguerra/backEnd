@@ -47,10 +47,10 @@ const loginUser = async (req, res) => {
             age: user.age, 
             role: "user"
         }
-
+        
         // role ADMIN
         if(email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
-            req.user.role = "admin";
+            console.log(req.user.role);
         }
 
         const accessToken = generateToken(user);

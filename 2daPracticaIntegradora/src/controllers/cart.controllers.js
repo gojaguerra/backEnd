@@ -1,11 +1,11 @@
 import { 
     postCart as postCartService,
     getCartById as getCartByIdService, 
-    putCartById as putCartByIdService, 
+    putCartById as putCartByIdService,
+    deleteAllProductsInCart as deleteAllProductsInCartService,  
     putProductInCart as putProductInCartService,
-    deleteCart as deleteCartService,
-    deleteProductInCart as deleteProductInCartService
-} from '../services/cart.services.js'
+    deleteProductInCart as deleteProductInCartService 
+} from '../services/carts.services.js';
 
 import { 
     getProductById as getProductByIdService, 
