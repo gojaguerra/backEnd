@@ -2,6 +2,7 @@ import { getUser as getUserService, addUser as addUserService } from '../service
 import { generateToken, createHash, isValidPassword } from '../utils.js';
 import { PRIVATE_COOKIE } from '../helpers/proyect.constants.js';
 import UsersDto from '../dao/DTOs/users.dto.js';
+import { postCart } from '../services/carts.services.js';
 
 const registerUser = async (req, res) => {
     try {
@@ -10,12 +11,16 @@ const registerUser = async (req, res) => {
         
         if (exists) return res.status(400).send({ status: 'error', error: 'User already exists' });
 
+        const cartId = await postCart();
+        //console.log(cartId);
+
         const user = {
             first_name,
             last_name,
             email,
             age,
-            password: createHash(password)
+            password: createHash(password), 
+            cart: cartId
         }
 
         await addUserService(user);
@@ -35,7 +40,7 @@ const loginUser = async (req, res) => {
         // console.log(email);
         // const user = await userModel.findOne({ email });
         const user = await getUserService({ email });
-
+        // console.log(user);
         // console.log("user:", user);
         if (!user) return res.status(400).send({ status: 'error', error: 'Incorrect credentials' });
 
@@ -46,7 +51,8 @@ const loginUser = async (req, res) => {
             last_name: user.last_name,
             email: user.email,
             age: user.age, 
-            role: "user"
+            role: "user",
+            cartId: user.cart._id
         }
         
         // role ADMIN

@@ -62,7 +62,9 @@ if(viewChat) {
 const viewCart = document.getElementById('viewCart')
 if(viewCart) {
     viewCart.addEventListener('click', (event) => {
-        window.location= "/api/carts/645f9a2d244315590f111e1e";
+        // window.location= "/api/carts/645f9a2d244315590f111e1e";
+        console.log(user.cartId);
+        window.location= "/api/carts/" + user.cartId;
     });
 };
 
@@ -91,10 +93,13 @@ function procesoId(comp){
                     console.log(id); */
                     const obj=`{"quantity": ${result.value}}`;
                     /* console.log("obj.", obj); */
-                    const cartId='645f9a2d244315590f111e1e';
-                    fetch('http://localhost:8080/api/carts/' + cartId + '/product/' + id, {
+                    // const cartId='645f9a2d244315590f111e1e';
+                    const cartId=req.user.cartId
+                    const path='http://localhost:8080/api/carts/' + cartId + '/product/' + id;
+                    console.log(path);
+                    fetch(path, {
                         method: 'PUT',
-                        body: JSON.stringify(obj),
+                        body: obj,
                         headers: {
                             'Content-Type': 'application/json'
                         }

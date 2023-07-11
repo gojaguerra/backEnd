@@ -1,11 +1,15 @@
 import mongoose from 'mongoose';
 
-const ticketCollection = 'ticket';
+const ticketCollection = 'tickets';
 
 const ticketSchema = new mongoose.Schema({
-    code: String,
+    code: {
+        type: String,
+        unique: true,
+        index: true
+    },
     purchase_datetime: Date,
-    amount: Number, 
+    amount: Number,
     purchaser: String
 });
 
