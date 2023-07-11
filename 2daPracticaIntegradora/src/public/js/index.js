@@ -87,22 +87,33 @@ function procesoId(comp){
             }).then(result =>{
                 // console.log(result);
                 if (result.isConfirmed) {
-                    
-                    Swal.fire({
-                        title: 'Producto Agregado al Carrito',
-                        icon: 'success'
+                    /* console.log(result.value);
+                    console.log(id); */
+                    const obj=`{"quantity": ${result.value}}`;
+                    /* console.log("obj.", obj); */
+                    const cartId='645f9a2d244315590f111e1e';
+                    fetch('http://localhost:8080/api/carts/' + cartId + '/product/' + id, {
+                        method: 'PUT',
+                        body: JSON.stringify(obj),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
                     })
-                     /*id = result.value;
-                        fetch('http://localhost:8080/api/products/' + id, {
-                        method: 'DELETE'
-                        })
-                        .then((response) => response.json())
-                        .then((data) => {
+                    .then((result) => {
+                        if (result.status === 200) {
                             Swal.fire({
-                                title: 'Producto Eliminado',
+                                title: 'Producto Agregado al Carrito',
                                 icon: 'success'
                             })
-                        }) */
+                        }else{
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Hubo un error al registrar el producto, intente luego',
+                                showConfirmButton: true,
+                            })
+                        }
+                    })
                 }
         }); 
     };

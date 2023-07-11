@@ -19,9 +19,58 @@ socket.on('showProducts', data => {
                 <p class="card-text">Descripción:  ${prod.description}</p>
                 <p class="card-text">Precio:$ ${prod.price}</p>
             </div>
-        </div>` 
+            <button type="button" class="btn btncaja btn-warning" 
+            id="${prod._id}" onclick="procesDelId(id)">
+            Eliminar
+        </button>
+            </div>` 
     })
 });
+
+function procesDelId(comp){
+    //console.log("1 " + comp);
+    const delProduct = document.getElementById(`${comp}`)
+    if(delProduct){ 
+        Swal.fire({
+            title: `Está seguro de eliminar el producto ${comp}? `,
+            showCancelButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then(result =>{
+            if (result.isConfirmed) {
+                id = result.value;
+                fetch('/api/products/' + comp, {
+                    method: 'DELETE'
+                    })
+                    .then((result) => {
+                        if (result.status === 200) {
+                            Swal.fire({
+                                title: 'Producto Eliminado',
+                                icon: 'success'
+                            })
+                            window.location= "/realTimeProducts";
+                        }else{
+                            if (result.status === 403) {
+                                Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'error',
+                                    title: 'No cuenta con permisos para realizar dicha acción!',
+                                    showConfirmButton: true,
+                                })
+                            }else {
+                                Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'error',
+                                    title: 'Hubo un error al registrar la eliminición del producto, intente luego',
+                                    showConfirmButton: true,
+                                })                
+                            }    
+                        }
+                    })
+            }
+       }); 
+    };
+};
 
 // Botón para ir al HOME
 const goHome = document.getElementById('goHome')
@@ -88,7 +137,7 @@ if(form) {
                             Swal.fire({
                                 position: 'top-end',
                                 icon: 'error',
-                                title: 'Zona restringida a administradores!',
+                                title: 'No tiene permisos para esta acción!',
                                 showConfirmButton: true,
                         })}else{
                             Swal.fire({

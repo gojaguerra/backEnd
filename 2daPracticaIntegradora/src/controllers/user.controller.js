@@ -1,6 +1,7 @@
 import { getUser as getUserService, addUser as addUserService } from '../services/user.services.js';
 import { generateToken, createHash, isValidPassword } from '../utils.js';
 import { PRIVATE_COOKIE } from '../helpers/proyect.constants.js';
+import UsersDto from '../dao/DTOs/users.dto.js';
 
 const registerUser = async (req, res) => {
     try {
@@ -49,8 +50,11 @@ const loginUser = async (req, res) => {
         }
         
         // role ADMIN
-        if(email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
+        /* if(email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
             console.log(req.user.role);
+        } */
+        if(req.user.email === 'adminCoder@coder.com' ) {
+            req.user.role = "admin";
         }
 
         const accessToken = generateToken(user);
@@ -94,8 +98,13 @@ const gitCallbackUser = async (req, res) => {
     res.redirect('/');
 };
 
-const currentUser = (req, res) => {
+/* const currentUser = (req, res) => {
     res.send({ status: 'success', payload: req.user });
+}; */
+
+const currentUser = (req, res) => {
+    const user = new UsersDto(req.user);
+    res.send({ status: 'success', payload: user });
 };
 
 export { 
