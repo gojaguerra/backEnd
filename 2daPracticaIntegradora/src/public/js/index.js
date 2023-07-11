@@ -62,9 +62,9 @@ if(viewChat) {
 const viewCart = document.getElementById('viewCart')
 if(viewCart) {
     viewCart.addEventListener('click', (event) => {
-        // window.location= "/api/carts/645f9a2d244315590f111e1e";
-        console.log(user.cartId);
-        window.location= "/api/carts/" + user.cartId;
+        window.location= "/api/carts/645f9a2d244315590f111e1e";
+        /* console.log("req",req.user.cartId);
+        window.location= "/api/carts/" + user.cartId; */
     });
 };
 

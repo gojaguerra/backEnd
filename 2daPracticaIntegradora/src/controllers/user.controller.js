@@ -7,6 +7,12 @@ import { postCart } from '../services/carts.services.js';
 const registerUser = async (req, res) => {
     try {
         const { first_name, last_name, email, age, password } = req.body;
+
+        if(!first_name || !last_name || !email || !age || !password){
+            // return res.status(400).send({ error:'Faltan completar campos!' });
+            return res.status(401).send({ status: 'error', error: 'Faltan completar campos!' })
+        };
+
         const exists = await getUserService({ email });
         
         if (exists) return res.status(400).send({ status: 'error', error: 'User already exists' });
