@@ -58,68 +58,74 @@ if(viewChat) {
     });
 };
 
-// Botón para ver el carrito
+// Botón para ver el carrito de prueba
 const viewCart = document.getElementById('viewCart')
 if(viewCart) {
-    viewCart.addEventListener('click', (event) => {
-        window.location= "/api/carts/645f9a2d244315590f111e1e";
-        /* console.log("req",req.user.cartId);
-        window.location= "/api/carts/" + user.cartId; */
+    viewCart.addEventListener('click', async (event) => {
+        const prueba = await fetch('/api/sessions/current', {
+            method: 'GET'
+        });
+        const data = await prueba.json();
+        const cart =data.payload.cart;
+        window.location= "/api/carts/"+cart;
     });
 };
 
 // Botón para insertar en carro
 function procesoId(comp){
     const id = comp.id
-    // console.log("1 " + id);
-    const butCart = document.getElementById(`${id}`);
-    // console.log(butCart);
+    const butCart = document.getElementById(`${id}`)
     if(butCart){ 
-            Swal.fire({
-                title: 'Muy buena eleccion',
-                text: "Ingrese la cantidad a pedir",
-                input: 'text',
-                inputValidator: (value) =>{
-                    return !value && "Ingrese la cantidad a pedir";
-                },
-                showCancelButton: true,
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                confirmButtonText: 'Agregar al Carrito'
-            }).then(result =>{
-                // console.log(result);
-                if (result.isConfirmed) {
-                    /* console.log(result.value);
-                    console.log(id); */
-                    const obj=`{"quantity": ${result.value}}`;
-                    /* console.log("obj.", obj); */
-                    // const cartId='645f9a2d244315590f111e1e';
-                    const cartId=req.user.cartId
-                    const path='http://localhost:8080/api/carts/' + cartId + '/product/' + id;
-                    console.log(path);
-                    fetch(path, {
-                        method: 'PUT',
-                        body: obj,
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    })
-                    .then((result) => {
-                        if (result.status === 200) {
-                            Swal.fire({
-                                title: 'Producto Agregado al Carrito',
-                                icon: 'success'
-                            })
-                        }else{
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: 'error',
-                                title: 'Hubo un error al registrar el producto, intente luego',
-                                showConfirmButton: true,
-                            })
-                        }
-                    })
-                }
+        Swal.fire({
+            title: 'Muy buena eleccion',
+            text: 'Ingrese la cantidad a pedir',
+            input: 'text',
+            inputValidator: (value) =>{
+                return !value && "Ingrese la cantidad a pedir";
+            },
+            showCancelButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonText: 'Agregar al Carrito'
+        }).then(async result =>{
+            //console.log(result);
+            if (result.isConfirmed) {
+                /* console.log(result.value);
+                console.log(id); */
+                const obj=`{"quantity": ${result.value}}`;
+                //console.log("obj.", obj); 
+                const prueba = await fetch('/api/sessions/current', {
+                    method: 'GET'
+                });
+                const data = await prueba.json();
+                const cart =data.payload.cart;
+                const cartId='/api/carts/'+cart+'/product/'+id
+                //console.log(cartId);
+                fetch(cartId, {
+                    method: 'PUT',
+                    body: obj,
+                    headers: {
+                        'Accept': "application/json",
+                        'Content-Type': 'application/json; charset=UTF-8'
+                    }
+                })
+                .then((result) => {
+                    //console.log(result.status);
+                    if (result.status === 200) {
+                        Swal.fire({
+                            title: 'Producto Agregado al Carrito',
+                            icon: 'success'
+                        })
+                    }else{
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Hubo un error al registrar el producto, intente luego',
+                            showConfirmButton: true,
+                        })
+                    }
+                })
+            }
         }); 
     };
 };
