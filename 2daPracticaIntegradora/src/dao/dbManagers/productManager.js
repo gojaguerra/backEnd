@@ -46,4 +46,9 @@ export default class ProductManager {
         return result;
     };
 
+    stockProduct = async (id, stock) => {
+        const result = await productModel.updateOne({_id: id}, {$inc: {stock: stock}});
+        return result;
+    }
+    
 };

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { postCart, getCartById, putCartById, putProductInCart, deleteCart, deleteProductInCart } from '../controllers/cart.controllers.js';
+import { postCart, getCartById, putCartById, putProductInCart, deleteCart, deleteProductInCart, postPurchase } from '../controllers/cart.controllers.js';
 import { passportCall, authorization } from "../utils.js";
 
 const router = Router();
@@ -24,5 +24,9 @@ router.delete('/:cid', passportCall('jwt'), authorization('user'), deleteCart);
 
 // BORRA UN PRODUCTO DEL CARRO
 router.delete('/:cid/product/:pid', passportCall('jwt'), authorization('user'), deleteProductInCart);
+
+// RUTA PARA FINALIZAR LA COMPRA PURCHASE
+/* router.put('/:cid/purchase', passportCall('jwt'), postPurchase); */
+router.put('/:cid/purchase', postPurchase);
 
 export default router;

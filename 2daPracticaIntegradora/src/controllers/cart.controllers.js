@@ -4,11 +4,13 @@ import {
     putCartById as putCartByIdService,
     deleteAllProductsInCart as deleteAllProductsInCartService,  
     putProductInCart as putProductInCartService,
-    deleteProductInCart as deleteProductInCartService 
+    deleteProductInCart as deleteProductInCartService, 
+    postPurchase as postPurchaseService
 } from '../services/carts.services.js';
 
 import { 
     getProductById as getProductByIdService, 
+    stockProduct as stockProductService
 } from "../services/products.services.js";
 
 
@@ -80,6 +82,19 @@ const putCartById = async(req, res) => {
         };
     } catch (error) {
         res.status(404).send({ status: "NOT FOUND", payload: `No se pudo agregar el Producto al carrito!` });
+    };
+};
+
+const deleteAllProductsInCart = async(req, res) => {
+    const cartId = String(req.params.cid);
+    try {
+        const cart = await deleteAllProductsInCartService(cartId);
+        const response ={ status: "Success", payload: cart};
+        //muestro resultado
+        res.status(200).json(response);
+    } catch (error) {
+        const response = { status: "NOT FOUND", payload: `El carrito con ID ${cartId} NO existe!` };
+        res.status(404).send(response);
     };
 };
 
@@ -186,11 +201,72 @@ const deleteProductInCart = async(req, res) => {
     };
 };
 
+const postPurchase = async(req, res) => {
+    //Leo el ID del carrito y producto por parametros 
+    console.log("1 INGRESO AL PROCESO DE COMPRA");
+    const cartId = String(req.params.cid);
+    //const userMail = req.user.email;
+    const userMail = "gojaguerra@gmail.com";
+    console.log("2 Leo parametros "  + cartId + " " + userMail);
+    // Primero Valido que exista el carrito 
+    try {
+        const newCart = [];
+        const noCart = [];
+        // OBTENGO el carrito QUE HAY EN la BASE
+        console.log("3 VALIDO CARRITO");
+        const cartPuchase = await getCartByIdService(cartId);
+        console.log("3C" + JSON.stringify(cartPuchase, null, '\t'));
+        console.log("4 Empiezo a recorrer carrito");
+        cartPuchase[0].products.forEach((product) => {
+        if (product.product.stock > product.quantity) {
+            const resultStock = stockProductService(product.product._id, product.quantity*-1)
+            //console.log("7 resultado de baja de stock" + resultStock);
+            const prodData = {
+                    price: product.product.price,
+                    quantity: product.quantity
+            }
+            newCart.push(prodData);
+            console.log("8 nuevo carrito" + newCart);
+            const resultDelete = deleteProductInCartService(cartPuchase[0]._id,product.product._id);
+                //console.log("9 resultado de delete de cart" + resultDelete);
+            } else {
+                const prodData = {
+                    id: product._id
+                };
+                noCart.push(prodData);
+            }
+        });
+        console.log(noCart);
+        //Recorro el carrito y verifico que el Stock sea correcto y genero el ticket
+        if (newCart.length > 0){
+            console.log("10 llamo a grabar ticket");
+            const result = await postPurchaseService(newCart, userMail);
+            //console.log("router: " + JSON.stringify(result, null, '\t'));
+            if (noCart.length > 0) {
+                res.status(200).send({ status: 'success', payload: `Se genero correctamente la compra con el ID ${result.code} y no pudieron procesarse por falta de stock ${noCart}`  })
+            } else {
+                res.status(200).send({ status: 'success', payload: `Se genero correctamente la compra con el ID ${result.code}`  })
+            }
+        } else {
+            if (noCart.length > 0) {
+                res.status(404).send({ status: "NOT FOUND", payload: `No pudieron procesarse por falta de stock ${JSON.stringify(noCart)}` });
+            } else {
+                res.status(404).send({ status: "NOT FOUND", payload: `No hay productos en el carrito!` });
+            }
+        };
+    } catch (error) {
+        const response = { status: "Error", payload: `El carrito con ID ${cartId} NO existe!` };
+        return res.status(404).json(response);
+    };
+};
+
 export {
     postCart, 
     getCartById,
     putCartById,
     putProductInCart,
     deleteCart,
-    deleteProductInCart
+    deleteProductInCart,
+    deleteAllProductsInCart,
+    postPurchase
 };
