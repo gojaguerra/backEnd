@@ -203,32 +203,28 @@ const deleteProductInCart = async(req, res) => {
 
 const postPurchase = async(req, res) => {
     //Leo el ID del carrito y producto por parametros 
-    console.log("1 INGRESO AL PROCESO DE COMPRA");
     const cartId = String(req.params.cid);
-    //const userMail = req.user.email;
+    // const userMail = req.user.email;
     const userMail = "gojaguerra@gmail.com";
-    console.log("2 Leo parametros "  + cartId + " " + userMail);
     // Primero Valido que exista el carrito 
     try {
         const newCart = [];
         const noCart = [];
-        // OBTENGO el carrito QUE HAY EN la BASE
-        console.log("3 VALIDO CARRITO");
+        // OBTENGO el carrito QUE HAY EN la BASE y PERTENECE AL USER LOGUEADO
         const cartPuchase = await getCartByIdService(cartId);
-        console.log("3C" + JSON.stringify(cartPuchase, null, '\t'));
-        console.log("4 Empiezo a recorrer carrito");
         cartPuchase[0].products.forEach((product) => {
+        // VALIDO STOCK SUFICIENTE
         if (product.product.stock > product.quantity) {
+            // ACTUALIZO STOCK
             const resultStock = stockProductService(product.product._id, product.quantity*-1)
-            //console.log("7 resultado de baja de stock" + resultStock);
             const prodData = {
                     price: product.product.price,
                     quantity: product.quantity
-            }
+            };
+            // ALMACENO EN NUEVO ARRAY
             newCart.push(prodData);
-            console.log("8 nuevo carrito" + newCart);
+            // ELIMINO PRODUCTO DEL CARRO
             const resultDelete = deleteProductInCartService(cartPuchase[0]._id,product.product._id);
-                //console.log("9 resultado de delete de cart" + resultDelete);
             } else {
                 const prodData = {
                     id: product._id
@@ -236,23 +232,21 @@ const postPurchase = async(req, res) => {
                 noCart.push(prodData);
             }
         });
-        console.log(noCart);
-        //Recorro el carrito y verifico que el Stock sea correcto y genero el ticket
+        
+        // SI HAY PRODUCTOS VALIDADOS CON STOCK GENERO LA VENTA
         if (newCart.length > 0){
-            console.log("10 llamo a grabar ticket");
             const result = await postPurchaseService(newCart, userMail);
-            //console.log("router: " + JSON.stringify(result, null, '\t'));
             if (noCart.length > 0) {
                 res.status(200).send({ status: 'success', payload: `Se genero correctamente la compra con el ID ${result.code} y no pudieron procesarse por falta de stock ${noCart}`  })
             } else {
                 res.status(200).send({ status: 'success', payload: `Se genero correctamente la compra con el ID ${result.code}`  })
-            }
+            };
         } else {
             if (noCart.length > 0) {
                 res.status(404).send({ status: "NOT FOUND", payload: `No pudieron procesarse por falta de stock ${JSON.stringify(noCart)}` });
             } else {
                 res.status(404).send({ status: "NOT FOUND", payload: `No hay productos en el carrito!` });
-            }
+            };
         };
     } catch (error) {
         const response = { status: "Error", payload: `El carrito con ID ${cartId} NO existe!` };
