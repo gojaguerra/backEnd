@@ -13,7 +13,8 @@ export const generateProductErrorInfo = (product) => {
     * title: needs to be a string, received ${product.title}
     * description: needs to be a string, received ${product.description}
     * code: needs to be a number, received ${product.code},
-    * stock: needs to be a number, received ${product.stock}
+    * stock: needs to be a number, received ${product.stock},
+    * price: needs to be a number, received ${product.price}
     `
 }
 

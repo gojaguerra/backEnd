@@ -67,20 +67,20 @@ const postProduct = async(req, res) => {
         product.status = true
     };
     if(!product.title || !product.description || !product.code || !product.price || !product.stock || !product.category){
-        //return res.status(400).send({ status: 'error', error: 'Faltan completar campos!' })
         throw CustomError.createError({
             name: 'ProductError',
             cause: generateProductErrorInfo({
-                title,
-                description,
-                code, 
-                stock
+                "title":product.title,
+                "description":product.description,
+                "code":product.code, 
+                "stock":product.stock,
+                "price":product.price
             }),
-            message: 'Error trying to create user',
+            message: 'Error trying to create product',
             code: EErrors.INVALID_TYPE_ERROR
         })
     };
-
+    
     try {
         const result = await postProductService(product);
         //Valido el resultado de la creacion del producto

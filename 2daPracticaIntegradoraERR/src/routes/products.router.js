@@ -10,7 +10,8 @@ router.get("/", getProducts);
 
 router.get('/:pid', getProductById);
 
-router.post('/', passportCall('jwt'), authorization('admin'), postProduct);
+//router.post('/', passportCall('jwt'), authorization('admin'), postProduct);
+router.post('/', postProduct);
 
 router.put('/:pid', passportCall('jwt'), authorization('admin'), putProductById);
 
