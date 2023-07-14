@@ -7,6 +7,7 @@ import productRouter from "./routes/products.router.js";
 import viewsProdRouter from "./routes/viewsProd.router.js";
 import viewsChatPage from "./routes/viewsChatPage.route.js"
 import sessionsRouter from './routes/sessions.router.js'
+import mockingproducts from './routes/mockingproducts.router.js';
 import "./dao/dbManagers/dbConfig.js"
 import config from "./config/config.js"
 import viewsRouter from './routes/views.router.js';
@@ -56,6 +57,8 @@ app.use('/api/products', productRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/realtimeproducts', viewsProdRouter)
 app.use('/chat', viewsChatPage)
+// MONCKING
+app.use('/mockingproducts', mockingproducts);
 
 // CONTROL DE ERRORES CUSTOM
 app.use(errorHandler);
