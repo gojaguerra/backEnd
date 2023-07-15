@@ -71,6 +71,19 @@ if(viewCart) {
     });
 };
 
+// Botón para ver finalizar pedido
+const closeCart = document.getElementById('cerrarTicket')
+if(closeCart) {
+    /* closeCart.addEventListener('click', async (event) => {
+        const prueba = await fetch('/api/sessions/current', {
+            method: 'GET'
+        });
+        const data = await prueba.json();
+        const cart =data.payload.cart;
+        window.location= "/api/carts/"+cart;
+    }); */
+};
+
 // Botón para insertar en carro
 function procesoId(comp){
     const id = comp.id

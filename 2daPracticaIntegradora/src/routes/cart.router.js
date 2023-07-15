@@ -26,7 +26,6 @@ router.delete('/:cid', passportCall('jwt'), authorization('user'), deleteCart);
 router.delete('/:cid/product/:pid', passportCall('jwt'), authorization('user'), deleteProductInCart);
 
 // RUTA PARA FINALIZAR LA COMPRA PURCHASE
-/* router.put('/:cid/purchase', passportCall('jwt'), postPurchase); */
-router.put('/:cid/purchase', postPurchase);
+router.put('/:cid/purchase', passportCall('jwt'), postPurchase);
 
 export default router;

@@ -1,9 +1,6 @@
 import { Router } from 'express';
-import { registerUser, loginUser, logoutUser, gitUser, gitCallbackUser, currentUser } from '../controllers/user.controller.js'
-import { generateToken, passportCall, createHash, isValidPassword } from '../utils.js';
-// import passport from 'passport';
-// import { responseMessages } from '../helpers/proyect.helpers.js';
-//import userModel from "../dao/models/users.Model.js";
+import { registerUser, loginUser, logoutUser, gitUser, gitCallbackUser, currentUser } from '../controllers/user.controller.js';
+import { passportCall } from '../utils.js';
 
 const router = Router();
 
