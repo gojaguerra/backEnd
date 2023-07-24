@@ -7,6 +7,8 @@ import productRouter from "./routes/products.router.js";
 import viewsProdRouter from "./routes/viewsProd.router.js";
 import viewsChatPage from "./routes/viewsChatPage.route.js"
 import sessionsRouter from './routes/sessions.router.js'
+import mockingproducts from './routes/mockingproducts.route.js';
+import loggerTest from './routes/loggerTest.route.js';
 import "./dao/dbManagers/dbConfig.js"
 import config from "./config/config.js"
 import viewsRouter from './routes/views.router.js';
@@ -17,22 +19,18 @@ import handlebars from "express-handlebars";
 import mongoose from "mongoose";
 import initializePassport from './config/passport.config.js';
 import passport from 'passport';
+import { addLogger } from './utils/logger.js';
 
 const app = express();
 app.use(express.static(`${__dirname}/public`));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
-// Conexion principal a Mongo con mongoose
-/* try {
-    await mongoose.connect("mongodb+srv://jguerra1968:THWf8CZ8UjehbFfO@cluster37960jg.hhv9pbe.mongodb.net/ecommerce?retryWrites=true&w=majority")
-    console.log("conectados a la base MONGO");
-} catch (error) {
-    console.log(error);
-} */
-
 // Middleware para cookies
 app.use(cookieParser());
+
+// Middleware para logger
+app.use(addLogger);
 
 //middleware Log conexiones
 app.use((req, res, next) => {
@@ -55,7 +53,10 @@ app.use('/api/products', productRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/realtimeproducts', viewsProdRouter)
 app.use('/chat', viewsChatPage)
-
+// MONCKING
+app.use('/mockingproducts', mockingproducts);
+// TEST LOGGER
+app.use('/loggerTest', loggerTest);
 
 const server = app.listen(config.port, () => console.log('Server running'));
 

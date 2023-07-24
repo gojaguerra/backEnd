@@ -27,6 +27,7 @@ const postCart = async(req, res) => {
         const result = await postCartService(cart);
         res.send({ status: "success", payload: result})
     } catch (error) {
+        req.logger.error('Error postCart ' + error.message);
         res.status(500).send({ status: "error", error });
     }
 
@@ -45,6 +46,7 @@ const getCartById = async(req, res) => {
         // res.status(200).json(response);
         res.render("carts.handlebars", cart[0] );
     } catch (error) {
+        req.logger.error(`getCartById = El carrito con ID ${cartId} NO existe!`);
         const response = { status: "NOT FOUND", payload: `El carrito con ID ${cartId} NO existe!` };
         res.status(404).send(response);
     };
@@ -62,6 +64,7 @@ const putCartById = async(req, res) => {
         // OBTENGO el carrito QUE HAY EN la BASE
         await getCartByIdService(cartId);
     } catch (error) {
+        req.logger.error(`putCartById = El carrito con ID ${cartId} NO existe!`);
         const response = { status: "Error", payload: `El carrito con ID ${cartId} NO existe!` };
         return res.status(404).json(response);
     }
@@ -70,17 +73,19 @@ const putCartById = async(req, res) => {
         // OBTENGO el producto QUE HAY EN la Base
         await getProductByIdService(productId);
     } catch (error) {
+        req.logger.error(`putCartById = El Producto con ID ${productId} NO existe!`);
         const response = { status: "Error", payload: `El Producto con ID ${productId} NO existe!` };
         return res.status(404).json(response);
     }
     // Una vez validado llamar al metodo addProductInCart
     try {
         const result = await putCartByIdService(cartId, productId, quantity);
-        console.log("router: " + JSON.stringify(result, null, '\t'));
+        // console.log("router: " + JSON.stringify(result, null, '\t'));
         if(result.acknowledged) {
             res.status(200).send({ status: 'success', payload: 'Se agrego correctamente el producto al carrito' })
         };
     } catch (error) {
+        req.logger.error(`putCartById = No se pudo agregar el Producto al carrito!` + error.message);
         res.status(404).send({ status: "NOT FOUND", payload: `No se pudo agregar el Producto al carrito!` });
     };
 };
@@ -93,6 +98,7 @@ const deleteAllProductsInCart = async(req, res) => {
         //muestro resultado
         res.status(200).json(response);
     } catch (error) {
+        req.logger.error(`deleteAllProductsInCart = El carrito con ID ${cartId} NO existe!`);
         const response = { status: "NOT FOUND", payload: `El carrito con ID ${cartId} NO existe!` };
         res.status(404).send(response);
     };
@@ -111,6 +117,7 @@ const putProductInCart = async(req, res) => {
         // OBTENGO el carrito QUE HAY EN la BASE
         await getCartByIdService(cartId);
     } catch (error) {
+        req.logger.error(`putProductInCart = El carrito con ID ${cartId} NO existe!`);
         const response = { status: "Error", payload: `El carrito con ID ${cartId} NO existe!` };
         return res.status(404).json(response);
     }
@@ -119,56 +126,22 @@ const putProductInCart = async(req, res) => {
         // OBTENGO el producto QUE HAY EN la Base
         await getProductByIdService(productId);
     } catch (error) {
+        req.logger.error(`putProductInCart = El Producto con ID ${productId} NO existe!`);
         const response = { status: "Error", payload: `El Producto con ID ${productId} NO existe!` };
         return res.status(404).json(response);
     }
     // Una vez validado llamar al metodo addProductInCart
     try {
         const result = await putProductInCartService(cartId, productId, quantity);
-        console.log("router: " + JSON.stringify(result, null, '\t'));
+        // console.log("router: " + JSON.stringify(result, null, '\t'));
         if(result.acknowledged) {
             res.status(200).send({ status: 'success', payload: 'Se actualizo correctamente el producto al carrito' })
         };
     } catch (error) {
+        req.logger.error(`putProductInCart = No se pudo actualizar el Producto al carrito!`);
         res.status(404).send({ status: "NOT FOUND", payload: `No se pudo actualizar el Producto al carrito!` });
     };
 };
-
-/* // AGREGO/ACTUALIZO PRODUCTO EN EL CARRITO
-router.post('/:cid/product/:pid', async(req, res) => {
-     //Leo el ID del carrito y producto por parametros 
-    const cartId = String(req.params.cid);
-    const productId = String(req.params.pid);
-
-    //MongoDB
-    // Primero Valido que exista el carrito 
-    try {
-        // OBTENGO el carrito QUE HAY EN la BASE
-        await cartManager.getCartById(cartId);
-    } catch (error) {
-        const response = { status: "Error", payload: `El carrito con ID ${cartId} NO existe!` };
-        return res.status(404).json(response);
-    }
-    // Segundo Valido que exista el producto
-    try {
-        // OBTENGO el producto QUE HAY EN la Base
-        await productManager.getProductById(productId);
-    } catch (error) {
-        const response = { status: "Error", payload: `El Producto con ID ${productId} NO existe!` };
-        return res.status(404).json(response);
-    }
-
-    // Una vez validado llamar al metodo addProductInCart
-    try {
-        const result = await cartManager.addProductInCart(cartId, productId);
-        if(result.acknowledged) {
-            res.status(200).send({ status: 'success', payload: 'Se agrego correctamente el producto al carrito' })
-        };
-    } catch (error) {
-        res.status(404).send({ status: "NOT FOUND", payload: `No se pudo agregar el Producto al carrito!` });
-    };
-
-}); */
 
 // BORRA TODOS LOS PRODUCTOS DEL CARRO
 // router.delete('/:cid', async(req, res) => {
@@ -180,6 +153,7 @@ const deleteCart = async(req, res) => {
         //muestro resultado
         res.status(200).json(response);
     } catch (error) {
+        req.logger.error(`putProductInCart = El Producto con ID ${productId} NO existe!`);
         const response = { status: "NOT FOUND", payload: `El carrito con ID ${cartId} NO existe!` };
         res.status(404).send(response);
     };
@@ -196,6 +170,7 @@ const deleteProductInCart = async(req, res) => {
         //muestro resultado
         res.status(200).json(response);
     } catch (error) {
+        req.logger.error(`putProductInCart = El Producto con ID ${productId} NO existe!`);
         const response = { status: "NOT FOUND", payload: `El carrito con ID ${cartId} NO existe!` };
         res.status(404).send(response);
     };
@@ -237,19 +212,24 @@ const postPurchase = async(req, res) => {
         if (newCart.length > 0){
             const result = await postPurchaseService(newCart, userMail);
             if (noCart.length > 0) {
+                req.logger.info(`postPurchase = Se genero correctamente la compra con el ID ${result.code}  y no pudieron procesarse por falta de stock ${JSON.stringify(noStockCart, null)}`);
                 res.status(200).send({ status: 'success', payload: `Se genero correctamente la compra con el ID ${result.code} y no pudieron procesarse por falta de stock ${noCart}`  })
             } else {
+                req.logger.info(`postPurchase = Se genero correctamente la compra con el ID ${result.code}`);
                 res.status(200).send({ status: 'success', payload: `Se genero correctamente la compra con el ID ${result.code}`  })
             };
         } else {
             if (noCart.length > 0) {
+                req.logger.info(`postPurchase = No pudieron procesarse por falta de stock ${JSON.stringify(noStockCart, null)}`);
                 res.status(404).send({ status: "NOT FOUND", payload: `No pudieron procesarse por falta de stock ${JSON.stringify(noCart)}` });
             } else {
+                req.logger.info(`postPurchase = No hay productos en el carrito!`);
                 res.status(404).send({ status: "NOT FOUND", payload: `No hay productos en el carrito!` });
             };
         };
     } catch (error) {
-        const response = { status: "Error", payload: `El carrito con ID ${cartId} NO existe!` };
+        req.logger.error(`postPurchase = ` + error.message);
+        const response = { status: "Error", payload: error };
         return res.status(404).json(response);
     };
 };

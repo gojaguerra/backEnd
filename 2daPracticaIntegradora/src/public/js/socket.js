@@ -8,8 +8,6 @@ const container = document.getElementById('container');
 //Socket
 socket.on('showProducts', data => {
     
-    console.log(data);
-    
     container.innerHTML = ``
     data.forEach(prod => {
         container.innerHTML +=`<div class="card" style="width: 18rem;">
@@ -28,7 +26,6 @@ socket.on('showProducts', data => {
 });
 
 function procesDelId(comp){
-    //console.log("1 " + comp);
     const delProduct = document.getElementById(`${comp}`)
     if(delProduct){ 
         Swal.fire({

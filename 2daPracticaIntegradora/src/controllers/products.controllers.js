@@ -25,7 +25,6 @@ const getProducts = async (req, res) => {
             sort2=sort;
             sort1= {price: sort};
         }
-        //console.log(query);
         const products = await getProductsService(limit, page, query1, sort1);
         products.prevLink = products.hasPrevPage?`http://localhost:8080/api/products?page=${products.prevPage}&query=${query2}&sort=${sort2}`:'';
         products.nextLink = products.hasNextPage?`http://localhost:8080/api/products?page=${products.nextPage}&query=${query2}&sort=${sort2}`:'';
@@ -35,6 +34,7 @@ const getProducts = async (req, res) => {
         //Render page
         res.render("products.handlebars", products );
 } catch (error) {
+    req.logger.error('Error getProducts ' + error.message);
     res.status(500).send({ status: "error", error });
 }
 };
@@ -52,8 +52,8 @@ const getProductById =  async(req, res) => {
         //Render page
         //res.render("products.hbs", { productById });
     } catch (error) {
+        req.logger.error(`getProductById = El producto con ID ${id} NO existe!`);
         const response = { status: "NOT FOUND", payload: `El producto con ID ${id} NO existe!` };
-        //Postman
         res.status(404).json(response);
     };
 };
@@ -64,7 +64,7 @@ const postProduct = async(req, res) => {
         product.status = true
     };
     if(!product.title || !product.description || !product.code || !product.price || !product.stock || !product.category){
-        // return res.status(400).send({ error:'Faltan completar campos!' });
+        req.logger.error(`postProduct = Faltan completar campos!`);
         return res.status(400).send({ status: 'error', error: 'Faltan completar campos!' })
     };
 
@@ -78,16 +78,15 @@ const postProduct = async(req, res) => {
 
         const response = { status: "Success", payload: result};
 
-        //res.status(200).json(response);
-        // muestro resultado
-        // res.redirect("/realTimeProducts");
         res.send({ status: 'success', message: 'Product OK' })
 
     } catch (error) {
         if(error.code===11000){
             // Código de producto duplicado
+            req.logger.error(`postProduct = Producto duplicado!`);
             res.status(501).send({ status: "error", error });
         }else{
+            req.logger.error('Error postProduct ' + error.message);
             res.status(500).send({ status: "error", error });
         };
     };
@@ -98,13 +97,8 @@ const putProductById = async(req,res) =>{
     const id = String(req.params.pid);
     const product = req.body;
 
-    /* console.log(product.category); */
-    /* if(!product.title || !product.description || !product.code || !product.price || 
-        !product.stock || !product.category || !product.status){
-        return res.status(400).send({error:'Hay campos que faltan completar!'});
-    } */
-
     if("id" in product){
+        req.logger.error(`putProductById = Error no se puede modificar el id ${id}`);
         return res.status(404).json({ status: "NOT FOUND", data: "Error no se puede modificar el id"});
     }
 
@@ -112,19 +106,21 @@ const putProductById = async(req,res) =>{
     try {
         const result = await putProductByIdService(id, product);
         if (result.acknowledged) {
+            req.logger.info(`putProductById = El producto con ID ${id} fue actualizado con éxito!`);
             const response = { status: "OK",  payload: `El producto con ID ${id} fue actualizado con éxito!`};
             res.status(200).json(response);
         } else {
+            req.logger.error('Error putProductById ERROR');
             res.status(200).send("ERROR");
         }
     } catch (error) {
+        req.logger.error('Error putProductById ' + error.message);
         res.status(404).send({ status: "error", error });
     }
 };
 
 const deleteProductById = async(req,res)=>{
     const id = String(req.params.pid);
-    //llamar al metodo deleteProduct pasandole como parametro id
 
     try {
         const result = await deleteProductByIdService(id);
@@ -133,13 +129,16 @@ const deleteProductById = async(req,res)=>{
         if (result.acknowledged & result.deletedCount!==0 ) {
             const io = req.app.get('socketio');
             io.emit("showProducts", await getProductsService());
+            req.logger.info(`deleteProductById = El producto con ID ${id} fue eliminado!`);
             const response = { status: "Success", payload: `El producto con ID ${id} fue eliminado!`}; 
             res.status(200).json(response);
         } else {
+            req.logger.error(`Error deleteProductById: NO existe el producto que desea eliminar!`);
             const response = { status: "NOT FOUND", payload: `NO existe el producto que desea eliminar!`}; 
             res.status(404).json(response);
         };
     } catch (error) {
+        req.logger.error(`Error deleteProductById: NO existe el producto que desea eliminar!`);
         res.status(404).json({ status: "NOT FOUND", payload: `NO existe el producto que desea eliminar!` });
         /* res.status(500).send({ status: "error", error }); */
     }

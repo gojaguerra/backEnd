@@ -52,10 +52,7 @@ const postPurchase = async (cart, userMail) => {
         purchaser: userMail
     };
 
-    console.log(ticket);
-
     const result = await ticketRepository.createTicket(ticket);
-    console.log(result);
     return result;
 };
 

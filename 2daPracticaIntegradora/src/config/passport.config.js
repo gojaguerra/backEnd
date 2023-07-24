@@ -38,7 +38,6 @@ const initializePassport = () => {
                     password: ''
                 }
                 const result = await addUserService(newUser);
-                // console.log("result:", result);
                 done(null, result);
                 
             } else {

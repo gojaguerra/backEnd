@@ -101,19 +101,14 @@ function procesoId(comp){
             allowEscapeKey: false,
             confirmButtonText: 'Agregar al Carrito'
         }).then(async result =>{
-            //console.log(result);
             if (result.isConfirmed) {
-                /* console.log(result.value);
-                console.log(id); */
                 const obj=`{"quantity": ${result.value}}`;
-                //console.log("obj.", obj); 
                 const prueba = await fetch('/api/sessions/current', {
                     method: 'GET'
                 });
                 const data = await prueba.json();
                 const cart =data.payload.cart;
                 const cartId='/api/carts/'+cart+'/product/'+id
-                //console.log(cartId);
                 fetch(cartId, {
                     method: 'PUT',
                     body: obj,
@@ -123,7 +118,6 @@ function procesoId(comp){
                     }
                 })
                 .then((result) => {
-                    //console.log(result.status);
                     if (result.status === 200) {
                         Swal.fire({
                             title: 'Producto Agregado al Carrito',

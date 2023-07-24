@@ -9,16 +9,18 @@ const registerUser = async (req, res) => {
         const { first_name, last_name, email, age, password } = req.body;
 
         if(!first_name || !last_name || !email || !age || !password){
-            // return res.status(400).send({ error:'Faltan completar campos!' });
+            req.logger.error(`Error registerUser: Faltan completar campos!`);
             return res.status(401).send({ status: 'error', error: 'Faltan completar campos!' })
         };
 
         const exists = await getUserService({ email });
         
-        if (exists) return res.status(400).send({ status: 'error', error: 'User already exists' });
+        if (exists) {
+            req.logger.error(`Error registerUser: User already exist!`);
+            return res.status(400).send({ status: 'error', error: 'User already exists' });
+        };
 
         const cartId = await postCart();
-        //console.log(cartId);
 
         const user = {
             first_name,
@@ -32,10 +34,12 @@ const registerUser = async (req, res) => {
         await addUserService(user);
 
         const accessToken = generateToken(user);
-
+        
+        req.logger.info(`registerUser = User registered`);
         res.send({ status: 'success', message: 'User registered', access_token: accessToken })
 
     } catch (error) {
+        req.logger.error(`registerUser = ` + error.message);
         res.status(500).send({ status: 'error', error: error.message });
     }
 };
@@ -43,14 +47,17 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
-        // console.log(email);
-        // const user = await userModel.findOne({ email });
         const user = await getUserService({ email });
-        // console.log(user);
-        // console.log("user:", user);
-        if (!user) return res.status(400).send({ status: 'error', error: 'Incorrect credentials' });
+        
+        if (!user) {
+            req.logger.error(`loginUser = Incorrect credentials`);
+            return res.status(400).send({ status: 'error', error: 'Incorrect credentials' });
+        };
 
-        if (!isValidPassword(user, password)) return res.status(401).send({ status: 'error', error: 'Incorrect password' })
+        if (!isValidPassword(user, password)) {
+            req.logger.error(`loginUser = Incorrect password`);
+            return res.status(401).send({ status: 'error', error: 'Incorrect password' })
+        };
 
         req.user = {
             first_name: user.first_name,
@@ -75,6 +82,7 @@ const loginUser = async (req, res) => {
             PRIVATE_COOKIE, accessToken, { maxAge: 60 * 60 * 1000, httpOnly: true }
         ).send({ status: 'success', message: 'Login success!' });
     } catch (error) {
+        req.logger.error(`registerUser = ` + error.message);
         res.status(500).send({ status: 'error', error });
     }
 };

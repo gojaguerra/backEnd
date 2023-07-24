@@ -37,7 +37,6 @@ const passportCall = (strategy) => {
             if(!user) {
                 return res.redirect('/login')
             }
-            console.log(user);
             req.user = user;
             next();
         })(req, res, next)
@@ -51,6 +50,19 @@ const authorization = (role) => {
     }
 }
 
+const generateProduct = () => {
+    return {
+        id: faker.database.mongodbObjectId(),
+        title: faker.commerce.productName(),
+        description: faker.commerce.productDescription(),
+        price: faker.commerce.price(),
+        code: faker.string.alphanumeric(10),
+        stock: faker.string.numeric(1),
+        category: faker.commerce.department(),
+        thumbnail: [faker.image.url()]
+    }
+}
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
@@ -61,5 +73,6 @@ export {
     generateToken,
     passportCall,
     authToken,
-    authorization
+    authorization,
+    generateProduct
 };
