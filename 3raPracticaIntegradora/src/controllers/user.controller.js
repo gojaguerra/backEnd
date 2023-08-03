@@ -118,13 +118,13 @@ const gitCallbackUser = async (req, res) => {
     res.redirect('/');
 };
 
-/* const currentUser = (req, res) => {
-    res.send({ status: 'success', payload: req.user });
-}; */
-
 const currentUser = (req, res) => {
     const user = new UsersDto(req.user);
     res.send({ status: 'success', payload: user });
+};
+
+const resetPass = (req, res) => {
+    
 };
 
 export { 
@@ -133,5 +133,6 @@ export {
     logoutUser, 
     gitUser, 
     gitCallbackUser, 
-    currentUser 
+    currentUser,
+    resetPass
 }

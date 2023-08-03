@@ -12,6 +12,10 @@ const loginRaiz =(req, res) => {
     res.render('login.handlebars');
 };
 
+const resetRaiz =(req, res) => {
+    res.render('resetPassword.handlebars');
+};
+
 const profileRaiz =(req, res) => {
     res.render('profile.handlebars', {
         user: req.user,
@@ -22,5 +26,6 @@ export {
     iniRaiz,
     regRaiz,
     loginRaiz,
-    profileRaiz
+    profileRaiz,
+    resetRaiz
 }

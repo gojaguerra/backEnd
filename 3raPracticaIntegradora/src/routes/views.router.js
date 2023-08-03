@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import { passportCall } from '../utils.js';
-import { iniRaiz, loginRaiz, profileRaiz, regRaiz } from '../controllers/viewsRouter.controller.js';
-
+import { iniRaiz, loginRaiz, profileRaiz, regRaiz, resetRaiz } from '../controllers/viewsRouter.controller.js';
 
 const router = Router();
 
@@ -10,35 +9,14 @@ router.route('/register')
 
 router.route('/login')
     .get(loginRaiz);
-    
+
+router.route('/resetPassword')
+    .get(resetRaiz);
+
 router.route('/')
     .get(passportCall('jwt'), iniRaiz);
 
 router.route('/profile')
     .get(passportCall('jwt'), profileRaiz);
     
-/* router.route('/register')
-    .get( (req, res) => {
-        res.render('register.handlebars');
-    });
-
-router.route('/login')
-    .get( (req, res) => {
-        res.render('login.handlebars');
-    });
-    
-router.route('/')
-    .get(passportCall('jwt'), (req, res) => {
-        res.render('home.handlebars', {
-            user: req.user
-        });
-    });
-
-router.route('/profile')
-    .get(passportCall('jwt'), (req, res) => {
-        res.render('profile.handlebars', {
-            user: req.user,
-        });
-    });
- */
 export default router;

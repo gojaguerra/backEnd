@@ -66,6 +66,11 @@ const generateProduct = () => {
     }
 }
 
+const generateTokenResetPass = (user) => {
+    const tokenResetPass = jwt.sign({ user }, PRIVATE_KEY, { expiresIn: '1h' });
+    return tokenResetPass;
+};
+
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     port: 587,
@@ -87,5 +92,6 @@ export {
     authToken,
     authorization,
     generateProduct,
+    generateTokenResetPass,
     transporter
 };
