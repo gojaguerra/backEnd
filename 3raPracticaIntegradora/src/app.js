@@ -16,7 +16,6 @@ import ProductManager from './dao/dbManagers/productManager.js';
 import MessageManager from './dao/dbManagers/chatManager.js';
 import cookieParser from 'cookie-parser';
 import handlebars from "express-handlebars";
-import mongoose from "mongoose";
 import initializePassport from './config/passport.config.js';
 import passport from 'passport';
 import { addLogger } from './utils/logger.js';

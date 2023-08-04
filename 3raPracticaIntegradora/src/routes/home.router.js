@@ -4,8 +4,6 @@ import { iniHome } from "../controllers/home.controller.js";
 
 const router = Router();
 
-// RENDERIZO HBS
-router.route('/')
-    .get(passportCall('jwt'), iniHome);
+router.get('/', passportCall('jwt'), iniHome);
 
 export default router;

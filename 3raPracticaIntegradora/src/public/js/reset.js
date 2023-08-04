@@ -1,11 +1,5 @@
 let nIntervId;
 
-function delayNavigateOk() {
-    if (!nIntervId) {
-        nIntervId = setInterval(navigateOk, 2000);
-    };
-};
-
 // Botón para ir al HOME
 const goHome = document.getElementById('goHome')
 if(goHome) {
@@ -15,17 +9,31 @@ if(goHome) {
     });
 };
 
+function delayNavigateOk() {
+    if (!nIntervId) {
+        nIntervId = setInterval(navigateOk, 2000);
+    };
+};
+
 function navigateOk() {
     window.location.replace('/');
 };
 
-const form = document.getElementById('loginForm');
+const form = document.getElementById('resetForm');
 
+if (form) {
 form.addEventListener('submit', e => {
     e.preventDefault();
     const data = new FormData(form);
     const obj = {};
     data.forEach((value, key) => obj[key] = value);
+    console.log(obj);
+    Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Enviando correo...',
+        showConfirmButton: true,
+      })
     fetch('/api/sessions/password-link', {
         method: 'POST',
         body: JSON.stringify(obj),
@@ -38,25 +46,16 @@ form.addEventListener('submit', e => {
             Swal.fire({
                 position: 'top-end',
                 icon: 'success',
-                title: 'Bienvenid@',
+                title: 'Se envio un email de reset!',
                 showConfirmButton: true,
               })
-
             delayNavigateOk();
-            //window.location.replace('/');
         }else{
             if (result.status === 400) {
                 Swal.fire({
                     position: 'top-end',
                     icon: 'error',
                     title: 'El usuario no existe, por favor registrese',
-                    showConfirmButton: true,
-                })
-            }else if (result.status === 401) {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'error',
-                    title: 'La contraseña es incorrecta, vuelva a intentarlo',
                     showConfirmButton: true,
                 })
             }else{
@@ -70,3 +69,4 @@ form.addEventListener('submit', e => {
         }
     });
 });
+};

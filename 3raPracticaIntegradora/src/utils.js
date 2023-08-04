@@ -8,8 +8,6 @@ import { responseMessages } from './helpers/proyect.helpers.js';
 import nodemailer from 'nodemailer';
 import config from "./config/config.js";
 
-import { log } from 'console';
-
 const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
 const isValidPassword = (user, password) => bcrypt.compareSync(password, user.password);
@@ -33,6 +31,22 @@ const authToken = (req, res, next) => {
     })
 }
 
+const authTokenResetPass = (req, res, next) => {
+    const authToken = String(req.query.token);
+    console.log("authToken:", authToken);
+    
+    if(!authToken) return res.status(401).send({error: responseMessages.not_authenticated});
+    
+    const token = authToken.split(' ')[1];
+    console.log("token:", token);
+    jwt.verify(token, PRIVATE_KEY, (error, credentials) => {
+        if (error) return res.status(403).send({error: responseMessages.not_authorized});
+        req.user = credentials.user;
+        next();
+    })
+};
+
+
 const passportCall = (strategy) => {
     return async (req, res, next) => {
         passport.authenticate(strategy, function(err, user, info) {
@@ -44,14 +58,14 @@ const passportCall = (strategy) => {
             next();
         })(req, res, next)
     }
-}
+};
 
 const authorization = (role) => {
     return async (req, res, next) => {
         if(req.user.role != role) return res.status(403).send({error: responseMessages.not_permissions});
         next();
     }
-}
+};
 
 const generateProduct = () => {
     return {
@@ -93,5 +107,6 @@ export {
     authorization,
     generateProduct,
     generateTokenResetPass,
-    transporter
+    transporter,
+    authTokenResetPass
 };

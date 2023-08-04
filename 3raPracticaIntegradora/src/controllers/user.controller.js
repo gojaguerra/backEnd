@@ -1,8 +1,11 @@
 import { getUser as getUserService, addUser as addUserService } from '../services/user.services.js';
-import { generateToken, createHash, isValidPassword } from '../utils.js';
+import { generateToken, generateTokenResetPass, createHash, isValidPassword } from '../utils.js';
 import { PRIVATE_COOKIE } from '../helpers/proyect.constants.js';
 import UsersDto from '../dao/DTOs/users.dto.js';
 import { postCart } from '../services/carts.services.js';
+import { resetPassNotification } from '../utils/custom-html.js';
+import { sendEmail } from '../services/mail.js';
+import { responseMessages } from '../helpers/proyect.helpers.js';
 
 const registerUser = async (req, res) => {
     try {
@@ -123,8 +126,38 @@ const currentUser = (req, res) => {
     res.send({ status: 'success', payload: user });
 };
 
-const resetPass = (req, res) => {
-    
+const passLink = async (req, res) => {
+    try {
+        const { email } = req.body;
+        req.logger.warning(`email = ` + email); 
+        const user = await getUserService({ email });
+
+        if (!user) {
+            req.logger.warning(`loginUser = ` + responseMessages.incorrect_user); 
+            return res.status(400).send({ status: 'error', error: responseMessages.incorrect_user });
+        }
+
+        const accessToken = generateTokenResetPass(user);
+
+        const link = `http://localhost:8080/api/sessions/linkPassword?token=${accessToken}`
+        const mail = {
+            to: user.email,
+            subject: 'Reseteo de Contraseña',
+            html: resetPassNotification(link)
+        }
+        console.log(mail);
+        await sendEmail(mail);
+
+        res.send({ status: 'success', message: 'link OK', access_token: accessToken });
+    } catch (error) {
+        req.logger.error(`loginUser = ` + error.message);
+        res.status(500).send({ status: 'error', error });
+    }
+
+};
+
+const linkPass =(req, res) => {
+    res.render('linkPassword.handlebars');
 };
 
 export { 
@@ -134,5 +167,6 @@ export {
     gitUser, 
     gitCallbackUser, 
     currentUser,
-    resetPass
+    passLink,
+    linkPass
 }

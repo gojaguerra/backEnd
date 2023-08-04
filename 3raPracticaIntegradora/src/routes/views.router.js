@@ -4,19 +4,14 @@ import { iniRaiz, loginRaiz, profileRaiz, regRaiz, resetRaiz } from '../controll
 
 const router = Router();
 
-router.route('/register')
-    .get(regRaiz);
+router.get('/register', regRaiz);
 
-router.route('/login')
-    .get(loginRaiz);
+router.get('/login', loginRaiz);
 
-router.route('/resetPassword')
-    .get(resetRaiz);
+router.get('/resetPassword', resetRaiz);
 
-router.route('/')
-    .get(passportCall('jwt'), iniRaiz);
+router.get('/', passportCall('jwt'), iniRaiz);
 
-router.route('/profile')
-    .get(passportCall('jwt'), profileRaiz);
-    
+router.get('/profile', passportCall('jwt'), profileRaiz);
+
 export default router;

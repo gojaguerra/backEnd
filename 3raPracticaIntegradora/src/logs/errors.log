@@ -9,3 +9,6 @@
 {"level":"error","message":"Error registerUser: Faltan completar campos!"}
 {"level":"error","message":"loginUser = Incorrect credentials"}
 {"level":"error","message":"loginUser = Incorrect password"}
+{"level":"error","message":"loginUser = responseMessages is not defined"}
+{"level":"error","message":"loginUser = responseMessages is not defined"}
+{"level":"error","message":"loginUser = Incorrect password"}
