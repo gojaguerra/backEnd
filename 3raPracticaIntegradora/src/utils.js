@@ -20,7 +20,7 @@ const generateToken = (user) => {
 const authToken = (req, res, next) => {
     const authToken = req.headers.authorization;
     
-    if(!authToken) return res.status(401).send({error: responseMessages.not_authenticated});
+    if (!authToken) return res.status(401).send({error: responseMessages.not_authenticated});
 
     const token = authToken.split(' ')[1];
 
@@ -32,16 +32,16 @@ const authToken = (req, res, next) => {
 }
 
 const authTokenResetPass = (req, res, next) => {
-    const authToken = String(req.query.token);
-    console.log("authToken:", authToken);
+    const authToken = req.query.token;
+    console.log(authToken);
+    if (!authToken) return res.status(401).send({error: responseMessages.not_authenticated});
     
-    if(!authToken) return res.status(401).send({error: responseMessages.not_authenticated});
-    
-    const token = authToken.split(' ')[1];
-    console.log("token:", token);
-    jwt.verify(token, PRIVATE_KEY, (error, credentials) => {
+    //const token = authToken.split(' ')[1];
+
+    jwt.verify(authToken, PRIVATE_KEY, (error, credentials) => {
         if (error) return res.status(403).send({error: responseMessages.not_authorized});
         req.user = credentials.user;
+       /*  console.log("req:", req.user); */
         next();
     })
 };
@@ -51,7 +51,7 @@ const passportCall = (strategy) => {
     return async (req, res, next) => {
         passport.authenticate(strategy, function(err, user, info) {
             if (err) return next(err);
-            if(!user) {
+            if (!user) {
                 return res.redirect('/login')
             }
             req.user = user;

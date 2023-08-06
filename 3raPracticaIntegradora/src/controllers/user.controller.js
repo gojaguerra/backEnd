@@ -157,7 +157,29 @@ const passLink = async (req, res) => {
 };
 
 const linkPass =(req, res) => {
+    /* console.log("email:", req.user.email);
+    console.log("password:",req.user.password); */
     res.render('linkPassword.handlebars');
+};
+
+const changePassword = async (req, res) =>{
+    try {
+        const { password } = req.body;
+
+        let email = String(req.params.email);
+        console.log("email", email);
+        const user = await getUserService({ email });
+
+        if (isValidPassword(user, password)) {
+            req.logger.warning(`loginUser = ` + responseMessages.invalid_password); 
+            return res.status(401).send({ status: 'error', error: responseMessages.invalid_password })
+        } else {
+            return res.status(200).send({ status: 'OK', payload: 'OK PASS' })
+        }
+
+    } catch(error) {
+
+    }
 };
 
 export { 
@@ -168,5 +190,6 @@ export {
     gitCallbackUser, 
     currentUser,
     passLink,
-    linkPass
+    linkPass,
+    changePassword
 }
