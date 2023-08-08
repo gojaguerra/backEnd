@@ -7,6 +7,7 @@ import { PRIVATE_KEY } from './helpers/proyect.constants.js';
 import { responseMessages } from './helpers/proyect.helpers.js';
 import nodemailer from 'nodemailer';
 import config from "./config/config.js";
+import { log } from 'console';
 
 const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
@@ -67,6 +68,20 @@ const authorization = (role) => {
     }
 };
 
+const authorizationRole = (role) => {
+    return async (req, res, next) => {
+        let roleOk=false;
+        const userRole=req.user.role;
+        role.forEach(element => {
+            if (userRole===element){
+                roleOk=true;
+            };
+        });
+        if(!roleOk) return res.status(403).send({error: responseMessages.not_permissions});
+        next();
+    }
+};
+
 const generateProduct = () => {
     return {
         id: faker.database.mongodbObjectId(),
@@ -108,5 +123,6 @@ export {
     generateProduct,
     generateTokenResetPass,
     transporter,
-    authTokenResetPass
+    authTokenResetPass,
+    authorizationRole
 };
