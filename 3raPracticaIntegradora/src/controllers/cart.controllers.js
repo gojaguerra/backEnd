@@ -58,6 +58,7 @@ const putCartById = async(req, res) => {
     //Leo el ID del carrito y producto por parametros 
     const cartId = String(req.params.cid);
     const { productId, quantity } = req.body;
+    
     //MongoDB
     // Primero Valido que exista el carrito 
     try {
@@ -111,6 +112,7 @@ const putProductInCart = async(req, res) => {
     const cartId = String(req.params.cid);
     const productId = String(req.params.pid);
     const { quantity } = req.body;
+    
     //MongoDB
     // Primero Valido que exista el carrito 
     try {
@@ -124,7 +126,14 @@ const putProductInCart = async(req, res) => {
     // Segundo Valido que exista el producto
     try {
         // OBTENGO el producto QUE HAY EN la Base
-        await getProductByIdService(productId);
+        const product = await getProductByIdService(productId);
+        
+        // verifico si es role premium no puede cargar sus propios productos
+        if (req.user.role==="premium" && product[0].owner===req.user.email) {
+            req.logger.error(`putProductInCart = El Producto con ID ${productId} NO puede agregarse!`);
+            const response = { status: "Error", payload: `El Producto con ID ${productId} NO puede agregarse!` };
+            return res.status(405).json(response);
+        }
     } catch (error) {
         req.logger.error(`putProductInCart = El Producto con ID ${productId} NO existe!`);
         const response = { status: "Error", payload: `El Producto con ID ${productId} NO existe!` };

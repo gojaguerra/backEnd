@@ -124,12 +124,19 @@ function procesoId(comp){
                             icon: 'success'
                         })
                     }else{
+                        if (result.status === 405) {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'User PREMIUM no puede agregar al Carrito productos propios!',
+                            })
+                        }else{
                         Swal.fire({
                             position: 'top-end',
                             icon: 'error',
                             title: 'Hubo un error al registrar el producto, intente luego',
                             showConfirmButton: true,
-                        })
+                        })}
                     }
                 })
             }

@@ -22,7 +22,6 @@ router.get('/github-callback', passportCall('github', { failureRedirect: '/login
 
 router.get('/current', passportCall('jwt'), currentUser);
 
-/* router.post('/premium/:uid', passportCall('jwt'), changeRol); */
 router.post('/premium/:uid', changeRol);
 
 export default router;
