@@ -132,7 +132,7 @@ const deleteProductById = async(req,res)=>{
         
         // obtengo el producto para verificar el owner
         const productById = await getProductByIdService(id)
-        
+        // si es premium solo puede borrar sus productos
         if (role==="premium" && productById[0].owner!==email){
             
             req.logger.error(`Error deleteProductById: NO tiene permiso para eliminar este producto!`);

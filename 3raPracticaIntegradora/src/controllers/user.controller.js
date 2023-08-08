@@ -199,9 +199,25 @@ const changePassword = async (req, res) =>{
     }
 };
 
-const changeRol = (req, res) => {
-    const user = new UsersDto(req.user);
-    res.send({ status: 'success', payload: user });
+const changeRol = async (req, res) => {
+    const uid = String(req.params.uid);
+    const { role } = req.body;
+    const result = await updateUserService(uid, { "role": role });
+
+    try { 
+        //Valido que se realizo el UPDATE
+         if (result.acknowledged & result.modifiedCount!==0) {
+            const response = { status: "Success", payload: `El rol fue cambiado con exito!`};       
+        //muestro resultado y elimino la cookie
+            res.status(200).json(response);
+        } else {
+        req.logger.error(`putPass = Error no se pudo actualizar el rol, verifique los datos ingresados`);
+        //muestro resultado error
+        res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo actualizar el rol, verifique los datos ingresados"});
+        };   
+    } catch(error) {
+        res.status(500).send({ status: 'error', error });
+    }
 };
 
 export { 
