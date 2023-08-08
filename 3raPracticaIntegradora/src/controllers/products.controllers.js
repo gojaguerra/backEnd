@@ -126,8 +126,20 @@ const putProductById = async(req,res) =>{
 
 const deleteProductById = async(req,res)=>{
     const id = String(req.params.pid);
-
+    const email=req.user.email.trim();
+    const role=req.user.role;
     try {
+        
+        // obtengo el producto para verificar el owner
+        const productById = await getProductByIdService(id)
+        
+        if (role==="premium" && productById[0].owner!==email){
+            
+            req.logger.error(`Error deleteProductById: NO tiene permiso para eliminar este producto!`);
+            const response = { status: "NOT PERMISION", payload: `NO tiene permiso para eliminar este producto!`}; 
+            return res.status(403).json(response);
+        };
+
         const result = await deleteProductByIdService(id);
 
         //Valido el resultado de la búsqueda y renderizo con el socket
