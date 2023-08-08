@@ -1,6 +1,4 @@
 import { userModel } from "../models/users.Model.js";
-// import { postRegister, postLogin, getLogout, getPassportCall } from '../controllers/sessions.controller.js'
-// import { generateToken, passportCall, createHash, isValidPassword } from '../../utils.js';
 
 export default class UserManager {
 
@@ -17,4 +15,10 @@ export default class UserManager {
         const user = await userModel.findOne( email );
         return user;
     }
+
+    updateUser = async (id, user) => {
+        const result = await userModel.updateOne({_id: id}, { $set: user });
+        return result;
+    };
+
 };

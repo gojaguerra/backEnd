@@ -1,17 +1,19 @@
 import { Router } from 'express';
 import { passportCall } from '../utils.js';
-import { iniRaiz, loginRaiz, profileRaiz, regRaiz, resetRaiz } from '../controllers/viewsRouter.controller.js';
+import { homeRoot, loginRoot, profileRoot, registerRoot, resetRoot, resetRootError } from '../controllers/viewsRouter.controller.js';
 
 const router = Router();
 
-router.get('/register', regRaiz);
+router.get('/register', registerRoot);
 
-router.get('/login', loginRaiz);
+router.get('/login', loginRoot);
 
-router.get('/resetPassword', resetRaiz);
+router.get('/resetPassword', resetRoot);
 
-router.get('/', passportCall('jwt'), iniRaiz);
+router.get('/resetPasswordError', resetRootError);  
 
-router.get('/profile', passportCall('jwt'), profileRaiz);
+router.get('/', passportCall('jwt'), homeRoot);
+
+router.get('/profile', passportCall('jwt'), profileRoot);
 
 export default router;

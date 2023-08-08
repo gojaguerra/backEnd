@@ -78,35 +78,24 @@ if (formPass) {
         const data = new FormData(formPass);
         const obj = {};
         data.forEach((value, key) => obj[key] = value);
-        console.log("obj:" ,obj);
-        /* console.log("obj:" ,obj);
-        const prueba = await fetch('/api/sessions/current', {
-            method: 'GET'
-        });
-        const user = await prueba.json();
-        const email =user.payload.email; */
-        const email="gojaguerra@gmail.com";
-        
-        const link = '/api/sessions/password-change/'+email
         Swal.fire({
             position: 'center',
             title: 'Cambiando contraseña ..',
             showConfirmButton: false,
           })
-        fetch(link, {
+        fetch('/api/sessions/password-change/', {
             method: 'POST',
             body: JSON.stringify(obj),
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
-        }).then(result => {
-            console.log(result.status);
+        }).then(result => {     
             if (result.status === 200) {
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
-                    title: 'La contraseña fue cambiada con exito',
+                    title: 'La contraseña fue cambiada con exito!',
                     showConfirmButton: true,
                   })
     
@@ -117,18 +106,18 @@ if (formPass) {
                     Swal.fire({
                         position: 'top-end',
                         icon: 'error',
-                        title: 'La contraseña debe ser distinta a la actual.',
+                        title: 'La contraseña debe ser distinta a la actual!',
                         showConfirmButton: true,
                     })
                 }else{
                     Swal.fire({
                         position: 'top-end',
                         icon: 'error',
-                        title: 'Hay datos incompletos, vuelva a intentarlo',
+                        title: 'No se pudo actualizar la contraseña!',
                         showConfirmButton: true,
                     })                
                 }    
             }
         });
     });
-}
+};

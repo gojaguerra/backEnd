@@ -1,31 +1,36 @@
-const iniRaiz =  (req, res) => {
+const homeRoot =  (req, res) => {
     res.render('home.handlebars', {
         user: req.user
     });
 };
 
-const regRaiz = (req, res) => {
+const registerRoot = (req, res) => {
     res.render('register.handlebars');
 };
 
-const loginRaiz =(req, res) => {
+const loginRoot =(req, res) => {
     res.render('login.handlebars');
 };
 
-const resetRaiz =(req, res) => {
+const resetRoot =(req, res) => {
     res.render('resetPassword.handlebars');
 };
 
-const profileRaiz =(req, res) => {
+const resetRootError =(req, res) => {
+    res.render('resetPasswordError.handlebars');
+};
+
+const profileRoot =(req, res) => {
     res.render('profile.handlebars', {
         user: req.user,
     });
 };
 
 export {
-    iniRaiz,
-    regRaiz,
-    loginRaiz,
-    profileRaiz,
-    resetRaiz
+    homeRoot,
+    registerRoot,
+    loginRoot,
+    profileRoot,
+    resetRoot,
+    resetRootError
 }

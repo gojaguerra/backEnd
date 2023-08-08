@@ -1,4 +1,4 @@
-import { getUser as getUserService, addUser as addUserService } from '../services/user.services.js';
+import { getUser as getUserService, addUser as addUserService, updateUser as updateUserService } from '../services/user.services.js';
 import { generateToken, generateTokenResetPass, createHash, isValidPassword } from '../utils.js';
 import { PRIVATE_COOKIE } from '../helpers/proyect.constants.js';
 import UsersDto from '../dao/DTOs/users.dto.js';
@@ -156,30 +156,52 @@ const passLink = async (req, res) => {
 
 };
 
-const linkPass =(req, res) => {
-    /* console.log("email:", req.user.email);
-    console.log("password:",req.user.password); */
+const linkPass = (req, res) => {
+    
+    const accessToken = req.query.token;
+
+    res.cookie(
+        PRIVATE_COOKIE, accessToken, { maxAge: 60 * 60 * 1000, httpOnly: true }
+    );
+
     res.render('linkPassword.handlebars');
+
 };
 
 const changePassword = async (req, res) =>{
     try {
         const { password } = req.body;
-
-        let email = String(req.params.email);
-        console.log("email", email);
+        const email = req.user.email;
         const user = await getUserService({ email });
 
         if (isValidPassword(user, password)) {
-            req.logger.warning(`loginUser = ` + responseMessages.invalid_password); 
+            req.logger.warning(`User = ` + responseMessages.invalid_password); 
             return res.status(401).send({ status: 'error', error: responseMessages.invalid_password })
         } else {
-            return res.status(200).send({ status: 'OK', payload: 'OK PASS' })
+            const id = String(user._id)
+            const newPass =  createHash(password)
+            const result = await updateUserService(id, { "password": newPass });
+            
+            //Valido que se realizo el UPDATE
+            if (result.acknowledged & result.modifiedCount!==0) {
+                const response = { status: "Success", payload: `La contraseña fue cambiada con exito!`};       
+                //muestro resultado y elimino la cookie
+                res.clearCookie(PRIVATE_COOKIE);
+                res.status(200).json(response);
+            } else {
+                req.logger.error(`putPass = Error no se pudo actualizar el producto, verifique los datos ingresados`);
+                //muestro resultado error
+                res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo actualizar el producto, verifique los datos ingresados"});
+            };   
         }
-
     } catch(error) {
-
+        res.status(500).send({ status: 'error', error });
     }
+};
+
+const changeRol = (req, res) => {
+    const user = new UsersDto(req.user);
+    res.send({ status: 'success', payload: user });
 };
 
 export { 
@@ -191,5 +213,6 @@ export {
     currentUser,
     passLink,
     linkPass,
-    changePassword
+    changePassword,
+    changeRol
 }

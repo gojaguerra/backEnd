@@ -60,12 +60,17 @@ const getProductById =  async(req, res) => {
 
 const postProduct = async(req, res) => {
     const product = req.body;
+    
     if (!product.status){
         product.status = true
     };
     if(!product.title || !product.description || !product.code || !product.price || !product.stock || !product.category){
         req.logger.error(`postProduct = Faltan completar campos!`);
         return res.status(400).send({ status: 'error', error: 'Faltan completar campos!' })
+    };
+    
+    if (!product.owner){
+        product.owner=req.user.email;
     };
 
     try {
