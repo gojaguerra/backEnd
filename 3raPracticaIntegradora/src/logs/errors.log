@@ -55,3 +55,5 @@
 {"level":"error","message":"putProductInCart = El Producto con ID 64d266d3f32eb1bad82ce232 NO puede agregarse!"}
 {"level":"error","message":"putProductInCart = El Producto con ID 64d266d3f32eb1bad82ce232 NO puede agregarse!"}
 {"level":"error","message":"putProductInCart = El Producto con ID 64d266d3f32eb1bad82ce232 NO puede agregarse!"}
+{"level":"error","message":"getCartById = El carrito con ID imagen NO existe!"}
+{"level":"error","message":"getCartById = El carrito con ID imagen NO existe!"}

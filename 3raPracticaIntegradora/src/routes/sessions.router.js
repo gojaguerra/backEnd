@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { registerUser, loginUser, logoutUser, gitUser, gitCallbackUser, currentUser, passLink, linkPass, changePassword, changeRol } from '../controllers/user.controller.js';
-import { authTokenResetPass, passportCall } from '../utils.js';
+import { authTokenResetPass, passportCall } from '../utils/utils.js';
 
 const router = Router();
 

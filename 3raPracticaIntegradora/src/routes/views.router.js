@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { passportCall } from '../utils.js';
+import { passportCall } from '../utils/utils.js';
 import { homeRoot, loginRoot, profileRoot, registerRoot, resetRoot, resetRootError } from '../controllers/viewsRouter.controller.js';
 
 const router = Router();

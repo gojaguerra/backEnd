@@ -1,6 +1,6 @@
 import express from 'express';
 import { Server } from 'socket.io';
-import { __dirname } from "./utils.js";
+import { __dirname } from "./utils/utils.js";
 import homeRouter from "./routes/home.router.js";
 import cartsRouter from "./routes/cart.router.js";
 import productRouter from "./routes/products.router.js";

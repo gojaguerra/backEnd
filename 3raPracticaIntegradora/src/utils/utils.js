@@ -3,10 +3,10 @@ import { fileURLToPath } from 'url';
 import passport from 'passport';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { PRIVATE_KEY } from './helpers/proyect.constants.js';
-import { responseMessages } from './helpers/proyect.helpers.js';
+import { PRIVATE_KEY } from '../helpers/proyect.constants.js';
+import { responseMessages } from '../helpers/proyect.helpers.js';
 import nodemailer from 'nodemailer';
-import config from "./config/config.js";
+import config from "../config/config.js";
 import { log } from 'console';
 
 const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(10));
@@ -120,7 +120,8 @@ const transporter = nodemailer.createTransport({
 })
 
 const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const dirname = path.dirname(__filename)
+const __dirname = path.join(dirname, '..')
 
 export {
     __dirname,

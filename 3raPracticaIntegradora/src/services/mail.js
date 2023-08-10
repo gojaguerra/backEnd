@@ -1,5 +1,5 @@
 import { responseMessages } from "../helpers/proyect.helpers.js";
-import { transporter } from "../utils.js";
+import { transporter } from "../utils/utils.js";
 
 export const sendEmail = async(email) => {
     await transporter.sendMail({
