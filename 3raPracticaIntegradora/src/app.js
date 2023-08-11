@@ -32,7 +32,7 @@ const swaggerOptions = {
     definition: {
         openapi: '3.0.1',
         info: {
-            title: 'Documentación del proyecto Comision 39760',
+            title: 'Documentación del proyecto Comision 39760 - Jose Guerra',
             description: 'API demo para comisión 39760 CoderHouse'
         }
     },
