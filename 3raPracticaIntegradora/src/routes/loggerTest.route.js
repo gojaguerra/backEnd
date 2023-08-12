@@ -2,9 +2,7 @@ import { Router } from 'express';
 
 const router = Router();
 
-router.route('/')
-    .get((req, res) => {
-        //default levels
+router.get('/',(req, res) => {
         req.logger.fatal('Prueba fatal');
         req.logger.error('Prueba error');
         req.logger.warning('Prueba warning');

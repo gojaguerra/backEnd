@@ -8,12 +8,6 @@ router.get("/", getProducts);
 
 router.get('/:pid', getProductById);
 
-/* router.post('/', passportCall('jwt'), authorization('admin'), postProduct);
-
-router.put('/:pid', passportCall('jwt'), authorization('admin'), putProductById);
-
-router.delete('/:pid', passportCall('jwt'), authorization('admin'), deleteProductById); */
-
 router.post('/', passportCall('jwt'), authorizationRole(['admin','premium']), postProduct);
 
 router.put('/:pid', passportCall('jwt'), authorizationRole(['admin','premium']), putProductById);

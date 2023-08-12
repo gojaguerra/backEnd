@@ -7,7 +7,6 @@ const persistence = config.persistence;
 
 switch(persistence) {
     case 'MONGO':
-        // console.log('Trabajando con BDD');
         const mongoose = await import("mongoose");
         await mongoose.connect(config.mongoUrl);
         const { default: CartsMongo } = await import('./dbManagers/cartManager.js');
@@ -18,7 +17,6 @@ switch(persistence) {
         Users = UsersMongo;
         break;
     case 'FILES':
-        // console.log('Trabajando con FS');
         const { default: CartsFiles } = await import('./managers/cartManager.js');
         const { default: ProductsFiles } = await import('./managers/productManager.js');
         Carts = CartsFiles;

@@ -113,7 +113,6 @@ export default class productManager {
             
             // Valido que exista 
             if (codeIndex===-1) {
-                /* console.log(`El producto con ID ${id} NO existe!`); */
                 return -1;
             } 
             

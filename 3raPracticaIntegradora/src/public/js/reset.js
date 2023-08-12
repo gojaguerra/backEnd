@@ -26,7 +26,6 @@ form.addEventListener('submit', e => {
     const data = new FormData(form);
     const obj = {};
     data.forEach((value, key) => obj[key] = value);
-    /* console.log(obj); */
     Swal.fire({
         position: 'top-end',
         icon: 'success',
@@ -70,7 +69,6 @@ form.addEventListener('submit', e => {
 });
 };
 
-/* const resetPassword = (props) => { */
 const formPass = document.getElementById('setPassForm');
 if (formPass) {
     formPass.addEventListener('submit', async (e) => {

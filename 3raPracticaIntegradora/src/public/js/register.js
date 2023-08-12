@@ -34,7 +34,6 @@ form.addEventListener('submit', e => {
             'Content-Type': 'application/json'
         }
     }).then(result => {
-        // console.log(result.status);
         if (result.status === 200) {
             Swal.fire({
                 position: 'top-end',
@@ -62,9 +61,6 @@ form.addEventListener('submit', e => {
                     timer: 5000
                 })
             }
-            //delayNavigateRegister();
-            //window.location.replace('/register');
         }
-
     });
 });

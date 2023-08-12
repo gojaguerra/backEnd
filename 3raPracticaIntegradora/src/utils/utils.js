@@ -7,7 +7,7 @@ import { PRIVATE_KEY } from '../helpers/proyect.constants.js';
 import { responseMessages } from '../helpers/proyect.helpers.js';
 import nodemailer from 'nodemailer';
 import config from "../config/config.js";
-import { log } from 'console';
+// import { log } from 'console';
 
 const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
@@ -34,7 +34,6 @@ const authToken = (req, res, next) => {
 
 /* const authTokenResetPass = (req, res, next) => {
     const authToken = req.query.token;
-    console.log(authToken);
     if (!authToken) return res.status(401).send({error: responseMessages.not_authenticated});
     
     jwt.verify(authToken, PRIVATE_KEY, (error, credentials) => {
@@ -46,16 +45,12 @@ const authToken = (req, res, next) => {
 
 const authTokenResetPass = (req, res, next) => {
     const authToken = req.query.token
-    console.log(authToken);
     if(!authToken) return res.redirect('/resetPasswordError');
-    //res.status(401).send({error: responseMessages.not_authenticated});
-
     jwt.verify(authToken, PRIVATE_KEY, (error, credentials) => {
-        if (error) return res.redirect('/resetPasswordError');
-        //res.status(403).send({error: responseMessages.not_authorized});
+    if (error) return res.redirect('/resetPasswordError');
         req.user = credentials.user;
         next();
-    })
+    });
 };
 
 const passportCall = (strategy) => {

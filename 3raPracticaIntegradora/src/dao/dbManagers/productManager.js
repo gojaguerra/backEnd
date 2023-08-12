@@ -9,13 +9,12 @@ export default class ProductManager {
     getProducts = async (limit, page, query, sort) => {
         let querys = {}
         if (query) { querys = query };
-        //armo una variable con los parámetros del paginate
-        let options = {
-            limit: limit,
-            page: page,
-            query: query,
-            sort: sort,
-            lean: true
+            let options = {
+                limit: limit,
+                page: page,
+                query: query,
+                sort: sort,
+                lean: true
         };
         // Si no hay limite no hago el paginate
         if (!limit) options = { pagination: false };

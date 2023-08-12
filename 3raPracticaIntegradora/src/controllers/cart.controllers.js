@@ -15,7 +15,6 @@ import {
 
 
 // AGREGO UN CARRITO NUEVO
-// router.post('/', async(req, res) => {
 const postCart = async(req, res) => {
     
     // Inicializo el carrito sin productos
@@ -34,13 +33,11 @@ const postCart = async(req, res) => {
 };
 
 // OBTENER SI EXISTE UN CARRITO PASANDO EL ID
-// router.get('/:cid', async(req, res) => {
 const getCartById = async(req, res) => {
     const cartId = String(req.params.cid);
     try {
         const cart = await getCartByIdService(cartId);
         const response ={ status: "Success", payload: cart};
-        //muestro resultado
         // VISTA DEL CARRITO
         cart[0].isValid= cart[0].products.length > 0
         // res.status(200).json(response);
@@ -53,14 +50,13 @@ const getCartById = async(req, res) => {
 };
 
 // AGREGO/ACTUALIZO PRODUCTO EN EL CARRITO
-// router.put('/:cid', async(req, res) => {
 const putCartById = async(req, res) => {
     //Leo el ID del carrito y producto por parametros 
     const cartId = String(req.params.cid);
     const { productId, quantity } = req.body;
     
     //MongoDB
-    // Primero Valido que exista el carrito 
+    // Valido que exista el carrito 
     try {
         // OBTENGO el carrito QUE HAY EN la BASE
         await getCartByIdService(cartId);
@@ -69,19 +65,19 @@ const putCartById = async(req, res) => {
         const response = { status: "Error", payload: `El carrito con ID ${cartId} NO existe!` };
         return res.status(404).json(response);
     }
-    // Segundo Valido que exista el producto
+    // Valido que exista el producto
     try {
         // OBTENGO el producto QUE HAY EN la Base
         await getProductByIdService(productId);
     } catch (error) {
         req.logger.error(`putCartById = El Producto con ID ${productId} NO existe!`);
         const response = { status: "Error", payload: `El Producto con ID ${productId} NO existe!` };
-        return res.status(404).json(response);
+        return res.status(401).json(response);
     }
+
     // Una vez validado llamar al metodo addProductInCart
     try {
         const result = await putCartByIdService(cartId, productId, quantity);
-        // console.log("router: " + JSON.stringify(result, null, '\t'));
         if(result.acknowledged) {
             res.status(200).send({ status: 'success', payload: 'Se agrego correctamente el producto al carrito' })
         };
@@ -106,7 +102,6 @@ const deleteAllProductsInCart = async(req, res) => {
 };
 
 // AGREGO/ACTUALIZO PRODUCTO EN EL CARRITO
-// router.put('/:cid/product/:pid', async(req, res) => {
 const putProductInCart = async(req, res) => {
     //Leo el ID del carrito y producto por parametros 
     const cartId = String(req.params.cid);
@@ -142,7 +137,6 @@ const putProductInCart = async(req, res) => {
     // Una vez validado llamar al metodo addProductInCart
     try {
         const result = await putProductInCartService(cartId, productId, quantity);
-        // console.log("router: " + JSON.stringify(result, null, '\t'));
         if(result.acknowledged) {
             res.status(200).send({ status: 'success', payload: 'Se actualizo correctamente el producto al carrito' })
         };
@@ -153,7 +147,6 @@ const putProductInCart = async(req, res) => {
 };
 
 // BORRA TODOS LOS PRODUCTOS DEL CARRO
-// router.delete('/:cid', async(req, res) => {
 const deleteCart = async(req, res) => {
     const cartId = String(req.params.cid);
     try {
@@ -169,7 +162,6 @@ const deleteCart = async(req, res) => {
 };
 
 // BORRA UN PRODUCTO DEL CARRO
-// router.delete('/:cid/product/:pid', async(req, res) => {
 const deleteProductInCart = async(req, res) => {
     const cartId = String(req.params.cid);
     const productId = String(req.params.pid);
@@ -188,9 +180,8 @@ const deleteProductInCart = async(req, res) => {
 const postPurchase = async(req, res) => {
     //Leo el ID del carrito y producto por parametros 
     const cartId = String(req.params.cid);
-    // const userMail = req.user.email;
     const userMail = "gojaguerra@gmail.com";
-    // Primero Valido que exista el carrito 
+    //  Valido que exista el carrito 
     try {
         const newCart = [];
         const noCart = [];

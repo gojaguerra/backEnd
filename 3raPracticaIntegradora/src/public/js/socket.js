@@ -2,8 +2,6 @@
 const socket = io();
 
 const container = document.getElementById('container');
-/* const butAdd = document.getElementById('butAdd'); */
-
 
 //Socket
 socket.on('showProducts', data => {
@@ -16,6 +14,7 @@ socket.on('showProducts', data => {
                 <h5 class="card-title">${prod.title}</h5>
                 <p class="card-text">Descripción:  ${prod.description}</p>
                 <p class="card-text">Precio:$ ${prod.price}</p>
+                <p class="card-text">Owner: ${prod.owner}</p>
             </div>
             <button type="button" class="btn btncaja btn-warning" 
             id="${prod._id}" onclick="procesDelId(id)">

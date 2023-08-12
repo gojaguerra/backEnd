@@ -36,8 +36,6 @@ const deleteProductInCart = async (cartId,productId) => {
 };
 
 const postPurchase = async (cart, userMail) => {
-    //suma precio
-    console.log("1A Ingreso a service grabar ticket");
     const sum = cart.reduce((acc, prev) => {
         acc += prev.price * prev.quantity;
         return acc;

@@ -37,7 +37,7 @@ paths:
         "404":
           description: El carrito con ID {cid} NO existe!
     put:
-      summary: Agrego productos a el carrito
+      summary: Agrego productos a un carrito
       tags:
         - Carts
       parameters:
@@ -62,6 +62,8 @@ paths:
           description: El producto con ID {productId} NO existe!
         "404":
           description: El carrito con ID {productId} NO existe!
+        "405":
+          description: El Producto con ID {productId} NO puede agregarse por ser del mismo usuario PREMIUM!
         "500":
           description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BBDD
     delete:
@@ -84,7 +86,7 @@ paths:
           description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BBDD
   /api/carts/{cid}/product/{pid}:
     put:
-      summary: Agrego productos a el carrito
+      summary: Agrego productos a un carrito
       tags:
         - Carts
       parameters:
@@ -143,7 +145,7 @@ paths:
           description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BBDD
   /api/carts/{cid}/purchase:
     put:
-      summary: Proceso de finalización y creación del ticket de compra.
+      summary: Proceso de cierre del carrito y creación del ticket de compra.
       tags:
         - Carts
       parameters:

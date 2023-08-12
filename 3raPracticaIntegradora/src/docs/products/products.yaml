@@ -1,7 +1,7 @@
 paths:
   /api/products: 
     get:
-      summary: Obtener todos los productos
+      summary: Obtener todos los productos en la BBDD
       tags:
         - Products
       parameters: 
@@ -21,7 +21,7 @@ paths:
         "500":
           description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BBDD
     post:
-      summary: Crea un nuevo producto
+      summary: Crea un producto nuevo
       tags:
         - Products
       requestBody:
@@ -41,7 +41,7 @@ paths:
           description: Ya existe el producto que quiere crear!
   /api/products/{pid}:
     get:
-      summary: Obtiene un solo producto a partir de su ID
+      summary: Obtiene un solo producto a partir de su MONGO ID
       tags:
         - Products
       parameters:

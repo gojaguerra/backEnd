@@ -145,7 +145,6 @@ const passLink = async (req, res) => {
             subject: 'Reseteo de Contraseña',
             html: resetPassNotification(link)
         }
-        console.log(mail);
         await sendEmail(mail);
 
         res.send({ status: 'success', message: 'link OK', access_token: accessToken });
