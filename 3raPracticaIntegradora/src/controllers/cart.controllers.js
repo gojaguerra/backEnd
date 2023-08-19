@@ -180,7 +180,8 @@ const deleteProductInCart = async(req, res) => {
 const postPurchase = async(req, res) => {
     //Leo el ID del carrito y producto por parametros 
     const cartId = String(req.params.cid);
-    const userMail = "gojaguerra@gmail.com";
+    /* const userMail = "gojaguerra@gmail.com"; */
+    const userMail = req.user.email;
     //  Valido que exista el carrito 
     try {
         const newCart = [];

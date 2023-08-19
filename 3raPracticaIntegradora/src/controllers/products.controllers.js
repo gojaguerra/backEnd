@@ -66,7 +66,7 @@ const postProduct = async(req, res) => {
     };
     if(!product.title || !product.description || !product.code || !product.price || !product.stock || !product.category){
         req.logger.error(`postProduct = Faltan completar campos!`);
-        return res.status(400).send({ status: 'error', error: 'Faltan completar campos!' })
+        return res.status(400).send({ status: 'error', error: 'Faltan completar campos!'})
     };
     
     if (!product.owner){
@@ -83,7 +83,8 @@ const postProduct = async(req, res) => {
 
         const response = { status: "Success", payload: result};
 
-        res.send({ status: 'success', message: 'Product OK' })
+        /* res.send({ status: 'success', message: 'Product OK' }) */
+        res.send( response )
 
     } catch (error) {
         if(error.code===11000){
@@ -148,7 +149,8 @@ const deleteProductById = async(req,res)=>{
             io.emit("showProducts", await getProductsService());
             req.logger.info(`deleteProductById = El producto con ID ${id} fue eliminado!`);
             const response = { status: "Success", payload: `El producto con ID ${id} fue eliminado!`}; 
-            res.status(200).json(response);
+            /* res.status(200).json(response); */
+            res.send( response );
         } else {
             req.logger.error(`Error deleteProductById: NO existe el producto que desea eliminar!`);
             const response = { status: "NOT FOUND", payload: `NO existe el producto que desea eliminar!`}; 
