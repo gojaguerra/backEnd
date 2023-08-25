@@ -7,6 +7,7 @@ import productRouter from "./routes/products.router.js";
 import viewsProdRouter from "./routes/viewsProd.router.js";
 import viewsChatPage from "./routes/viewsChatPage.route.js"
 import sessionsRouter from './routes/sessions.router.js'
+import usersRouter from './routes/users.router.js';
 import mockingproducts from './routes/mockingproducts.route.js';
 import loggerTest from './routes/loggerTest.route.js';
 import "./dao/dbManagers/dbConfig.js"
@@ -64,6 +65,7 @@ app.set('view engine', 'handlebars');
 
 app.use('/', viewsRouter);
 app.use('/api/sessions', sessionsRouter);
+app.use('/api/users', usersRouter);
 app.use('/home', homeRouter);
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartsRouter);
