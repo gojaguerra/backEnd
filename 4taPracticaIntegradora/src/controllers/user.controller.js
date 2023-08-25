@@ -81,8 +81,7 @@ const loginUser = async (req, res) => {
 
         const accessToken = generateToken(user);
 
-        res.cookie(
-            PRIVATE_COOKIE, accessToken, { maxAge: 60 * 60 * 1000, httpOnly: true }
+        res.cookie(PRIVATE_COOKIE, accessToken, { maxAge: 60 * 60 * 1000, httpOnly: true }
         ).send({ status: 'success', message: 'Login success!' });
     } catch (error) {
         req.logger.error(`registerUser = ` + error.message);
