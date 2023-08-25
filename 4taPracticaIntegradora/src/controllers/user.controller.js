@@ -79,6 +79,11 @@ const loginUser = async (req, res) => {
             req.user.role = "admin";
         }
 
+        // ACTUALIZO ULTIMA CONEXION
+        const id = String(user._id)
+        const newDateTime =  new Date();
+        await updateUserService(id, { "last_connection": newDateTime });
+
         const accessToken = generateToken(user);
 
         res.cookie(PRIVATE_COOKIE, accessToken, { maxAge: 60 * 60 * 1000, httpOnly: true }
@@ -90,6 +95,13 @@ const loginUser = async (req, res) => {
 };
 
 const logoutUser = (req, res) => {
+   
+/*         // ACTUALIZO ULTIMA CONEXION
+        const id = String(req.user._id)
+        const newDateTime =  new Date();
+        const result = await updateUserService(id, { "last_connection": newDateTime });
+        console.log("result:",result); */
+
     res.clearCookie(PRIVATE_COOKIE);
     res.redirect('/login')
 };
