@@ -1,11 +1,13 @@
 import { getUser as getUserService, addUser as addUserService, updateUser as updateUserService } from '../services/user.services.js';
 import { generateToken, generateTokenResetPass, createHash, isValidPassword } from '../utils/utils.js';
-import { PRIVATE_COOKIE } from '../helpers/proyect.constants.js';
+import { PRIVATE_COOKIE, PRIVATE_KEY } from '../helpers/proyect.constants.js';
 import UsersDto from '../dao/DTOs/users.dto.js';
 import { postCart } from '../services/carts.services.js';
 import { resetPassNotification } from '../utils/custom-html.js';
 import { sendEmail } from '../services/mail.js';
 import { responseMessages } from '../helpers/proyect.helpers.js';
+import jwt from 'jsonwebtoken';
+
 
 const registerUser = async (req, res) => {
     try {
@@ -95,9 +97,12 @@ const loginUser = async (req, res) => {
 };
 
 const logoutUser = async (req, res) => {
-   
+    
     // ACTUALIZO ULTIMA CONEXION
-    const id = "64ade5160a5c4030e21aa515" /* String(req.user._id) */
+    const cookie = req.cookies[PRIVATE_COOKIE]
+    const user = jwt.verify(cookie, PRIVATE_KEY);
+    const id = user._id;
+    // const id = "64ade5160a5c4030e21aa515" /* String(req.user._id) */
     const newDateTime =  new Date();
     const result = await updateUserService(id, { "last_connection": newDateTime });
 
