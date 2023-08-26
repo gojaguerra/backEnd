@@ -94,13 +94,12 @@ const loginUser = async (req, res) => {
     }
 };
 
-const logoutUser = (req, res) => {
+const logoutUser = async (req, res) => {
    
-/*         // ACTUALIZO ULTIMA CONEXION
-        const id = String(req.user._id)
-        const newDateTime =  new Date();
-        const result = await updateUserService(id, { "last_connection": newDateTime });
-        console.log("result:",result); */
+    // ACTUALIZO ULTIMA CONEXION
+    const id = "64ade5160a5c4030e21aa515" /* String(req.user._id) */
+    const newDateTime =  new Date();
+    const result = await updateUserService(id, { "last_connection": newDateTime });
 
     res.clearCookie(PRIVATE_COOKIE);
     res.redirect('/login')
