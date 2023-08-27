@@ -231,7 +231,36 @@ const changeRol = async (req, res) => {
 
 const uploadFile = async (req, res) => {
     try {
+        const id = String(req.params.uid); 
         const newDocument = [];
+    
+        if (!req.files) {
+            return res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo actualizar el usuario, porque no hay archivos"});
+        };
+        if (req.files.profiles) {
+            req.files.profiles.forEach(element => {
+                const filename = element.filename;
+                const name = element.fieldname;
+                const document = {
+                    name: name,
+                    reference: `http://localhost:8080/files/${name}/${filename}`
+                };
+                newDocument.push(document);
+            });
+        };
+        if (req.files.documents) {
+            req.files.documents.forEach(element => {
+                const filename = element.filename;
+                const name = element.fieldname;
+                const document = {
+                    name: name,
+                    reference: `http://localhost:8080/files/${name}/${filename}`
+                };
+                newDocument.push(document);
+            });
+        };
+
+        /* const newDocument = [];
         const id = String(req.params.uid);
         req.files.forEach(element => {
             const filename = element.filename;
@@ -240,9 +269,9 @@ const uploadFile = async (req, res) => {
                 reference: `http://localhost:8080/documents/profiles/${filename}`
             }
             newDocument.push(document);
-        });
+        }); */
 
-        // ACTUALIZO DOCUMENTS EN EL USER
+        // ACTUALIZO DOCUMENTS EN EL USER HACIENDO PUSH
         const result = await updateUserPushService(id, newDocument);
         
         // VALIDO EL UPDATE
@@ -254,25 +283,6 @@ const uploadFile = async (req, res) => {
             res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo subir la imagen!"});
         }; 
 
-        /* const id = String(req.params.uid);
-        const filename = req.files.filename;
-        const newDocument = {
-            name: req.files.fieldname,
-            reference: `http://localhost:8080/documents/profiles/${filename}`
-        }
-    
-        // ACTUALIZO DOCUMENTS EN EL USER
-        const result = await updateUserService(id, {documents: newDocument});
-        
-        // VALIDO EL UPDATE
-        if (result.acknowledged & result.modifiedCount!==0) {
-            const response = { status: "Success", payload: `Se adjunto el archivo al usuario!`};       
-            res.status(200).json(response);
-        } else {
-            req.logger.error(`insertFile = No subio la imagen`);
-            res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo subir la imagen!"});
-        };  */
-        
     } catch (error) {
         res.status(500).send({message: "Could not upload the file: " + req.files.originalname, error});
     }
