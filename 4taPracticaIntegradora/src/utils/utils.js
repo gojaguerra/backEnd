@@ -7,7 +7,8 @@ import { PRIVATE_KEY } from '../helpers/proyect.constants.js';
 import { responseMessages } from '../helpers/proyect.helpers.js';
 import nodemailer from 'nodemailer';
 import config from "../config/config.js";
-// import { log } from 'console';
+import multer from 'multer';
+/* import { log } from 'console'; */
 
 const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
@@ -114,6 +115,22 @@ const transporter = nodemailer.createTransport({
     }
 })
 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, `${__dirname}/public/documents/profiles`);
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
+    }
+});
+
+const uploader = multer({
+    storage, onError: (err, next) => {
+        console.log(err);
+        next();
+    }
+});
+
 const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
 const __dirname = path.join(dirname, '..')
@@ -130,5 +147,6 @@ export {
     generateTokenResetPass,
     transporter,
     authTokenResetPass,
-    authorizationRole
+    authorizationRole, 
+    uploader
 };

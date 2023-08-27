@@ -1,13 +1,11 @@
-import { getUser as getUserService, addUser as addUserService, updateUser as updateUserService } from '../services/user.services.js';
+import { getUser as getUserService, addUser as addUserService, updateUser as updateUserService, updateUserPush as updateUserPushService } from '../services/user.services.js';
 import { generateToken, generateTokenResetPass, createHash, isValidPassword } from '../utils/utils.js';
-import { PRIVATE_COOKIE, PRIVATE_KEY } from '../helpers/proyect.constants.js';
+import { PRIVATE_COOKIE } from '../helpers/proyect.constants.js';
 import UsersDto from '../dao/DTOs/users.dto.js';
 import { postCart } from '../services/carts.services.js';
 import { resetPassNotification } from '../utils/custom-html.js';
 import { sendEmail } from '../services/mail.js';
 import { responseMessages } from '../helpers/proyect.helpers.js';
-import jwt from 'jsonwebtoken';
-
 
 const registerUser = async (req, res) => {
     try {
@@ -99,10 +97,7 @@ const loginUser = async (req, res) => {
 const logoutUser = async (req, res) => {
     
     // ACTUALIZO ULTIMA CONEXION
-    const cookie = req.cookies[PRIVATE_COOKIE]
-    const user = jwt.verify(cookie, PRIVATE_KEY);
-    const id = user._id;
-    // const id = "64ade5160a5c4030e21aa515" /* String(req.user._id) */
+    const id = String(req.user._id)
     const newDateTime =  new Date();
     const result = await updateUserService(id, { "last_connection": newDateTime });
 
@@ -196,7 +191,7 @@ const changePassword = async (req, res) =>{
             const newPass =  createHash(password)
             const result = await updateUserService(id, { "password": newPass });
             
-            //Valido que se realizo el UPDATE
+            //Valido UPDATE
             if (result.acknowledged & result.modifiedCount!==0) {
                 const response = { status: "Success", payload: `La contraseña fue cambiada con exito!`};       
                 //muestro resultado y elimino la cookie
@@ -219,20 +214,69 @@ const changeRol = async (req, res) => {
     const result = await updateUserService(uid, { "role": role });
 
     try { 
-        //Valido que se realizo el UPDATE
-         if (result.acknowledged & result.modifiedCount!==0) {
+        //Valido UPDATE
+        if (result.acknowledged & result.modifiedCount!==0) {
             const response = { status: "Success", payload: `El rol fue cambiado con exito!`};       
-        //muestro resultado y elimino la cookie
+            //muestro resultado y elimino la cookie
             res.status(200).json(response);
         } else {
-        req.logger.error(`putPass = Error no se pudo actualizar el rol, verifique los datos ingresados`);
-        //muestro resultado error
-        res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo actualizar el rol, verifique los datos ingresados"});
+            req.logger.error(`putPass = Error no se pudo actualizar el rol, verifique los datos ingresados`);
+            //muestro resultado error
+            res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo actualizar el rol, verifique los datos ingresados"});
         };   
     } catch(error) {
         res.status(500).send({ status: 'error', error });
     }
 };
+
+const uploadFile = async (req, res) => {
+    try {
+        const newDocument = [];
+        const id = String(req.params.uid);
+        req.files.forEach(element => {
+            const filename = element.filename;
+            const document = {
+                name: element.fieldname,
+                reference: `http://localhost:8080/documents/profiles/${filename}`
+            }
+            newDocument.push(document);
+        });
+
+        // ACTUALIZO DOCUMENTS EN EL USER
+        const result = await updateUserPushService(id, newDocument);
+        
+        // VALIDO EL UPDATE
+        if (result.acknowledged & result.modifiedCount!==0) {
+            const response = { status: "Success", payload: `Se adjunto el archivo al usuario!`};       
+            res.status(200).json(response);
+        } else {
+            req.logger.error(`insertFile = No subio la imagen`);
+            res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo subir la imagen!"});
+        }; 
+
+        /* const id = String(req.params.uid);
+        const filename = req.files.filename;
+        const newDocument = {
+            name: req.files.fieldname,
+            reference: `http://localhost:8080/documents/profiles/${filename}`
+        }
+    
+        // ACTUALIZO DOCUMENTS EN EL USER
+        const result = await updateUserService(id, {documents: newDocument});
+        
+        // VALIDO EL UPDATE
+        if (result.acknowledged & result.modifiedCount!==0) {
+            const response = { status: "Success", payload: `Se adjunto el archivo al usuario!`};       
+            res.status(200).json(response);
+        } else {
+            req.logger.error(`insertFile = No subio la imagen`);
+            res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo subir la imagen!"});
+        };  */
+        
+    } catch (error) {
+        res.status(500).send({message: "Could not upload the file: " + req.files.originalname, error});
+    }
+}
 
 export { 
     registerUser, 
@@ -244,5 +288,6 @@ export {
     passLink,
     linkPass,
     changePassword,
-    changeRol
+    changeRol,
+    uploadFile
 }

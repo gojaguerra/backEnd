@@ -16,8 +16,18 @@ export default class UserManager {
         return user;
     }
 
+    getUserById = async (id) => {
+        const user = await userModel.findOne( id );
+        return user; 
+    };
+
     updateUser = async (id, user) => {
         const result = await userModel.updateOne({_id: id}, { $set: user });
+        return result;
+    };
+
+    updateUserPush = async (id, user) => {
+        const result = await userModel.updateOne({_id: id}, {$push: { documents: user}});
         return result;
     };
 

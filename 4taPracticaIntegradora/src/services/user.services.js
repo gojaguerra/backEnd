@@ -17,8 +17,14 @@ const updateUser = async (id, user) => {
     return result;
 };
 
+const updateUserPush = async (id, user) => {
+    const result = await usersRepository.updateUserPush(id, user);
+    return result;
+};
+
 export {
     getUser,
     addUser,
-    updateUser
+    updateUser,
+    updateUserPush
 }

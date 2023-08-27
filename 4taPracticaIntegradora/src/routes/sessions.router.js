@@ -8,7 +8,7 @@ router.post('/register', registerUser);
 
 router.post('/login', loginUser);
 
-router.get('/logout', logoutUser);
+router.get('/logout', passportCall('jwt'), logoutUser);
 
 router.post('/password-link', passLink);
 
