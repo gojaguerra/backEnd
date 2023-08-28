@@ -90,7 +90,12 @@ const authorizationRole = (role) => {
 
 const verifyUserStatus = async (req, res, next) => {
     const id = String(req.params.uid)
-    const user = await getUserById({_id: id});
+    let user;
+    try {
+        user = await getUserById({_id: id});
+    } catch (error) {
+        return res.status(500).send({error: responseMessages.incorrect_user});
+    };
     if(user){
         if(user.role==="user") {
             let identification, address, account;
