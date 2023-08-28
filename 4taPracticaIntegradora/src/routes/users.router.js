@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import { changeRol, uploadFile } from '../controllers/user.controller.js';
-import { uploader } from '../utils/utils.js';
+import { uploader, verifyUserStatus } from '../utils/utils.js';
 
 const router = Router();
 
-router.post('/premium/:uid', changeRol);
+router.post('/premium/:uid', verifyUserStatus, changeRol);
 
 /* router.post('/:uid/documents', uploader.array('file'), uploadFile); */
 

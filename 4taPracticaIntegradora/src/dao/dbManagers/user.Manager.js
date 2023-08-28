@@ -26,8 +26,8 @@ export default class UserManager {
         return result;
     };
 
-    updateUserPush = async (id, user) => {
-        const result = await userModel.updateOne({_id: id}, {$push: { documents: user}});
+    updateUserPush = async (id, dataPush) => {
+        const result = await userModel.updateOne({_id: id}, {$push: dataPush});
         return result;
     };
 

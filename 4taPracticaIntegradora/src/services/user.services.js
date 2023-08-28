@@ -7,6 +7,11 @@ const getUser = async (email) => {
     return user;
 };
 
+const getUserById = async (id) => {
+    const user = await usersRepository.getUserById(id);
+    return user;
+};
+
 const addUser = async (user) => {
     const result = await usersRepository.addUser(user);
     return result;
@@ -24,6 +29,7 @@ const updateUserPush = async (id, user) => {
 
 export {
     getUser,
+    getUserById,
     addUser,
     updateUser,
     updateUserPush

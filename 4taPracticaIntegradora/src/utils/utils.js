@@ -8,7 +8,7 @@ import { responseMessages } from '../helpers/proyect.helpers.js';
 import nodemailer from 'nodemailer';
 import config from "../config/config.js";
 import multer from 'multer';
-/* import { log } from 'console'; */
+import { getUserById } from '../services/user.services.js';
 
 const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
@@ -88,6 +88,38 @@ const authorizationRole = (role) => {
     }
 };
 
+const verifyUserStatus = async (req, res, next) => {
+    const id = String(req.params.uid)
+    const user = await getUserById({_id: id});
+    if(user){
+        if(user.role==="user") {
+            let identification, address, account;
+            user.status.forEach(element => {
+                switch (element) {
+                    case "IDENTIFICATION":
+                        identification=true;
+                        break;
+                    case "ADDRESS":
+                        address=true;
+                        break;
+                    case "ACCOUNT":
+                        account=true;
+                        break;
+                    }
+            });
+            if(identification && address && account){
+                next();
+            } else {
+                return res.status(403).send({error: responseMessages.not_complete_role});
+            }
+        } else {
+            next();
+        }
+    } else {
+        return res.status(403).send({error: responseMessages.user_notfound});
+    }
+};
+
 const generateProduct = () => {
     return {
         id: faker.database.mongodbObjectId(),
@@ -161,5 +193,6 @@ export {
     transporter,
     authTokenResetPass,
     authorizationRole, 
-    uploader
+    uploader,
+    verifyUserStatus
 };
