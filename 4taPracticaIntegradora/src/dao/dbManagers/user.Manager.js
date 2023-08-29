@@ -21,6 +21,11 @@ export default class UserManager {
         return user; 
     };
 
+    getAllUser = async () => {
+        const user = await userModel.find().lean();
+        return user; 
+    };
+    
     updateUser = async (id, user) => {
         const result = await userModel.updateOne({_id: id}, { $set: user });
         return result;
@@ -28,6 +33,11 @@ export default class UserManager {
 
     updateUserPush = async (id, dataPush) => {
         const result = await userModel.updateOne({_id: id}, {$push: dataPush});
+        return result;
+    };
+
+    deleteAllUser = async (filter) => {
+        const result = await userModel.deleteMany(filter);
         return result;
     };
 
