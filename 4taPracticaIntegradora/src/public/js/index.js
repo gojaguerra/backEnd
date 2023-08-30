@@ -71,6 +71,19 @@ if(viewCart) {
     });
 };
 
+// Botón para el cambio de ROL
+const changeRole = document.getElementById('changeRole')
+if(changeRole) {
+    changeRole.addEventListener('click', (event) => {
+/*         const prueba = await fetch('/api/sessions/current', {
+            method: 'GET'
+        });
+        const data = await prueba.json();
+        const cart =data.payload.cart; */
+        window.location= "/api/users/usersrole";
+     });
+};
+
 // Botón para ver finalizar pedido
 const closeCart = document.getElementById('cerrarTicket')
 if(closeCart) {

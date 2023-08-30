@@ -1,4 +1,4 @@
-import { getUser as getUserService, addUser as addUserService, updateUser as updateUserService, updateUserPush as updateUserPushService } from '../services/user.services.js';
+import { getUser as getUserService, addUser as addUserService, updateUser as updateUserService, updateUserPush as updateUserPushService, getAllUser as getAllUserService } from '../services/user.services.js';
 import { generateToken, generateTokenResetPass, createHash, isValidPassword } from '../utils/utils.js';
 import { PRIVATE_COOKIE } from '../helpers/proyect.constants.js';
 import UsersDto from '../dao/DTOs/users.dto.js';
@@ -229,6 +229,21 @@ const changeRol = async (req, res) => {
     }
 };
 
+// OBTENER TODOS LOS USUARIOS
+const getAllUser = async(req, res) => {
+    try {
+        const users = await getAllUserService();
+        const response ={ status: "Success", payload: users};
+        // VISTA DE USUARIOS
+        // res.status(200).json(response);
+        res.render("users.handlebars", {users} );
+    } catch (error) {
+        req.logger.error(`getAllUser = No se pudieron mostrar los usuarios!`);
+        const response = { status: "NOT FOUND", payload: 'No se pudieron mostrar los usuarios' };
+        res.status(404).send(response);
+    };
+};
+
 const uploadFile = async (req, res) => {
     try {
         const id = String(req.params.uid); 
@@ -299,5 +314,6 @@ export {
     linkPass,
     changePassword,
     changeRol,
+    getAllUser,
     uploadFile
 }

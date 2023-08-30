@@ -50,7 +50,7 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre('find', function () {
-    this.populate('carts.cart');
+    this.populate('cart.cart');
 });
 
 export const userModel = mongoose.model(userCollection, userSchema);

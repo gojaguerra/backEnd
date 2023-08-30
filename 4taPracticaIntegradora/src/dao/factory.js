@@ -3,6 +3,7 @@ import config from "../config/config.js";
 let Carts;
 let Products;
 let Users;
+let Tickets;
 const persistence = config.persistence;
 
 switch(persistence) {
@@ -12,9 +13,11 @@ switch(persistence) {
         const { default: CartsMongo } = await import('./dbManagers/cartManager.js');
         const { default: ProductsMongo } = await import('./dbManagers/productManager.js');
         const { default: UsersMongo } = await import('./dbManagers/user.Manager.js');
+        const { default: TicketsMongo } = await import('./dbManagers/ticket.Manager.js');
         Carts = CartsMongo;
         Products = ProductsMongo;
         Users = UsersMongo;
+        Tickets = TicketsMongo;
         break;
     case 'FILES':
         const { default: CartsFiles } = await import('./managers/cartManager.js');
@@ -27,5 +30,6 @@ switch(persistence) {
 export {
     Carts,
     Products,
-    Users
+    Users,
+    Tickets
 }

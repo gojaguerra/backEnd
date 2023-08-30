@@ -1,0 +1,34 @@
+<h2 style="color:darkblue;">Bienvenidos al servidor express - Comisión 39760</h2> <br>
+<h2>Usuarios</h2>
+  
+
+    <div class="table-responsive tabla">
+        <table class="table table-primary table-striped">
+            <thead>
+                <tr>
+                    <th scope="col"> Apellido </th>
+                    <th scope="col"> Nombre </th>
+                    <th scope="col"> Role </th>
+                    <th scope="col"> Email </th>
+                    <th scope="col"> Last Connection </th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each users}}
+                    <tr>
+                        <th scope="row"> {{this.last_name}} </th>
+                        <th scope="row"> {{this.first_name}}</th>
+                        <th scope="row"> {{this.role}}</th>
+                        <th scope="row"> {{this.email}} </th>
+                        <th scope="row"> {{this.last_connection}}</th>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>    
+    </div>
+<br/>
+
+{{!-- <button id="viewProduct" class="btn btn-secondary"> Comprar Productos</button> --}}
+<button id="goHome" class="btn btn-secondary"> Ir al Home</button>
+
+<script src="/js/index.js"></script>

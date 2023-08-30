@@ -1,8 +1,9 @@
-import UsersDao from '../dao/dbManagers/user.Manager.js';
+/* import UsersDao from '../dao/dbManagers/user.Manager.js'; */
 
 export default class UsersRepository {
-    constructor() {
-        this.dao = new UsersDao();
+    constructor(dao) {
+        /* this.dao = new UsersDao(); */
+        this.dao = dao;
     };
 
     getUser = async (email) => {

@@ -1,8 +1,9 @@
-import ProductsDao from '../dao/dbManagers/productManager.js';
+/* import ProductsDao from '../dao/dbManagers/productManager.js'; */
 
 export default class ProductsRepository {
-    constructor() {
-        this.dao = new ProductsDao();
+    constructor(dao) {
+        /* this.dao = new ProductsDao(); */
+        this.dao = dao;
     };
 
     getProducts = async (limit, page, query, sort) => {

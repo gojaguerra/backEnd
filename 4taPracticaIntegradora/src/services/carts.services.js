@@ -1,9 +1,11 @@
-import CartsRepository from '../repositories/carts.repository.js';
-import ProductsRepository from '../repositories/products.repository.js';
+/* import CartsRepository from '../repositories/carts.repository.js';
 import TicketRepository from '../repositories/ticket.repository.js';
+ */
+import { cartsRepository } from '../repositories/index.js';
+import { ticketsRepository } from '../repositories/index.js';
 
-const cartsRepository = new CartsRepository();
-const ticketRepository = new TicketRepository();
+/* const cartsRepository = new CartsRepository();
+const ticketRepository = new TicketRepository(); */
 
 const postCart = async (cart) => {
     const result = await cartsRepository.addCart(cart);
@@ -50,7 +52,7 @@ const postPurchase = async (cart, userMail) => {
         purchaser: userMail
     };
 
-    const result = await ticketRepository.createTicket(ticket);
+    const result = await ticketsRepository.createTicket(ticket);
     return result;
 };
 
