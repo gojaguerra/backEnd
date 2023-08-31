@@ -1,7 +1,4 @@
-/* import UsersRepository from '../repositories/users.repository.js'; */
 import { usersRepository } from '../repositories/index.js';
-
-/* const usersRepository = new UsersRepository(); */
 
 const getUser = async (email) => {
     const user = await usersRepository.getUser(email);
@@ -46,4 +43,4 @@ export {
     updateUser,
     updateUserPush,
     deleteAllUser
-}
+};

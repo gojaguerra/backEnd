@@ -74,14 +74,25 @@ if(viewCart) {
 // Botón para el cambio de ROL
 const changeRole = document.getElementById('changeRole')
 if(changeRole) {
-    changeRole.addEventListener('click', (event) => {
-/*         const prueba = await fetch('/api/sessions/current', {
+    changeRole.addEventListener('click', async (event) => {
+        await fetch('/api/users/usersrole', {
             method: 'GET'
+        })
+        .then((result) => {
+            if (result.status === 200) {
+                window.location= '/api/users/usersrole';
+            }else{
+                if (result.status === 403) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'No tiene permisos para administrar usuarios!',
+                        showConfirmButton: true,
+                    });
+                };
+            };
         });
-        const data = await prueba.json();
-        const cart =data.payload.cart; */
-        window.location= "/api/users/usersrole";
-     });
+    });
 };
 
 // Botón para ver finalizar pedido

@@ -14,4 +14,4 @@ export {
     productsRepository,
     usersRepository,
     ticketsRepository
-}
+};

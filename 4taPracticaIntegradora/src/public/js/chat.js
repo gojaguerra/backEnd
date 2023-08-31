@@ -23,7 +23,7 @@ chatbox.addEventListener('keyup', evt => {
             socket.emit('message', { user, message: chatbox.value});
             chatbox.value='';
         }
-    }
+    };
 });
 
 socket.on('messageLogs', data => {

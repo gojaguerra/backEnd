@@ -1,8 +1,5 @@
-/* import CartsDao from '../dao/dbManagers/cartManager.js'; */
-
 export default class CartsRepository {
     constructor(dao) {
-        /* this.dao = new CartsDao(); */
         this.dao = dao;
     }
 

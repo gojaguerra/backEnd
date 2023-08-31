@@ -1,8 +1,5 @@
-/* import ProductsDao from '../dao/dbManagers/productManager.js'; */
-
 export default class ProductsRepository {
     constructor(dao) {
-        /* this.dao = new ProductsDao(); */
         this.dao = dao;
     };
 

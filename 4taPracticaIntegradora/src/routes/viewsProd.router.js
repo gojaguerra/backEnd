@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
         res.render('realTimeProducts', { products });
     } catch (error) {
         res.status(500).send({ status: "error", error });
-    }
+    };
 });
 
 export default router;

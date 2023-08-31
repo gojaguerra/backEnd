@@ -4,4 +4,4 @@ const chatRoute =(req, res) => {
 
 export {
     chatRoute
-}
+};

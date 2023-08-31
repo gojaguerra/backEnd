@@ -33,10 +33,10 @@ const getProducts = async (req, res) => {
         // res.send({ status: "success", payload: products}); 
         //Render page
         res.render("products.handlebars", products );
-} catch (error) {
-    req.logger.error('Error getProducts ' + error.message);
-    res.status(500).send({ status: "error", error });
-}
+    } catch (error) {
+        req.logger.error('Error getProducts ' + error.message);
+        res.status(500).send({ status: "error", error });
+    };
 };
 
 const getProductById =  async(req, res) => {
@@ -122,7 +122,7 @@ const putProductById = async(req,res) =>{
     } catch (error) {
         req.logger.error('Error putProductById ' + error.message);
         res.status(404).send({ status: "error", error });
-    }
+    };
 };
 
 const deleteProductById = async(req,res)=>{
@@ -160,7 +160,7 @@ const deleteProductById = async(req,res)=>{
         req.logger.error(`Error deleteProductById: NO existe el producto que desea eliminar!`);
         res.status(404).json({ status: "NOT FOUND", payload: `NO existe el producto que desea eliminar!` });
         /* res.status(500).send({ status: "error", error }); */
-    }
+    };
 };
 
 export {

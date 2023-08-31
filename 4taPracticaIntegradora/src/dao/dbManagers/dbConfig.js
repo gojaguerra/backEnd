@@ -8,4 +8,4 @@ try {
     console.log('DB Connect');
 } catch (error) {
     console.log(error);    
-}
+};

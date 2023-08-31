@@ -7,5 +7,5 @@ export const sendEmail = async(email) => {
         to: email.to,
         subject: email.subject,
         html: email.html
-    })
+    });
 };

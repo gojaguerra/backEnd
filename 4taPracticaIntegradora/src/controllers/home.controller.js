@@ -6,4 +6,4 @@ const iniHome =  (req, res) => {
 
 export {
     iniHome
-}
+};

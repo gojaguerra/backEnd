@@ -44,7 +44,7 @@ const registerUser = async (req, res) => {
     } catch (error) {
         req.logger.error(`registerUser = ` + error.message);
         res.status(500).send({ status: 'error', error: error.message });
-    }
+    };
 };
 
 const loginUser = async (req, res) => {
@@ -91,7 +91,7 @@ const loginUser = async (req, res) => {
     } catch (error) {
         req.logger.error(`registerUser = ` + error.message);
         res.status(500).send({ status: 'error', error });
-    }
+    };
 };
 
 const logoutUser = async (req, res) => {
@@ -102,7 +102,7 @@ const logoutUser = async (req, res) => {
     const result = await updateUserService(id, { "last_connection": newDateTime });
 
     res.clearCookie(PRIVATE_COOKIE);
-    res.redirect('/login')
+    res.redirect('/login');
 };
 
 const gitUser = async (req, res) => {
@@ -121,12 +121,12 @@ const gitCallbackUser = async (req, res) => {
 
     if(req.user.email === 'adminCoder@coder.com' ) {
         req.user.role = "admin";
-    }
+    };
     const accessToken = generateToken(req.user);
 
     res.cookie(
         PRIVATE_COOKIE, accessToken, { maxAge: 60 * 60 * 1000, httpOnly: true }
-    )
+    );
     
     res.redirect('/');
 };
@@ -161,7 +161,7 @@ const passLink = async (req, res) => {
     } catch (error) {
         req.logger.error(`loginUser = ` + error.message);
         res.status(500).send({ status: 'error', error });
-    }
+    };
 
 };
 
@@ -205,7 +205,7 @@ const changePassword = async (req, res) =>{
         }
     } catch(error) {
         res.status(500).send({ status: 'error', error });
-    }
+    };
 };
 
 const changeRol = async (req, res) => {
@@ -226,20 +226,25 @@ const changeRol = async (req, res) => {
         };   
     } catch(error) {
         res.status(500).send({ status: 'error', error });
-    }
+    };
 };
 
 // OBTENER TODOS LOS USUARIOS
 const getAllUser = async(req, res) => {
     try {
-        const users = await getAllUserService();
+        const usersList = await getAllUserService();
+        const users = [];
+        usersList.forEach(element => {
+            users.push(new UsersDto(element))
+        });
         const response ={ status: "Success", payload: users};
+        users.isValid = users.length > 0
         // VISTA DE USUARIOS
-        // res.status(200).json(response);
-        res.render("users.handlebars", {users} );
+        //res.status(200).json(response);
+        res.render("users.handlebars", { users });
     } catch (error) {
         req.logger.error(`getAllUser = No se pudieron mostrar los usuarios!`);
-        const response = { status: "NOT FOUND", payload: 'No se pudieron mostrar los usuarios' };
+        const response = { status: "NOT FOUND", payload: 'No se pudieron mostrar los usuarios!', error };
         res.status(404).send(response);
     };
 };
@@ -300,7 +305,7 @@ const uploadFile = async (req, res) => {
 
     } catch (error) {
         res.status(500).send({message: "Could not upload the file: " + req.files.originalname, error});
-    }
+    };
 }
 
 export { 
@@ -316,4 +321,4 @@ export {
     changeRol,
     getAllUser,
     uploadFile
-}
+};

@@ -32,4 +32,4 @@ export {
     Products,
     Users,
     Tickets
-}
+};

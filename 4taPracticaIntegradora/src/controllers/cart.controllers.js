@@ -28,7 +28,7 @@ const postCart = async(req, res) => {
     } catch (error) {
         req.logger.error('Error postCart ' + error.message);
         res.status(500).send({ status: "error", error });
-    }
+    };
 
 };
 
@@ -73,7 +73,7 @@ const putCartById = async(req, res) => {
         req.logger.error(`putCartById = El Producto con ID ${productId} NO existe!`);
         const response = { status: "Error", payload: `El Producto con ID ${productId} NO existe!` };
         return res.status(401).json(response);
-    }
+    };
 
     // Una vez validado llamar al metodo addProductInCart
     try {
@@ -206,7 +206,7 @@ const postPurchase = async(req, res) => {
                     id: product._id
                 };
                 noCart.push(prodData);
-            }
+            };
         });
         
         // SI HAY PRODUCTOS VALIDADOS CON STOCK GENERO LA VENTA

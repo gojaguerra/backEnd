@@ -30,19 +30,8 @@ const authToken = (req, res, next) => {
         if (error) return res.status(403).send({error: responseMessages.not_authorized});
         req.user = credentials.user;
         next();
-    })
-}
-
-/* const authTokenResetPass = (req, res, next) => {
-    const authToken = req.query.token;
-    if (!authToken) return res.status(401).send({error: responseMessages.not_authenticated});
-    
-    jwt.verify(authToken, PRIVATE_KEY, (error, credentials) => {
-        if (error) return res.status(403).send({error: responseMessages.not_authorized});
-        req.user = credentials.user;
-        next();
-    })
-}; */
+    });
+};
 
 const authTokenResetPass = (req, res, next) => {
     const authToken = req.query.token
@@ -64,14 +53,14 @@ const passportCall = (strategy) => {
             req.user = user;
             next();
         })(req, res, next)
-    }
+    };
 };
 
 const authorization = (role) => {
     return async (req, res, next) => {
         if(req.user.role != role) return res.status(403).send({error: responseMessages.not_permissions});
         next();
-    }
+    };
 };
 
 const authorizationRole = (role) => {
@@ -85,7 +74,7 @@ const authorizationRole = (role) => {
         });
         if(!roleOk) return res.status(403).send({error: responseMessages.not_permissions});
         next();
-    }
+    };
 };
 
 const verifyUserStatus = async (req, res, next) => {
@@ -122,7 +111,7 @@ const verifyUserStatus = async (req, res, next) => {
         }
     } else {
         return res.status(403).send({error: responseMessages.user_notfound});
-    }
+    };
 };
 
 const generateProduct = () => {
@@ -135,8 +124,8 @@ const generateProduct = () => {
         stock: faker.string.numeric(1),
         category: faker.commerce.department(),
         thumbnail: [faker.image.url()]
-    }
-}
+    };
+};
 
 const generateTokenResetPass = (user) => {
     const tokenResetPass = jwt.sign({ user }, PRIVATE_KEY, { expiresIn: '1h' });
@@ -150,7 +139,7 @@ const transporter = nodemailer.createTransport({
         user: config.userNodemailer,
         pass: config.passNodemailer
     }
-})
+});
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -181,9 +170,9 @@ const uploader = multer({
     }
 });
 
-const __filename = fileURLToPath(import.meta.url)
-const dirname = path.dirname(__filename)
-const __dirname = path.join(dirname, '..')
+const __filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(__filename);
+const __dirname = path.join(dirname, '..');
 
 export {
     __dirname,

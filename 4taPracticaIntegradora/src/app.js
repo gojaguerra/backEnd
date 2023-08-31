@@ -10,8 +10,8 @@ import sessionsRouter from './routes/sessions.router.js'
 import usersRouter from './routes/users.router.js';
 import mockingproducts from './routes/mockingproducts.route.js';
 import loggerTest from './routes/loggerTest.route.js';
-import "./dao/dbManagers/dbConfig.js"
-import config from "./config/config.js"
+import "./dao/dbManagers/dbConfig.js";
+import config from "./config/config.js";
 import viewsRouter from './routes/views.router.js';
 import ProductManager from './dao/dbManagers/productManager.js';
 import MessageManager from './dao/dbManagers/chatManager.js';
@@ -69,8 +69,8 @@ app.use('/api/users', usersRouter);
 app.use('/home', homeRouter);
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartsRouter);
-app.use('/realtimeproducts', viewsProdRouter)
-app.use('/chat', viewsChatPage)
+app.use('/realtimeproducts', viewsProdRouter);
+app.use('/chat', viewsChatPage);
 // MONCKING
 app.use('/mockingproducts', mockingproducts);
 // TEST LOGGER
@@ -88,7 +88,7 @@ const messages = [];
 
 io.on('connection', async socket => {
     console.log('Nuevo cliente conectado');
-    const products = await productManager.getProducts()
+    const products = await productManager.getProducts();
     io.emit("showProducts", products.docs);
 
     socket.on('message', data => {

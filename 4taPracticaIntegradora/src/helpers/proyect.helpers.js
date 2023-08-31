@@ -17,4 +17,4 @@ const responseMessages = {
 
 export {
     responseMessages
-}
+};

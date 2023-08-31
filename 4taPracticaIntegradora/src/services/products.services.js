@@ -1,7 +1,4 @@
-/* import ProductsRepository from '../repositories/products.repository.js'; */
 import { productsRepository } from '../repositories/index.js';
-
-/* const productsRepository = new ProductsRepository(); */
 
 const getProducts = async (limit, page, query1, sort1) => {
         const products = await productsRepository.getProducts(limit, page, query1, sort1);
@@ -40,4 +37,4 @@ export {
     putProductById,
     deleteProductById,
     stockProduct
-}
+};

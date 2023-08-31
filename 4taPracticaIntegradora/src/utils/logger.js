@@ -12,7 +12,7 @@ const customLevelOptions = {
         http: 4,
         debug: 5
     }
-}
+};
 
 if (config.ENVIRONMENT === 'PRODUCTION') {
     logger = winston.createLogger({
@@ -36,10 +36,10 @@ if (config.ENVIRONMENT === 'PRODUCTION') {
             })
         ]
     });
-}
+};
 
 export const addLogger = (req, res, next) => {
     req.logger = logger;
     req.logger.info(`${req.method} en ${req.url} - ${new Date().toISOString()}`);
     next();
-}
+};

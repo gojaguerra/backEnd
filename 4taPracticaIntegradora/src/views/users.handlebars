@@ -1,13 +1,12 @@
 <h2 style="color:darkblue;">Bienvenidos al servidor express - Comisión 39760</h2> <br>
 <h2>Usuarios</h2>
   
-
+{{#if users.isValid}}
     <div class="table-responsive tabla">
         <table class="table table-primary table-striped">
             <thead>
                 <tr>
-                    <th scope="col"> Apellido </th>
-                    <th scope="col"> Nombre </th>
+                    <th scope="col"> Apellido y Nombre </th>
                     <th scope="col"> Role </th>
                     <th scope="col"> Email </th>
                     <th scope="col"> Last Connection </th>
@@ -16,16 +15,19 @@
             <tbody>
                 {{#each users}}
                     <tr>
-                        <th scope="row"> {{this.last_name}} </th>
-                        <th scope="row"> {{this.first_name}}</th>
+                        <th scope="row"> {{this.name}} </th>
                         <th scope="row"> {{this.role}}</th>
                         <th scope="row"> {{this.email}} </th>
                         <th scope="row"> {{this.last_connection}}</th>
+                        {{!-- <button class="btn btn-primary" id="{{this._id}}" onclick="procesoId(this)">Comprar</button> --}}
                     </tr>
                 {{/each}}
             </tbody>
         </table>    
     </div>
+{{else}}    
+    <h2 style="color: chocolate;">No se encontraron Usuarios </h2>
+{{/if}}
 <br/>
 
 {{!-- <button id="viewProduct" class="btn btn-secondary"> Comprar Productos</button> --}}
