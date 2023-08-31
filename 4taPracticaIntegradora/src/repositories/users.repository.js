@@ -33,6 +33,11 @@ export default class UsersRepository {
         return result;
     }
 
+    deleteUserById = async (id) => {
+        const result = await this.dao.deleteUserById(id);
+        return result;
+    };
+    
     deleteAllUser = async (filter) => {
         const result = await this.dao.deleteAllUser(filter);
         return result;

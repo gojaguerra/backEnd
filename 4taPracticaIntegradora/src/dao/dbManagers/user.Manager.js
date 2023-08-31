@@ -36,6 +36,11 @@ export default class UserManager {
         return result;
     };
 
+    deleteUserById = async (id) => {
+        const result = await userModel.deleteOne({_id: id});
+        return result;
+    };
+    
     deleteAllUser = async (filter) => {
         const result = await userModel.deleteMany(filter);
         return result;

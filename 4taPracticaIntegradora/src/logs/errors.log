@@ -11,3 +11,11 @@
 {"level":"error","message":"getCartById = El carrito con ID 64ade5160a5c4030e21aa512 NO existe!"}
 {"level":"error","message":"getAllUser = No se pudieron mostrar los usuarios!"}
 {"level":"error","message":"getAllUser = No se pudieron mostrar los usuarios!"}
+{"level":"error","message":"postProduct = Faltan completar campos!"}
+{"level":"error","message":"postProduct = Faltan completar campos!"}
+{"level":"error","message":"getAllUser = No se pudieron mostrar los usuarios!"}
+{"level":"error","message":"getAllUser = No se pudieron mostrar los usuarios!"}
+{"level":"error","message":"getAllUser = No se pudieron mostrar los usuarios!"}
+{"level":"error","message":"loginUser = Incorrect password"}
+{"level":"error","message":"loginUser = Incorrect credentials"}
+{"level":"error","message":"deleteUser = No se pudo eliminar el user. No se encontro el usuario."}

@@ -1,13 +1,18 @@
 import { Router } from 'express';
-import { changeRol, uploadFile, getAllUser } from '../controllers/user.controller.js';
+import { changeRol, uploadFile, getAllUser, deleteUser } from '../controllers/user.controller.js';
 import { authorization, passportCall, uploader, verifyUserStatus } from '../utils/utils.js';
 
 const router = Router();
 
+// ELiminar un usuario
+router.delete('/delete/:uid', deleteUser)
+
+// Cambio de ROL - middleware para verificar si corresponde o no
 router.post('/premium/:uid', verifyUserStatus, changeRol);
 
 /* router.post('/:uid/documents', uploader.array('file'), uploadFile); */
 
+// Subir los documentos: ACCOUNT ADDRESS IDENTIFICATION
 router.post('/:uid/documents', uploader.fields([
         {name: 'profiles', maxCount: 1}, 
         {name: 'products', maxCount: 1},

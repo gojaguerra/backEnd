@@ -1,4 +1,4 @@
-import { getUser as getUserService, addUser as addUserService, updateUser as updateUserService, updateUserPush as updateUserPushService, getAllUser as getAllUserService } from '../services/user.services.js';
+import { getUser as getUserService, addUser as addUserService, updateUser as updateUserService, updateUserPush as updateUserPushService, getAllUser as getAllUserService, deleteUserById as deleteUserByIdService, getUserById as getUserByIdService } from '../services/user.services.js';
 import { generateToken, generateTokenResetPass, createHash, isValidPassword } from '../utils/utils.js';
 import { PRIVATE_COOKIE } from '../helpers/proyect.constants.js';
 import UsersDto from '../dao/DTOs/users.dto.js';
@@ -241,7 +241,7 @@ const getAllUser = async(req, res) => {
         users.isValid = users.length > 0
         // VISTA DE USUARIOS
         //res.status(200).json(response);
-        res.render("users.handlebars", { users });
+        res.render("users.cards.handlebars", { users });
     } catch (error) {
         req.logger.error(`getAllUser = No se pudieron mostrar los usuarios!`);
         const response = { status: "NOT FOUND", payload: 'No se pudieron mostrar los usuarios!', error };
@@ -308,6 +308,35 @@ const uploadFile = async (req, res) => {
     };
 }
 
+const deleteUser = async (req, res) => {
+    try {
+        
+        const id = String(req.params.uid);
+        const user = await getUserByIdService({ id });
+        console.log("user:",user);
+        if(user) {
+            const cart = user.cart;
+            // eliminar el cart
+
+            // eliminar el usuario
+            const result = await deleteUserByIdService(id);
+            
+            if (result.acknowledged & result.deletedCount!==0) {
+                const response = { status: "Success", payload: `El usuario fue eliminado con Exito!`};       
+                res.status(200).json(response);
+            } else {
+                req.logger.error(`deleteUser = No se pudo eliminar el user`);
+                res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo eliminar el usuario, verifique los datos ingresados"});
+            };
+        } else {
+            req.logger.error(`deleteUser = No se pudo eliminar el user. No se encontro el usuario.`);
+            res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo eliminar el usuario. No se encontro el usuario."});
+        };
+    } catch (error) {
+        res.status(500).send({ status: 'error', error });
+    }
+};
+
 export { 
     registerUser, 
     loginUser, 
@@ -320,5 +349,6 @@ export {
     changePassword,
     changeRol,
     getAllUser,
-    uploadFile
+    uploadFile,
+    deleteUser
 };

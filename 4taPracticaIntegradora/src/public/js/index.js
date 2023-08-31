@@ -1,3 +1,15 @@
+let nIntervId;
+
+function delayNavigateOkUsers() {
+    if (!nIntervId) {
+        nIntervId = setInterval(navigateOk, 2000);
+    };
+};
+
+function navigateOk() {
+    window.location.replace('/api/users/usersrole');
+};
+
 // Selector de Orden de precio
 const ordPri = document.getElementById('ordPri')
 if(ordPri){
@@ -71,7 +83,7 @@ if(viewCart) {
     });
 };
 
-// Botón para el cambio de ROL
+// Botón para acceder a ADMINISTRAR USUARIOS
 const changeRole = document.getElementById('changeRole')
 if(changeRole) {
     changeRole.addEventListener('click', async (event) => {
@@ -93,6 +105,111 @@ if(changeRole) {
             };
         });
     });
+};
+
+// Botón para el cambio de ROL de USUARIOS
+function userDeleteId(comp){
+    const id = comp.id;
+    const butCart = document.getElementById(`${id}`)
+    if(butCart){ 
+        Swal.fire({
+            title: `Está seguro de eliminar el user ${id}? `,
+            showCancelButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then(result =>{
+            if (result.isConfirmed) {
+                id = result.value;
+                fetch('/api/users/delete/' + id, {
+                    method: 'DELETE'
+                    })
+                    .then((result) => {
+                        if (result.status === 200) {
+                            Swal.fire({
+                                title: 'Usuario Eliminado',
+                                icon: 'success'
+                            })
+                            delayNavigateOkUsers();
+                        }else{
+                            if (result.status === 403) {
+                                Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'error',
+                                    title: 'No cuenta con permisos para realizar dicha acción!',
+                                    showConfirmButton: true,
+                                })
+                            }else {
+                                Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'error',
+                                    title: 'Hubo un error al registrar la eliminición del usuario, intente luego',
+                                    showConfirmButton: true,
+                                })                
+                            }    
+                        }
+                    })
+            }
+       }); 
+    };
+};
+
+// Botón para el cambio de ROL
+function userChangeRoleId(comp){
+    const id = comp.id;
+    const butCart = document.getElementById(`${id}`)
+    if(butCart){ 
+        Swal.fire({
+            title: 'Cambio de Rol',
+            text: 'Seleccione de la lista',
+            input: 'select', 
+            inputOptions:{
+                admin: 'Admin',
+                premium: 'Premium',
+                user: 'User'
+            },
+            showCancelButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonText: 'Aceptar'
+        }).then(async result =>{
+            if (result.isConfirmed) {
+                const obj=`{"role": "${result.value}"}`;
+                const url='/api/users/premium/'+id
+                fetch(url, {
+                    method: 'POST',
+                    body: obj,
+                    headers: {
+                        'Accept': "application/json",
+                        'Content-Type': 'application/json; charset=UTF-8'
+                    }
+                })
+                .then((result) => {
+                    if (result.status === 200) {
+                        Swal.fire({
+                            title: 'Ha cambiado el rol correctamente',
+                            icon: 'success'
+                        })
+                        delayNavigateOkUsers();
+                        /* window.location= "/api/users/usersrole"; */
+                    }else{
+                        if (result.status === 403) {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'User PREMIUM no cumple los requisitos!',
+                            })
+                        }else{
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Hubo un error al registrar el producto, intente luego',
+                            showConfirmButton: true,
+                        })}
+                    }
+                })
+            }
+        }); 
+    };
 };
 
 // Botón para ver finalizar pedido
