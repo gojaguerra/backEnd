@@ -10,8 +10,8 @@ const getUserById = async (id) => {
     return user;
 };
 
-const getAllUser = async () => {
-    const user = await usersRepository.getAllUser();
+const getAllUser = async (filter) => {
+    const user = await usersRepository.getAllUser(filter);
     return user;
 };
 

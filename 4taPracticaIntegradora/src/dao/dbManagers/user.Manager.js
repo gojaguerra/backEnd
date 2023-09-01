@@ -21,8 +21,8 @@ export default class UserManager {
         return user; 
     };
 
-    getAllUser = async () => {
-        const user = await userModel.find().lean();
+    getAllUser = async (filter) => {
+        const user = await userModel.find(filter).lean();
         return user; 
     };
     

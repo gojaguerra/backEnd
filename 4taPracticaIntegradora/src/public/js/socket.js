@@ -29,6 +29,7 @@ function procesDelId(comp){
     if(delProduct){ 
         Swal.fire({
             title: `Está seguro de eliminar el producto ${comp}? `,
+            icon: 'warning',
             showCancelButton: true,
             allowOutsideClick: false,
             allowEscapeKey: false

@@ -21,6 +21,11 @@ export default class CartManager {
         return cart;         
     };
 
+    deleteCartById = async (cartId) => {
+        const cart = await cartModel.deleteOne({_id: cartId});
+        return cart;    
+    };
+    
     addProductInCart = async (cartId,productId,quantity) => {
         //Intento incrementar la cantidad si se encuentra el producto en el carrito
         const result = await cartModel.updateOne({_id: cartId, "products.product": productId },

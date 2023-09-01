@@ -13,6 +13,16 @@ export default class CartsRepository {
         return result;
     }
 
+    getCartById = async (cartId) => {
+        const result = await this.dao.getCartById(cartId);
+        return result;
+    }
+
+    deleteCartById = async (cartId) => {
+        const result = await this.dao.deleteCartById(cartId);
+        return result;
+    }
+    
     addCart = async (cart) => {
         const result = await this.dao.addCart(cart);
         return result;

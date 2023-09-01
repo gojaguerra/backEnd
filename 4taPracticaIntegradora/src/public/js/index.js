@@ -107,48 +107,60 @@ if(changeRole) {
     });
 };
 
-// Botón para el cambio de ROL de USUARIOS
+// Botón para ELIMINAR USUARIOS
 function userDeleteId(comp){
     const id = comp.id;
     const butCart = document.getElementById(`${id}`)
     if(butCart){ 
         Swal.fire({
-            title: `Está seguro de eliminar el user ${id}? `,
+            title: `Está seguro de eliminar el user? `,
+            icon: 'warning',
+            input: 'text',
+            inputLabel: "Ingrese el motivo de la eliminación:",
+            inputValidator: (value) =>{
+                return !value && 'Por favor ingrese un motivo!';
+            },
             showCancelButton: true,
+            confirmButtonText: 'Eliminar!',
             allowOutsideClick: false,
             allowEscapeKey: false
         }).then(result =>{
             if (result.isConfirmed) {
-                id = result.value;
-                fetch('/api/users/delete/' + id, {
-                    method: 'DELETE'
-                    })
-                    .then((result) => {
-                        if (result.status === 200) {
+                const motivo= `{"motivo": "${result.value}"}`;
+                const url='/api/users/delete/'+id
+                fetch(url, {
+                    method: 'DELETE',
+                    body: motivo,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then((result) => {
+                    if (result.status === 200) {
+                        Swal.fire({
+                            title: 'Usuario Eliminado',
+                            icon: 'success'
+                        })
+                        delayNavigateOkUsers();
+                    }else{
+                        if (result.status === 403) {
                             Swal.fire({
-                                title: 'Usuario Eliminado',
-                                icon: 'success'
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'No cuenta con permisos para realizar dicha acción!',
+                                showConfirmButton: true,
                             })
-                            delayNavigateOkUsers();
-                        }else{
-                            if (result.status === 403) {
-                                Swal.fire({
-                                    position: 'top-end',
-                                    icon: 'error',
-                                    title: 'No cuenta con permisos para realizar dicha acción!',
-                                    showConfirmButton: true,
-                                })
-                            }else {
-                                Swal.fire({
-                                    position: 'top-end',
-                                    icon: 'error',
-                                    title: 'Hubo un error al registrar la eliminición del usuario, intente luego',
-                                    showConfirmButton: true,
-                                })                
-                            }    
-                        }
-                    })
-            }
+                        }else {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Hubo un error al registrar la eliminición del usuario, intente luego',
+                                showConfirmButton: true,
+                            })                
+                        }    
+                    }
+                });
+            };
        }); 
     };
 };
@@ -210,6 +222,58 @@ function userChangeRoleId(comp){
             }
         }); 
     };
+};
+
+// Botón para Eliminar usuarios por inactividad
+const goDeleteForTime = document.getElementById('goDeleteForTime')
+if(goDeleteForTime) {
+    goDeleteForTime.addEventListener('click', (event) => {
+        Swal.fire({
+            title: 'Eliminar Usuarios por Inactividad',
+            icon: 'warning',
+            showCancelButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonText: 'Eliminar'
+        }).then(async result =>{
+            if (result.isConfirmed) {
+                await fetch('/api/users/deleteall', {
+                    method: 'DELETE',
+                    headers: {
+                        'Accept': "application/json",
+                        'Content-Type': 'application/json; charset=UTF-8'
+                    }
+                })
+                .then((result) => {
+                    console.log(result);
+                    if (result.status === 200) {
+                        Swal.fire({
+                            title: 'Se eliminaron los usuarios correctamente',
+                            icon: 'success',
+                            timer: 2000
+                        })
+                        delayNavigateOkUsers();
+                    } else { 
+                        if (result.status === 404) {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'No se encontraron usuarios a eliminar!',
+                                showConfirmButton: true,
+                        }) 
+                    } else {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Hubo un error al querer eliminar usuarios, intente luego',
+                            showConfirmButton: true,
+                        })
+                    }
+                }
+                })
+            }        
+        })        
+    })
 };
 
 // Botón para ver finalizar pedido

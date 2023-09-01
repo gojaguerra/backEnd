@@ -2,6 +2,7 @@ import {
     postCart as postCartService,
     getCartById as getCartByIdService, 
     putCartById as putCartByIdService,
+    deleteCartById as deleteCartByIdService,
     deleteAllProductsInCart as deleteAllProductsInCartService,  
     putProductInCart as putProductInCartService,
     deleteProductInCart as deleteProductInCartService, 
@@ -84,6 +85,19 @@ const putCartById = async(req, res) => {
     } catch (error) {
         req.logger.error(`putCartById = No se pudo agregar el Producto al carrito!` + error.message);
         res.status(404).send({ status: "NOT FOUND", payload: `No se pudo agregar el Producto al carrito!` });
+    };
+};
+
+const deleteCartById = async(req, res) => {
+    let cartId = String(req.params.cid);
+    try {
+        const cart = await deleteCartByIdService(cartId);
+        const response ={ status: "Success", payload: cart};
+        res.status(200).json(response);
+    } catch (error) {
+        req.logger.error(`deleteCartById = El carrito con ID ${cartId} NO existe!`);
+        const response = { status: "NOT FOUND", payload: `El carrito con ID ${cartId} NO existe!` };
+        res.status(500).send(response);
     };
 };
 
@@ -241,6 +255,7 @@ export {
     putCartById,
     putProductInCart,
     deleteCart,
+    deleteCartById, 
     deleteProductInCart,
     deleteAllProductsInCart,
     postPurchase

@@ -11,6 +11,11 @@ const getCartById = async (id) => {
     return cart;
 };
 
+const deleteCartById = async (cartId) => {
+    const cart = await cartsRepository.deleteCartById(cartId);
+    return cart;
+};
+
 const putCartById = async (cartId, productId, quantity) => {
     const result = await cartsRepository.addProductInCart(cartId, productId, quantity);
     return result;
@@ -54,6 +59,7 @@ export {
     postCart,
     getCartById,
     putCartById,
+    deleteCartById,
     deleteAllProductsInCart, 
     putProductInCart,
     deleteProductInCart,

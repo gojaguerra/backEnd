@@ -1,11 +1,13 @@
-import { getUser as getUserService, addUser as addUserService, updateUser as updateUserService, updateUserPush as updateUserPushService, getAllUser as getAllUserService, deleteUserById as deleteUserByIdService, getUserById as getUserByIdService } from '../services/user.services.js';
+import { getUser as getUserService, addUser as addUserService, updateUser as updateUserService, updateUserPush as updateUserPushService, getAllUser as getAllUserService, deleteUserById as deleteUserByIdService, getUserById as getUserByIdService, deleteAllUser as deleteAllUserService } from '../services/user.services.js';
+import { deleteCartById as deleteCartByIdService, postCart } from '../services/carts.services.js';
 import { generateToken, generateTokenResetPass, createHash, isValidPassword } from '../utils/utils.js';
 import { PRIVATE_COOKIE } from '../helpers/proyect.constants.js';
 import UsersDto from '../dao/DTOs/users.dto.js';
-import { postCart } from '../services/carts.services.js';
 import { resetPassNotification } from '../utils/custom-html.js';
+import { deleteNotification } from '../utils/custom-html-delete.js';
 import { sendEmail } from '../services/mail.js';
 import { responseMessages } from '../helpers/proyect.helpers.js';
+import moment from "moment";
 
 const registerUser = async (req, res) => {
     try {
@@ -312,14 +314,28 @@ const deleteUser = async (req, res) => {
     try {
         
         const id = String(req.params.uid);
-        const user = await getUserByIdService({ id });
-        console.log("user:",user);
+        const { motivo } = req.body;
+        const user = await getUserByIdService({ _id: id });
+        
         if(user) {
-            const cart = user.cart;
-            // eliminar el cart
+            // eliminar el cart asociado al user
+            const cartId = user.cart;
+            await deleteCartByIdService(cartId);
 
             // eliminar el usuario
             const result = await deleteUserByIdService(id);
+            
+            // Envío mail de aviso
+            const type = "Usuario"
+            const detail = `usuario con mail ${user.email}`
+            const reason = `${motivo}`
+            const mail = { 
+                to: user.email,
+                subject: 'Eliminación de Usuario',
+                html: deleteNotification(type, detail, reason)
+            };
+            
+            await sendEmail(mail);
             
             if (result.acknowledged & result.deletedCount!==0) {
                 const response = { status: "Success", payload: `El usuario fue eliminado con Exito!`};       
@@ -331,6 +347,54 @@ const deleteUser = async (req, res) => {
         } else {
             req.logger.error(`deleteUser = No se pudo eliminar el user. No se encontro el usuario.`);
             res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo eliminar el usuario. No se encontro el usuario."});
+        };
+    } catch (error) {
+        res.status(500).send({ status: 'error', error });
+    }
+};
+
+const deleteAllUser = async (req, res) => {
+    try {
+        const day = 1;
+        /* const condition = moment().subtract(day, 'days'); */
+        const condition = moment().subtract(30, 'minutes');
+
+        // no quiero borrar estos IDS
+        const condUserExclude = {$and: [{ _id: {$ne: '648db29c17e05dbabba91f03'} }, { _id: {$ne: '648db6f58ce7033d67aee2b0'} }, { _id: {$ne: '64ada31c22ec3fa7e8c91be3'} }, { _id: {$ne: '64ade5160a5c4030e21aa515'} }, { _id: {$ne: '64be674527cf84a028a6c668'} }, { _id: {$ne: '64e0ad827686bbf728168024'} }]}
+        // busco los usuarios para eliminar sus carros
+        const usersAll = await getAllUserService( {$and: [{ last_connection: {$lt: condition} }, condUserExclude]} );
+        
+        //Elimino los carritos asociados a los usuarios a eliminar
+        usersAll.forEach(async (element) => {
+            //Elimino el carrito asociado al usuario
+            await deleteCartByIdService(element.cart);
+
+            // Envío mail de aviso
+            const type = "Usuario"
+            const detail = `usuario con mail ${element.email}`
+            const reason = "Por inactividad de la cuenta"
+            const mail = { 
+                to: element.email,
+                subject: 'Eliminación de Usuario',
+                html: deleteNotification(type, detail, reason)
+            }
+            
+            await sendEmail(mail);
+
+        });
+        
+        const usersDelete = await deleteAllUserService( {$and: [{ last_connection: {$lt: condition} }, condUserExclude]} );
+        
+        //Valido que se realizo el UPDATE
+        if (usersDelete.acknowledged & usersDelete.deletedCount!==0) {
+            const response = { status: "Success", payload: `Se eliminaron ${usersDelete.deletedCount} usuarios!`};       
+            //muestro resultado
+            res.status(200).send(response);
+            
+        } else {
+            req.logger.error(`deleteAllUser = No se pudo eliminar el user`);
+            //muestro resultado error
+            res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo eliminar el usuario, verifique los datos ingresados"});
         };
     } catch (error) {
         res.status(500).send({ status: 'error', error });
@@ -350,5 +414,6 @@ export {
     changeRol,
     getAllUser,
     uploadFile,
-    deleteUser
+    deleteUser,
+    deleteAllUser
 };

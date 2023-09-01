@@ -5,6 +5,8 @@ import {
     putProductById as putProductByIdService,
     deleteProductById as deleteProductByIdService  
 } from "../services/products.services.js";
+import { getUser as getUserService} from "../services/user.services.js";
+import { sendEmail } from "../services/mail.js";
 
 const getProducts = async (req, res) => {
     //leo el parametro por req.query
@@ -133,7 +135,8 @@ const deleteProductById = async(req,res)=>{
         
         // obtengo el producto para verificar el owner
         const productById = await getProductByIdService(id)
-        // si es premium solo puede borrar sus productos
+
+        // si role es premium solo puede borrar sus productos
         if (role==="premium" && productById[0].owner!==email){
             
             req.logger.error(`Error deleteProductById: NO tiene permiso para eliminar este producto!`);
@@ -141,7 +144,27 @@ const deleteProductById = async(req,res)=>{
             return res.status(403).json(response);
         };
 
-        const result = await deleteProductByIdService(id);
+        /* const result = await deleteProductByIdService(id); */
+        const result = {
+            acknowledged:true,
+            deletedCount:1
+        };
+        // si el producto es de user premium debo notificarle por email que se elimino el producto
+        if (productById[0].owner){
+            const user = await getUserService({ email: productById[0].owner });
+            if (user.role==="premium"){
+                // Envío mail de aviso
+                const type = "Producto"
+                const detail = `producto codigo: ${productById[0].code}`
+                const reason = "admin elimino!"
+                const mail = { 
+                    to: productById[0].owner,
+                    subject: 'Eliminación de Producto',
+                    html: deleteNotification(type, detail, reason)
+                }
+                await sendEmail(mail);
+            };
+        };
 
         //Valido el resultado de la búsqueda y renderizo con el socket
         if (result.acknowledged & result.deletedCount!==0 ) {
